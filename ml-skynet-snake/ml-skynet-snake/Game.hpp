@@ -5,6 +5,7 @@
 #include "Settings.hpp"
 #include "Snake.hpp"
 #include "Input.hpp"
+#include "Simulation.hpp"
 
 class Game
 {
@@ -20,5 +21,6 @@ private:
 	Board board_;
 	Snake snake_;
 	Input input_;
+	Simulation simulation_;
 };
 

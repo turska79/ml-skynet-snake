@@ -3,3 +3,13 @@
 *.db
 *.ipch
 *.opendb
+ml-skynet-snake/.vs/ml-skynet-snake/v15/.suo
+*.dll
+*.lib
+*.obj
+*.log
+*.tlog
+*.idb
+*.pdb
+*.exe
+*.ilk

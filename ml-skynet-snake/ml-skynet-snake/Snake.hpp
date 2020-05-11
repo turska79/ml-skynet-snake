@@ -3,8 +3,9 @@
 #include <cstddef>
 #include <list>
 #include "Point.hpp"
-
+//#include <SDL.h>
 class Board;
+class Keyboard;
 
 class Snake
 {
@@ -12,12 +13,18 @@ public:
 	Snake();
 	~Snake();
 
+	enum class Direction { up, down, left, right };
+
 	void init(Point<std::size_t> position, Board& board);
-	void updatePosition(Board& board);
+	void updatePosition(Board& board, const Point<std::size_t> newHeadPosition);
+	void processInput(const Keyboard& keyboard);
+	const Snake::Direction getDirection() const;
+	Point<std::size_t> getHeadPosition() const;
+	const float getSpeed() const;
 	//void Grow(int amount);
 	//void UpdatePosition(Board& board);
 
-	enum class Move { up, down, left, right };
+	
 
 	//Move last_dir = Move::up;
 	//Move dir = Move::up;
@@ -25,7 +32,10 @@ public:
 private:
 	Point<std::size_t> headPosition_{ 0,0 };
 	std::list<Point<std::size_t>> body;
+	Direction direction_{ Direction::right };
+	//void updateHeadPosition(Board& board);
 
+	float speed_{ 0.2 };
 	//int size = 1;
 	//float speed = 0.5f;
 	//int growing = 0;

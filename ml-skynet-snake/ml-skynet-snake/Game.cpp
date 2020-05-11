@@ -4,7 +4,7 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <string>
-
+#include <iostream>
 
 
 class FpsCounter {
@@ -50,7 +50,7 @@ Game::~Game()
 
 void Game::run()
 {
-	const unsigned int simulationFrequency{ 33 };
+	const unsigned int simulationFrequency{ 100 };
 	const unsigned int framesPerSecond{ 60 };
 	const unsigned int secondAsMilliseconds{ 1000 };
 	bool running = true;
@@ -77,36 +77,50 @@ void Game::run()
 		lag += elapsed;
 
 		SDL_Event event;
-		if (SDL_PollEvent(&event)) {
+		
+		//if (SDL_PollEvent(nullptr) == 1 && SDL_PollEvent(&event)) {
+		auto eventsInQueue = SDL_PollEvent(nullptr);
+		constexpr int queueEmpty{ 0 };
+
+		if (eventsInQueue != queueEmpty) {
+			SDL_PollEvent(&event);
+
 			if (event.type == SDL_QUIT) {
 				running = false;
 				break;
 			}
-
 			input_.update();
-			
-			if (input_.getKeyState(SDL_Scancode::SDL_SCANCODE_ESCAPE) == keyboard::ButtonState::pressed) {
+
+			const auto& keyboard = input_.getKeyboard();
+
+			if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_ESCAPE) == keyboard::ButtonState::pressed) {
 				running = false;
 			}
+
+			snake_.processInput(keyboard);
+		}
+
 			
-			while (lag >= simulationFrequency) {
-				snake_.updatePosition(board_);
-				lag -= simulationFrequency;
-			}
+		while (lag >= simulationFrequency) {
+			std::cout << "run simulation, lag: " << std::to_string(lag);
+			//snake_.updatePosition(board_);
+			const Point<std::size_t> target = simulation_.getNextSnakePosition(board_, snake_);
+			simulation_.checkForCollision(board_, target);
+			simulation_.updateSnakePosition(board_, snake_, target);
+			lag -= simulationFrequency;
+		}
 
-			renderer_.renderBackground();
-			renderer_.renderCells(board_.grid_);
+		renderer_.renderBackground();
+		renderer_.renderCells(board_.grid_);
+		
+		fpsCounter.update();
+		renderer_.renderText(20, 20, fpsCounter.text, *calibri, black);
+		renderer_.present();
 
-			fpsCounter.update();
-			renderer_.renderText(20, 20, fpsCounter.text, *calibri, black);
-			renderer_.present();
+		uint32_t deltatime = SDL_GetTicks() - previous;
 
-			uint32_t deltatime = SDL_GetTicks() - previous;
-
-			if (deltatime < (secondAsMilliseconds / framesPerSecond)) {
-				SDL_Delay((secondAsMilliseconds / framesPerSecond) - deltatime);
-			}
-			
+		if (deltatime < (secondAsMilliseconds / framesPerSecond)) {
+			SDL_Delay((secondAsMilliseconds / framesPerSecond) - deltatime);
 		}
 	}
 }
