@@ -52,7 +52,7 @@ Point<std::size_t> Snake::getHeadPosition() const
 	return headPosition_;
 }
 
-const float Snake::getSpeed() const
+const unsigned int Snake::getSpeed() const
 {
 	return speed_;
 }
@@ -65,6 +65,8 @@ void Snake::updatePosition(Board& board, const Point<std::size_t> newHeadPositio
 	headPosition_ = newHeadPosition;
 	cell = board.findCell(headPosition_);
 	cell->type_ = Cell::Type::head;
+	int arr[10];
+	int* p = arr;
 }
 /*
 void Snake::updateHeadPosition(Board& board)

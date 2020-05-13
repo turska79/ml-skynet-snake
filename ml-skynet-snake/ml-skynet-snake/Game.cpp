@@ -50,9 +50,6 @@ Game::~Game()
 
 void Game::run()
 {
-	const unsigned int simulationFrequency{ 100 };
-	const unsigned int framesPerSecond{ 60 };
-	const unsigned int secondAsMilliseconds{ 1000 };
 	bool running = true;
 	FpsCounter fpsCounter;
 	fpsCounter.start();
@@ -66,19 +63,21 @@ void Game::run()
 
 	snake_.init(initialPosition, board_);
 
-	uint32_t previous = SDL_GetTicks();
-	double lag{ 0 };
+	uint32_t startTime{ 0 };
+	uint32_t endTime = SDL_GetTicks();
+	uint32_t deltaTime{ 0 };
+	constexpr unsigned int targetFramesPerSecond{ 60 };
+	constexpr unsigned int secondAsMilliseconds{ 1000 };
+
+	uint32_t simulationStartTime{ 0 };
+	uint32_t simulationEndTime = { 10000 };
+	uint32_t simulationDeltaTime{ 0 };
 
 	while (running) {
-		uint32_t current = SDL_GetTicks();
-		uint32_t elapsed = current - previous;
-
-		previous = current;
-		lag += elapsed;
+		startTime = SDL_GetTicks();
 
 		SDL_Event event;
 		
-		//if (SDL_PollEvent(nullptr) == 1 && SDL_PollEvent(&event)) {
 		auto eventsInQueue = SDL_PollEvent(nullptr);
 		constexpr int queueEmpty{ 0 };
 
@@ -100,14 +99,17 @@ void Game::run()
 			snake_.processInput(keyboard);
 		}
 
-			
-		while (lag >= simulationFrequency) {
-			std::cout << "run simulation, lag: " << std::to_string(lag);
-			//snake_.updatePosition(board_);
+		
+		simulationStartTime = SDL_GetTicks();
+		simulationDeltaTime = simulationStartTime - simulationEndTime;
+		const unsigned int snakeSpeed = snake_.getSpeed();
+	
+		if (simulationDeltaTime > (secondAsMilliseconds / snakeSpeed)) {
+			std::cout << "simulationDeltaTime: " << std::to_string(simulationDeltaTime) << std::endl;
 			const Point<std::size_t> target = simulation_.getNextSnakePosition(board_, snake_);
 			simulation_.checkForCollision(board_, target);
 			simulation_.updateSnakePosition(board_, snake_, target);
-			lag -= simulationFrequency;
+			simulationEndTime = SDL_GetTicks();
 		}
 
 		renderer_.renderBackground();
@@ -117,10 +119,11 @@ void Game::run()
 		renderer_.renderText(20, 20, fpsCounter.text, *calibri, black);
 		renderer_.present();
 
-		uint32_t deltatime = SDL_GetTicks() - previous;
+		endTime = SDL_GetTicks();
+		deltaTime = endTime - startTime;
 
-		if (deltatime < (secondAsMilliseconds / framesPerSecond)) {
-			SDL_Delay((secondAsMilliseconds / framesPerSecond) - deltatime);
+		if (deltaTime < (secondAsMilliseconds / targetFramesPerSecond)) {
+			SDL_Delay((secondAsMilliseconds / targetFramesPerSecond) - deltaTime);
 		}
 	}
 }

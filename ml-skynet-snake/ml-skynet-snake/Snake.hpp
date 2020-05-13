@@ -20,7 +20,7 @@ public:
 	void processInput(const Keyboard& keyboard);
 	const Snake::Direction getDirection() const;
 	Point<std::size_t> getHeadPosition() const;
-	const float getSpeed() const;
+	const unsigned int getSpeed() const;
 	//void Grow(int amount);
 	//void UpdatePosition(Board& board);
 
@@ -35,7 +35,7 @@ private:
 	Direction direction_{ Direction::right };
 	//void updateHeadPosition(Board& board);
 
-	float speed_{ 0.2 };
+	unsigned int speed_{ 10 };
 	//int size = 1;
 	//float speed = 0.5f;
 	//int growing = 0;

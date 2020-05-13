@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\turska\source\repos\ml-skynet-snake\ml-skynet-snake\ml-skynet-snake</FILEPATH>
+      <FILENAME>board.hpp</FILENAME>
+      <LINE>15</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'Cell::Cell' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>Cell::{ctor}</FUNCTION>
+    <DECORATED>??0Cell@@QEAA@W4Type@0@_K1@Z</DECORATED>
+    <FUNCLINE>15</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\turska\source\sdl2-devel-2.0.12-vc\sdl2-2.0.12\include</FILEPATH>
+      <FILENAME>sdl_endian.h</FILENAME>
+      <LINE>201</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>26494</DEFECTCODE>
+    <DESCRIPTION>Variable 'hi' is uninitialized. Always initialize an object (type.5).</DESCRIPTION>
+    <FUNCTION>SDL_Swap64</FUNCTION>
+    <DECORATED>SDL_Swap64</DECORATED>
+    <FUNCLINE>199</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\turska\source\repos\ml-skynet-snake\ml-skynet-snake\ml-skynet-snake</FILEPATH>
+      <FILENAME>board.cpp</FILENAME>
+      <LINE>11</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>26432</DEFECTCODE>
+    <DESCRIPTION>If you define or delete any default operation in the type 'class Board', define or delete them all (c.21).</DESCRIPTION>
+    <FUNCTION>Board::{dtor}</FUNCTION>
+    <DECORATED>??1Board@@UEAA@XZ</DECORATED>
+    <FUNCLINE>11</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\turska\source\repos\ml-skynet-snake\ml-skynet-snake\ml-skynet-snake</FILEPATH>
+      <FILENAME>board.cpp</FILENAME>
+      <LINE>22</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function '&lt;lambda_27ce52575367dc59921b8ded830e286d&gt;::operator()' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>Board::findCell::&lt;lambda_27ce52575367dc59921b8ded830e286d&gt;::()</FUNCTION>
+    <DECORATED>??R&lt;lambda_27ce52575367dc59921b8ded830e286d&gt;@@QEBA_NAEAV?$unique_ptr@UCell@@U?$default_delete@UCell@@@std@@@std@@@Z</DECORATED>
+    <FUNCLINE>22</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\turska\source\repos\ml-skynet-snake\ml-skynet-snake\ml-skynet-snake</FILEPATH>
+      <FILENAME>board.cpp</FILENAME>
+      <LINE>24</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>26489</DEFECTCODE>
+    <DESCRIPTION>Don't dereference a pointer that may be invalid: 'it'. 'it' may have been invalidated at line 17 (lifetime.1).</DESCRIPTION>
+    <FUNCTION>Board::findCell</FUNCTION>
+    <DECORATED>?findCell@Board@@QEAAPEAUCell@@AEBU?$Point@_K@@@Z</DECORATED>
+    <FUNCLINE>15</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\turska\source\repos\ml-skynet-snake\ml-skynet-snake\ml-skynet-snake</FILEPATH>
+        <FILENAME>board.cpp</FILENAME>
+        <LINE>17</LINE>
+        <COLUMN>23</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\turska\source\repos\ml-skynet-snake\ml-skynet-snake\ml-skynet-snake</FILEPATH>
+      <FILENAME>board.cpp</FILENAME>
+      <LINE>25</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>26489</DEFECTCODE>
+    <DESCRIPTION>Don't dereference a pointer that may be invalid: 'it'. 'it' may have been invalidated at line 17 (lifetime.1).</DESCRIPTION>
+    <FUNCTION>Board::findCell</FUNCTION>
+    <DECORATED>?findCell@Board@@QEAAPEAUCell@@AEBU?$Point@_K@@@Z</DECORATED>
+    <FUNCLINE>15</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\turska\source\repos\ml-skynet-snake\ml-skynet-snake\ml-skynet-snake</FILEPATH>
+        <FILENAME>board.cpp</FILENAME>
+        <LINE>17</LINE>
+        <COLUMN>23</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>
