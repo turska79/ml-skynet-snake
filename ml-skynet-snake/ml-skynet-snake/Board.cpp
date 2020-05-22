@@ -7,11 +7,6 @@ Board::Board(Settings& settings)
 	createBoard(settings.gridWidth_, settings.gridHeight_);
 }
 
-
-Board::~Board()
-{
-}
-
 Cell* Board::findCell(const  Point<std::size_t>& coordinate)
 {
 	const auto& it = std::find_if(grid_.begin(), grid_.end(), [&coordinate](std::unique_ptr<Cell>& cell) {
@@ -25,6 +20,12 @@ Cell* Board::findCell(const  Point<std::size_t>& coordinate)
 		return it->get();
 
 	return nullptr;
+}
+
+void Board::resetBoard()
+{
+	grid_.clear();
+	createBoard(gridWidth_, gridHeight_);
 }
 
 void Board::createBoard(std::size_t gridWidth, std::size_t gridHeight)
@@ -56,8 +57,7 @@ void Board::createBoard(std::size_t gridWidth, std::size_t gridHeight)
 				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::wall, row, column));
 			} else if (row == bottomWall) {
 				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::wall, row, column));
-			}
-			else {
+			} else {
 				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::empty, row, column));
 			}
 		}

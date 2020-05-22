@@ -28,10 +28,11 @@ int main(int, char**) {
 	TTF_Init();
 
 	Game game(settings);
-
 	game.run();
-
+	
+	TTF_Quit();
 	SDL_Quit();
+
 	return 0;
 }
 

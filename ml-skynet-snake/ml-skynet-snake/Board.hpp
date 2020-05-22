@@ -19,9 +19,9 @@ class Board
 {
 public:
 	Board(Settings& settings);
-	virtual ~Board();
 	std::list<std::unique_ptr<Cell>> grid_;
 	Cell* findCell(const  Point<std::size_t>& coordinate);
+	void resetBoard();
 private:
 	void createBoard(std::size_t gridWidth_, std::size_t gridHeight);
 	std::size_t gridWidth_{ 0 };

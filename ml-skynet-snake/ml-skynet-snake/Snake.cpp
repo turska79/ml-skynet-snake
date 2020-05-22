@@ -22,24 +22,9 @@ void Snake::init(Point<std::size_t> position, Board& board)
 	cell->type_ = Cell::Type::head;
 }
 
-void Snake::processInput(const Keyboard& keyboard)
+void Snake::setDirection(const Direction direction)
 {
-	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_RIGHT) == keyboard::ButtonState::pressed) {
-		std::cout << "snake pressed: right" << std::endl;
-		direction_ = Direction::right;
-	}
-	else  if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_LEFT) == keyboard::ButtonState::pressed) {
-		std::cout << "snake pressed: left" << std::endl;
-		direction_ = Direction::left;
-	}
-	else  if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_UP) == keyboard::ButtonState::pressed) {
-		std::cout << "snake pressed: up" << std::endl;
-		direction_ = Direction::up;
-	}
-	else if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_DOWN) == keyboard::ButtonState::pressed) {
-		std::cout << "snake pressed: down" << std::endl;
-		direction_ = Direction::down;
-	}
+	direction_ = direction;
 }
 
 const Snake::Direction Snake::getDirection() const

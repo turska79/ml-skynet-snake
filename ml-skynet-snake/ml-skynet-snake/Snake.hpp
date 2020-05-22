@@ -17,7 +17,7 @@ public:
 
 	void init(Point<std::size_t> position, Board& board);
 	void updatePosition(Board& board, const Point<std::size_t> newHeadPosition);
-	void processInput(const Keyboard& keyboard);
+	void setDirection(const Direction direction);
 	const Snake::Direction getDirection() const;
 	Point<std::size_t> getHeadPosition() const;
 	const unsigned int getSpeed() const;
