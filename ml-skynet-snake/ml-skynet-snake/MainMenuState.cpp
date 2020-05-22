@@ -1,9 +1,8 @@
 #include "MainMenuState.hpp"
-//#include "Input.hpp"
-//#include "Renderer.hpp"
 #include "Game.hpp"
-#include <SDL_ttf.h>
 #include "RunningState.hpp"
+#include <SDL_ttf.h>
+#include <iostream>
 
 MainMenuState::MainMenuState(Game& game) : State(game)
 {
@@ -11,6 +10,7 @@ MainMenuState::MainMenuState(Game& game) : State(game)
 
 void MainMenuState::enter()
 {
+	std::cout << " MainMenuState::enter()" << std::endl;
 	constexpr unsigned int fontSize{ 20 };
 
 	FontPtr font(TTF_OpenFont("C:\\WINDOWS\\Fonts\\Calibrib.ttf", fontSize));
@@ -27,6 +27,7 @@ void MainMenuState::update(Renderer& renderer, uint32_t deltaTime)
 
 void MainMenuState::exit()
 {
+	std::cout << " MainMenuState::exit()" << std::endl;
 }
 
 void MainMenuState::handleInput(const Keyboard& keyboard)

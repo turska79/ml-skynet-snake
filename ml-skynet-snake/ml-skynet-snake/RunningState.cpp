@@ -15,24 +15,35 @@ RunningState::~RunningState()
 
 void RunningState::enter()
 {
+	std::cout << " RunningState::enter()" << std::endl;
+	resetBoard();
+	initSnake();
+}
+
+void RunningState::resetBoard() const
+{
 	Board& board = game_.board();
 	board.resetBoard();
-	
+}
+
+void RunningState::initSnake()
+{
 	Point<std::size_t> initialPosition;
 	initialPosition.x_ = 10;
 	initialPosition.y_ = 10;
 
+	Board& board = game_.board();
 	snake_.init(initialPosition, board);
+	snake_.setDirection(Snake::Direction::right);
 }
 
 void RunningState::update(Renderer & renderer, uint32_t deltaTime)
 {
 	constexpr unsigned int secondAsMilliseconds{ 1000 };
-	updateDeltaTime += deltaTime;
+	updateDeltaTime_ += deltaTime;
 	const unsigned int snakeSpeed = snake_.getSpeed();
 
-	if (updateDeltaTime > (secondAsMilliseconds / snakeSpeed)) {
-		std::cout << "updateDeltaTime: " << std::to_string(updateDeltaTime) << std::endl;
+	if (updateDeltaTime_ > (secondAsMilliseconds / snakeSpeed)) {
 		Board& board = game_.board();
 		const Point<std::size_t> target = simulation_.getNextSnakePosition(board, snake_);
 		
@@ -44,13 +55,13 @@ void RunningState::update(Renderer & renderer, uint32_t deltaTime)
 		}
 
 		simulation_.updateSnakePosition(board, snake_, target);
-		updateDeltaTime = updateDeltaTime - (secondAsMilliseconds / snakeSpeed);
+		updateDeltaTime_ = updateDeltaTime_ - (secondAsMilliseconds / snakeSpeed);
 	}
 }
 
 void RunningState::exit()
 {
-
+	std::cout << " RunningState::exit()" << std::endl;
 }
 
 void RunningState::handleInput(const Keyboard & keyboard)
@@ -76,3 +87,5 @@ void RunningState::handleInput(const Keyboard & keyboard)
 
 	snake_.setDirection(direction);
 }
+
+

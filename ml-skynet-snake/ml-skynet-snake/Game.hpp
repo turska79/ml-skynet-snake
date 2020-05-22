@@ -30,7 +30,7 @@ private:
 	State* currentState() const;
 	const bool checkForQuit() const;
 
-	bool running_{ false };
+	bool running_{ true };
 	Renderer renderer_;
 	Settings settings_;
 	Board board_;

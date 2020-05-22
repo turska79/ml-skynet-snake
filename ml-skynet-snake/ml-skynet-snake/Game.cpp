@@ -15,32 +15,9 @@ Game::Game(Settings& settings) :
 {
 
 }
-/*
-void Game::pushState(std::unique_ptr<State> state)
-{
-	if (states_.empty() == false) {
-		states_.back()->exit();
-	}
-	
-	state->enter();
-
-	states_.emplace_back(std::move(state));
-}
-
-void Game::popState()
-{
-	if (states_.empty() == false) {
-		states_.back()->exit();
-		states_.pop_back();
-	}
-	
-	if (states_.empty() == false) {
-		states_.back()->enter();
-	}
-}*/
-
 void Game::run()
 {
+	std::cout << " Game::run()" << std::endl;
 	Timer fpsTimer;
 	Timer capFramesTimer;
 
@@ -101,6 +78,7 @@ void Game::run()
 	}
 
 	exit();
+	std::cout << " Game::run() exit" << std::endl;
 }
 
 void Game::exit()

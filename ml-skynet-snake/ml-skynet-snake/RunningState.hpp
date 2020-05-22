@@ -19,9 +19,11 @@ public:
 	virtual void exit() override;
 	virtual void handleInput(const Keyboard& keyboard) override;
 private:
+	void resetBoard() const;
+	void initSnake();
 	Snake snake_;
 	Simulation simulation_;
 	
-	uint32_t updateDeltaTime{ 0 };
+	uint32_t updateDeltaTime_{ 0 };
 };
 
