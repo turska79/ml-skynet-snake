@@ -14,10 +14,6 @@ Renderer::Renderer(std::size_t windowWidth, std::size_t windowHeight, SDL_Color&
 }
 
 
-Renderer::~Renderer()
-{
-}
-
 void Renderer::renderText(const unsigned int x, const unsigned int y, const std::string& text, TTF_Font &font, const SDL_Color& color)
 {
 	int text_width{ 0 };
@@ -59,9 +55,14 @@ void Renderer::renderCells(const std::list<std::unique_ptr<Cell>>& cells)
 		if (cell->type_ == Cell::Type::wall) {
 			SDL_SetRenderDrawColor(renderer_.get(), 105, 105, 105, 255);
 			SDL_RenderFillRect(renderer_.get(), &cellArea);
-		}
-		else if (cell->type_ == Cell::Type::head) {
-			SDL_SetRenderDrawColor(renderer_.get(), 34, 139, 34, 255);
+		} else if (cell->type_ == Cell::Type::head) {
+			SDL_SetRenderDrawColor(renderer_.get(), 220, 20, 60, 255);
+			SDL_RenderFillRect(renderer_.get(), &cellArea);
+		} else if (cell->type_ == Cell::Type::body) {
+			SDL_SetRenderDrawColor(renderer_.get(), 0, 0, 0, 255);
+			SDL_RenderFillRect(renderer_.get(), &cellArea);
+		} else if (cell->type_ == Cell::Type::food) {
+			SDL_SetRenderDrawColor(renderer_.get(), 0, 128, 0, 255);
 			SDL_RenderFillRect(renderer_.get(), &cellArea);
 		}
 	}
@@ -70,4 +71,9 @@ void Renderer::renderCells(const std::list<std::unique_ptr<Cell>>& cells)
 void Renderer::present()
 {
 	SDL_RenderPresent(renderer_.get());
+}
+
+void Renderer::clear()
+{
+	SDL_RenderClear(renderer_.get());
 }

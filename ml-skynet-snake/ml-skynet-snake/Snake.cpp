@@ -39,16 +39,21 @@ void Snake::grow(const unsigned int length)
 
 void Snake::updatePosition(Board& board, const Point<std::size_t> newHeadPosition)
 {
-	Cell* cell = board.findCell(headPosition_);
+	Cell* currentHeadCell = board.findCell(headPosition_);
+
 	if (body_.empty()) {
-		cell->type_ = Cell::Type::empty;
+		currentHeadCell->type_ = Cell::Type::empty;
 	} else {
-		cell->type_ = Cell::Type::body;
+		currentHeadCell->type_ = Cell::Type::body;
+		body_.push_back(headPosition_);
+		
+		Cell* currentTail = board.findCell(body_.front());
+		currentTail->type_ = Cell::Type::empty;
 		body_.pop_front();
 	}
 
 	headPosition_ = newHeadPosition;
-	cell = board.findCell(headPosition_);
-	cell->type_ = Cell::Type::head;
+	Cell* newHeadCell = board.findCell(headPosition_);
+	newHeadCell->type_ = Cell::Type::head;
 }
 

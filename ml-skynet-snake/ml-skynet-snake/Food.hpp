@@ -8,9 +8,9 @@ class Board;
 class Food
 {
 public:
-	void init(Point<std::size_t> position, Board& board);
+	void init(Board& board, const Point<std::size_t> position);
 	void updatePosition(Board& board, const Point<std::size_t> position);
-
+	const Point<std::size_t> position() const;
 private:
 	Point<std::size_t> position_{ 0, 0 };
 };

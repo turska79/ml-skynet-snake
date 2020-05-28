@@ -20,19 +20,15 @@ const Point<std::size_t> Simulation::getNextSnakePosition(const Board& board, co
 
 	switch (direction) {
 	case Snake::Direction::right:
-		std::cout << "snake direction right" << std::endl;
 		position.x_ += 1;
 		break;
 	case Snake::Direction::left:
-		std::cout << "nake directionrun left" << std::endl;
 		position.x_ -= 1;
 		break;
 	case Snake::Direction::up:
-		std::cout << "nake direction run up" << std::endl;
 		position.y_ -= 1;
 		break;
 	case Snake::Direction::down:
-		std::cout << "nake direction run down" << std::endl;
 		position.y_ += 1;
 		break;
 	default:

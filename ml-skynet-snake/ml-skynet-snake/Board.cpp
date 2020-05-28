@@ -8,7 +8,7 @@ Board::Board(const Settings& settings)
 	createBoard(settings.gridWidth_, settings.gridHeight_);
 }
 
-Cell* Board::findCell(const  Point<std::size_t>& coordinate)
+Cell* Board::findCell(const Point<std::size_t>& coordinate)
 {
 	const auto& it = std::find_if(grid_.begin(), grid_.end(), [&coordinate](const std::unique_ptr<Cell>& cell) {
 		if (coordinate.x_ == cell->x_ && coordinate.y_ == cell->y_)
@@ -29,8 +29,29 @@ void Board::resetBoard()
 	createBoard(gridWidth_, gridHeight_);
 }
 
-void Board::resetFood(Food& food)
+Point<std::size_t> Board::findRandomEmptyCell()
 {
+	Point<std::size_t> emptyCell{ 0,0 };
+
+	std::random_device rd;
+	std::default_random_engine generator(rd());
+	
+	std::uniform_int_distribution<size_t> distributionByWidth(0, gridWidth_);
+	std::uniform_int_distribution<size_t> distributionByHeight(0, gridHeight_);
+
+	while (true) {
+		size_t randomX = distributionByWidth(generator);
+		size_t randomY = distributionByHeight(generator);
+		emptyCell.x_ = randomX;
+		emptyCell.y_ = randomY;
+
+		Cell* cell = findCell(emptyCell);
+		if (cell && cell->type_ == Cell::Type::empty) {
+			break;
+		}
+	}
+
+	return emptyCell;
 }
 
 void Board::createBoard(std::size_t gridWidth, std::size_t gridHeight)

@@ -20,8 +20,9 @@ class Board
 public:
 	explicit Board(const Settings& settings);
 	std::list<std::unique_ptr<Cell>> grid_;
-	Cell* findCell(const  Point<std::size_t>& coordinate);
+	Cell* findCell(const Point<std::size_t>& coordinate);
 	void resetBoard();
+	Point<std::size_t> findRandomEmptyCell();
 private:
 	void createBoard(std::size_t gridWidth_, std::size_t gridHeight);
 	std::size_t gridWidth_{ 0 };

@@ -3,6 +3,7 @@
 #include "State.hpp"
 #include "Snake.hpp"
 #include "Simulation.hpp"
+#include "Food.hpp"
 
 class Renderer;
 class Keyboard;
@@ -21,8 +22,11 @@ public:
 private:
 	void resetBoard() const;
 	void initSnake();
+	void initFood();
+	void newRandomPositionForFood();
 	Snake snake_;
 	Simulation simulation_;
+	Food food_;
 	
 	uint32_t updateDeltaTime_{ 0 };
 };

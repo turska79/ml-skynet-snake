@@ -6,7 +6,6 @@
 #include <SDL_ttf.h>
 #include <iostream>
 #include <string>
-#include <iostream>
 
 Game::Game(Settings& settings) :
 	settings_(settings),
@@ -40,6 +39,7 @@ void Game::run()
 
 	while (running_) {
 		capFramesTimer.start();
+		renderer_.clear();
 
 		const uint32_t newTime = SDL_GetTicks();
 		const uint32_t deltaTime = newTime - currentTime;
@@ -52,21 +52,21 @@ void Game::run()
 		}
 		
 		handleInput();
-
+		
 		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
 		if (avgFPS > 2000000) {
 			avgFPS = 0;
 		}
 
 		std::string fpsTtext{"FPS: "};
-		fpsTtext.append(std::to_string(avgFPS));
+		fpsTtext.append(std::to_string(static_cast<unsigned int>(std::round(avgFPS))));
 
 		renderer_.renderBackground();
 		renderer_.renderCells(board_.grid_);
-		
 		renderer_.renderText(20, 20, fpsTtext, *calibri, black);
 
 		currentState()->update(renderer_, deltaTime);
+
 		renderer_.present();
 		
 		++countedFrames;
