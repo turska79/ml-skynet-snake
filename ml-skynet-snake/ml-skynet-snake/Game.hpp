@@ -17,9 +17,9 @@ public:
 	explicit Game(Settings& settings);
 
 	void run();
-	void exit();
+	void exit() noexcept;
 	
-	Board& board();
+	Board& board() noexcept;
 private:
 	void handleEvents();
 	void handleInput();

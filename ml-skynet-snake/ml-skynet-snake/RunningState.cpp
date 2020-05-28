@@ -8,11 +8,6 @@ RunningState::RunningState(Game& game) : State(game)
 {
 }
 
-
-RunningState::~RunningState()
-{
-}
-
 void RunningState::enter()
 {
 	std::cout << " RunningState::enter()" << std::endl;
@@ -41,7 +36,7 @@ void RunningState::initSnake()
 void RunningState::initFood()
 {
 	Board& board = game_.board();
-	Point<std::size_t> position = board.findRandomEmptyCell();
+	const Point<std::size_t> position = board.findRandomEmptyCell();
 
 	food_.init(board, position);
 }
@@ -49,7 +44,7 @@ void RunningState::initFood()
 void RunningState::newRandomPositionForFood()
 {
 	Board& board = game_.board();
-	Point<std::size_t> position = board.findRandomEmptyCell();
+	const Point<std::size_t> position = board.findRandomEmptyCell();
 
 	food_.updatePosition(board, position);
 }
@@ -64,14 +59,14 @@ void RunningState::update(Renderer & renderer, uint32_t deltaTime)
 		Board& board = game_.board();
 		const Point<std::size_t> target = simulation_.getNextSnakePosition(board, snake_);
 		
-		bool collision = simulation_.checkForCollision(board, target);
+		const bool collision = simulation_.checkForCollision(board, target);
 
 		if (collision) {
 			game_.pushState<GameOverState>(game_);
 			return;
 		}
 
-		bool food = simulation_.checkForFood(board, target);
+		const bool food = simulation_.checkForFood(board, target);
 
 		if (food) {
 			snake_.grow(1);

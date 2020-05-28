@@ -4,7 +4,7 @@
 #include <SDL_ttf.h>
 #include <iostream>
 
-GameOverState::GameOverState(Game& game) : State(game)
+GameOverState::GameOverState(Game& game) noexcept : State(game)
 {
 }
 

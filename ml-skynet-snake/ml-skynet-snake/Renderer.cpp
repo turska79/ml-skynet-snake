@@ -1,10 +1,7 @@
-
 #include "Renderer.hpp"
-
 #include <SDL.h>
 
-
-Renderer::Renderer(std::size_t windowWidth, std::size_t windowHeight, SDL_Color& background) : windowWidth_(windowWidth), windowHeight_(windowHeight), backGround_(background)
+Renderer::Renderer(std::size_t windowWidth, std::size_t windowHeight, SDL_Color& background) noexcept : windowWidth_(windowWidth), windowHeight_(windowHeight), backGround_(background)
 {
 	WindowPtr window(SDL_CreateWindow("SkyNet Snake", 100, 100, static_cast<int>(windowWidth_), static_cast<int>(windowHeight_), SDL_WINDOW_SHOWN));
 	window_ = std::move(window);
@@ -14,7 +11,7 @@ Renderer::Renderer(std::size_t windowWidth, std::size_t windowHeight, SDL_Color&
 }
 
 
-void Renderer::renderText(const unsigned int x, const unsigned int y, const std::string& text, TTF_Font &font, const SDL_Color& color)
+void Renderer::renderText(const unsigned int x, const unsigned int y, const std::string& text, TTF_Font &font, const SDL_Color& color) noexcept
 {
 	int text_width{ 0 };
 	int text_height{ 0 };
@@ -31,10 +28,10 @@ void Renderer::renderText(const unsigned int x, const unsigned int y, const std:
 	textArea.w = text_width;
 	textArea.h = text_height;
 
-	SDL_RenderCopy(renderer_.get(), texture.get(), NULL, &textArea);
+	SDL_RenderCopy(renderer_.get(), texture.get(), nullptr, &textArea);
 }
 
-void Renderer::renderBackground()
+void Renderer::renderBackground() noexcept
 {
 	SDL_SetRenderDrawColor(renderer_.get(), backGround_.r, backGround_.g, backGround_.b, backGround_.a);
 	SDL_RenderClear(renderer_.get());
@@ -68,12 +65,12 @@ void Renderer::renderCells(const std::list<std::unique_ptr<Cell>>& cells)
 	}
 }
 
-void Renderer::present()
+void Renderer::present() noexcept
 {
 	SDL_RenderPresent(renderer_.get());
 }
 
-void Renderer::clear()
+void Renderer::clear() noexcept
 {
 	SDL_RenderClear(renderer_.get());
 }

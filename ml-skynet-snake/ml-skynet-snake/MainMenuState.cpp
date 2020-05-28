@@ -4,7 +4,7 @@
 #include <SDL_ttf.h>
 #include <iostream>
 
-MainMenuState::MainMenuState(Game& game) : State(game)
+MainMenuState::MainMenuState(Game& game) noexcept : State(game)
 {
 }
 

@@ -13,8 +13,7 @@ using FontPtr = std::unique_ptr<TTF_Font, std::integral_constant<decltype(&TTF_C
 class State
 {
 public:
-	State(Game& game) : game_(game) { };
-	virtual ~State() {};
+	State(Game& game) noexcept : game_(game) { };
 
 	virtual void enter() = 0;
 	virtual void update(Renderer& renderer, uint32_t deltaTime) = 0;

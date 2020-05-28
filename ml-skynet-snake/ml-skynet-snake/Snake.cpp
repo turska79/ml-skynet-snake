@@ -12,22 +12,22 @@ void Snake::init(Point<std::size_t> position, Board& board)
 	cell->type_ = Cell::Type::head;
 }
 
-void Snake::setDirection(const Direction direction)
+void Snake::setDirection(const Direction direction) noexcept
 {
 	direction_ = direction;
 }
 
-const Snake::Direction Snake::getDirection() const
+const Snake::Direction Snake::getDirection() const noexcept
 {
 	return direction_;
 }
 
-Point<std::size_t> Snake::getHeadPosition() const
+Point<std::size_t> Snake::getHeadPosition() const noexcept
 {
 	return headPosition_;
 }
 
-const unsigned int Snake::getSpeed() const
+const unsigned int Snake::getSpeed() const noexcept
 {
 	return speed_;
 }

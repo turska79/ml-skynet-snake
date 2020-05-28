@@ -5,13 +5,10 @@
 class Input 
 {
 public:
-	Input();
-	virtual ~Input();
-		
-	void update();
-	const Keyboard& getKeyboard() const;
+	void update() noexcept;
+	const Keyboard& getKeyboard() const noexcept;
 
 private:
-	void prepareForUpdate();
+	void prepareForUpdate() noexcept;
 	KeyboardState keyboard_;
 };

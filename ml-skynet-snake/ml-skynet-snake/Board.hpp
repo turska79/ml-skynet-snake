@@ -7,12 +7,11 @@
 
 struct Settings;
 
-
 struct Cell : public Point<std::size_t>
 {
 	enum class Type { wall, head, body, food, empty } type_;
 	
-	Cell(Type type, std::size_t x, std::size_t y) : type_(type) { x_ = x; y_ = y; };
+	Cell(Type type, std::size_t x, std::size_t y) noexcept : type_(type) { x_ = x; y_ = y; };
 };
 
 class Board

@@ -1,7 +1,7 @@
 #include "Timer.hpp"
 #include <SDL.h>
 
-void Timer::start()
+void Timer::start() noexcept
 {
 	started = true;
 
@@ -11,7 +11,7 @@ void Timer::start()
 	pausedTicks = 0;
 }
 
-void Timer::stop()
+void Timer::stop() noexcept
 {
 	started = false;
 
@@ -21,7 +21,7 @@ void Timer::stop()
 	pausedTicks = 0;
 }
 
-void Timer::pause()
+void Timer::pause() noexcept
 {
 	if (started && !paused) {
 		paused = true;
@@ -31,7 +31,7 @@ void Timer::pause()
 	}
 }
 
-void Timer::unpause()
+void Timer::unpause() noexcept
 {
 	if (started && paused) {
 		paused = false;
@@ -42,7 +42,7 @@ void Timer::unpause()
 	}
 }
 
-uint32_t Timer::getTicks()
+uint32_t Timer::getTicks() noexcept
 {
 	uint32_t time{ 0 };
 
@@ -57,12 +57,12 @@ uint32_t Timer::getTicks()
 	return time;
 }
 
-bool Timer::isStarted()
+bool Timer::isStarted() noexcept
 {
 	return started;
 }
 
-bool Timer::isPaused()
+bool Timer::isPaused() noexcept
 {
 	return paused && started;
 }

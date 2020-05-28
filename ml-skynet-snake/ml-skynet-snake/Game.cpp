@@ -81,21 +81,21 @@ void Game::run()
 	std::cout << " Game::run() exit" << std::endl;
 }
 
-void Game::exit()
+void Game::exit() noexcept
 {
 	states_.clear();
 }
 
-Board& Game::board()
+Board& Game::board() noexcept
 {
 	return board_;
 }
 
 void Game::handleEvents()
 {
-	SDL_Event event;
+	SDL_Event event{ 0 };
 
-	auto eventsInQueue = SDL_PollEvent(nullptr);
+	const auto eventsInQueue = SDL_PollEvent(nullptr);
 	constexpr int queueEmpty{ 0 };
 
 	if (eventsInQueue != queueEmpty) {

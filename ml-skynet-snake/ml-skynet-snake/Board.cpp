@@ -10,7 +10,7 @@ Board::Board(const Settings& settings)
 
 Cell* Board::findCell(const Point<std::size_t>& coordinate)
 {
-	const auto& it = std::find_if(grid_.begin(), grid_.end(), [&coordinate](const std::unique_ptr<Cell>& cell) {
+	const auto& it = std::find_if(grid_.begin(), grid_.end(), [&coordinate](const std::unique_ptr<Cell>& cell) noexcept {
 		if (coordinate.x_ == cell->x_ && coordinate.y_ == cell->y_)
 			return true;
 		else
@@ -36,12 +36,12 @@ Point<std::size_t> Board::findRandomEmptyCell()
 	std::random_device rd;
 	std::default_random_engine generator(rd());
 	
-	std::uniform_int_distribution<size_t> distributionByWidth(0, gridWidth_);
-	std::uniform_int_distribution<size_t> distributionByHeight(0, gridHeight_);
+	const std::uniform_int_distribution<size_t> distributionByWidth(0, gridWidth_);
+	const std::uniform_int_distribution<size_t> distributionByHeight(0, gridHeight_);
 
 	while (true) {
-		size_t randomX = distributionByWidth(generator);
-		size_t randomY = distributionByHeight(generator);
+		const size_t randomX = distributionByWidth(generator);
+		const size_t randomY = distributionByHeight(generator);
 		emptyCell.x_ = randomX;
 		emptyCell.y_ = randomY;
 

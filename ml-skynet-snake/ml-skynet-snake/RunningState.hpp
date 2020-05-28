@@ -13,12 +13,11 @@ class RunningState : public State
 {
 public:
 	explicit RunningState(Game& game);
-	virtual ~RunningState();
-
-	virtual void enter() override;
-	virtual void update(Renderer& renderer, uint32_t deltaTime) override;
-	virtual void exit() override;
-	virtual void handleInput(const Keyboard& keyboard) override;
+	virtual ~RunningState() {};
+	void enter() override;
+	void update(Renderer& renderer, uint32_t deltaTime) override;
+	void exit() override;
+	void handleInput(const Keyboard& keyboard) override;
 private:
 	void resetBoard() const;
 	void initSnake();

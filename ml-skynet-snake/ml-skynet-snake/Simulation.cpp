@@ -3,19 +3,9 @@
 #include "Snake.hpp"
 #include <iostream>
 
-
-Simulation::Simulation()
+const Point<std::size_t> Simulation::getNextSnakePosition(const Board& board, const Snake& snake) const noexcept
 {
-}
-
-
-Simulation::~Simulation()
-{
-}
-
-const Point<std::size_t> Simulation::getNextSnakePosition(const Board& board, const Snake& snake) const
-{
-	Snake::Direction direction = snake.getDirection();
+	const Snake::Direction direction = snake.getDirection();
 	Point<std::size_t> position = snake.getHeadPosition();
 
 	switch (direction) {

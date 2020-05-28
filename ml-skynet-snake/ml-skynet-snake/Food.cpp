@@ -19,7 +19,7 @@ void Food::updatePosition(Board& board, const Point<std::size_t> position)
 	cell->type_ = Cell::Type::food;
 }
 
-const Point<std::size_t> Food::position() const
+const Point<std::size_t> Food::position() const noexcept
 {
 	return position_;
 }

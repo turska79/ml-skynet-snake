@@ -14,10 +14,10 @@ public:
 
 	void init(Point<std::size_t> position, Board& board);
 	void updatePosition(Board& board, const Point<std::size_t> newHeadPosition);
-	void setDirection(const Direction direction);
-	const Snake::Direction getDirection() const;
-	Point<std::size_t> getHeadPosition() const;
-	const unsigned int getSpeed() const;
+	void setDirection(const Direction direction) noexcept;
+	const Snake::Direction getDirection() const noexcept;
+	Point<std::size_t> getHeadPosition() const noexcept;
+	const unsigned int getSpeed() const noexcept;
 	void grow(const unsigned int length);
 private:
 	Point<std::size_t> headPosition_{ 0,0 };

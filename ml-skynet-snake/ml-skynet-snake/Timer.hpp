@@ -5,15 +5,15 @@
 class Timer
 {
 public:
-	void start();
-	void stop();
-	void pause();
-	void unpause();
+	void start() noexcept;
+	void stop() noexcept;
+	void pause() noexcept;
+	void unpause() noexcept;
 
-	uint32_t getTicks();
+	uint32_t getTicks() noexcept;
 
-	bool isStarted();
-	bool isPaused();
+	bool isStarted() noexcept;
+	bool isPaused() noexcept;
 
 private:
 	uint32_t startTicks{ 0 };
