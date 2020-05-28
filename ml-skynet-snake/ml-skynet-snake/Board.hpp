@@ -18,7 +18,7 @@ struct Cell : public Point<std::size_t>
 class Board
 {
 public:
-	Board(Settings& settings);
+	explicit Board(const Settings& settings);
 	std::list<std::unique_ptr<Cell>> grid_;
 	Cell* findCell(const  Point<std::size_t>& coordinate);
 	void resetBoard();

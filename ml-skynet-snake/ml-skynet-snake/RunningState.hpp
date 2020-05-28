@@ -11,7 +11,7 @@ class Game;
 class RunningState : public State
 {
 public:
-	RunningState(Game& game);
+	explicit RunningState(Game& game);
 	virtual ~RunningState();
 
 	virtual void enter() override;

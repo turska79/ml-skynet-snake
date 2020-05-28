@@ -1,15 +1,16 @@
 #include "Board.hpp"
 #include "Settings.hpp"
 #include <algorithm>
+#include <random>
 
-Board::Board(Settings& settings)
+Board::Board(const Settings& settings)
 {
 	createBoard(settings.gridWidth_, settings.gridHeight_);
 }
 
 Cell* Board::findCell(const  Point<std::size_t>& coordinate)
 {
-	const auto& it = std::find_if(grid_.begin(), grid_.end(), [&coordinate](std::unique_ptr<Cell>& cell) {
+	const auto& it = std::find_if(grid_.begin(), grid_.end(), [&coordinate](const std::unique_ptr<Cell>& cell) {
 		if (coordinate.x_ == cell->x_ && coordinate.y_ == cell->y_)
 			return true;
 		else
@@ -26,6 +27,10 @@ void Board::resetBoard()
 {
 	grid_.clear();
 	createBoard(gridWidth_, gridHeight_);
+}
+
+void Board::resetFood(Food& food)
+{
 }
 
 void Board::createBoard(std::size_t gridWidth, std::size_t gridHeight)

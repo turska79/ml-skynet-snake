@@ -11,11 +11,10 @@ public:
 
 	KeyboardState();
 
-	bool getKeyValue(SDL_Scancode keyCode) const;
-	keyboard::ButtonState getKeyState(SDL_Scancode keyCode) const;
+	bool getKeyValue(SDL_Scancode keyCode) const override;
+	keyboard::ButtonState getKeyState(SDL_Scancode keyCode) const override;
 
 protected:
-	//const uint8_t* currentState_{ nullptr };
 	uint8_t currentState_[SDL_NUM_SCANCODES] = { 0 };
 	uint8_t previousState_[SDL_NUM_SCANCODES] = { 0 };
 };

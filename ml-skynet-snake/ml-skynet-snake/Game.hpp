@@ -5,7 +5,6 @@
 #include "Settings.hpp"
 #include "Input.hpp"
 #include "Simulation.hpp"
-//#include "State.hpp"
 #include "GameStates.h"
 #include <vector>
 #include <memory>
@@ -15,10 +14,7 @@ class State;
 class Game : public GameStates
 {
 public:
-	Game(Settings& settings);
-
-	//void pushState(std::unique_ptr<State> state);
-	//void popState();
+	explicit Game(Settings& settings);
 
 	void run();
 	void exit();
@@ -34,10 +30,6 @@ private:
 	Renderer renderer_;
 	Settings settings_;
 	Board board_;
-	//Snake snake_;
 	Input input_;
-	//Simulation simulation_;
-	
-	//std::vector<std::unique_ptr<State>> states_;
 };
 

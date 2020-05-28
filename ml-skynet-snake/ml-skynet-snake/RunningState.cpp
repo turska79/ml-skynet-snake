@@ -54,6 +54,12 @@ void RunningState::update(Renderer & renderer, uint32_t deltaTime)
 			return;
 		}
 
+		bool food = simulation_.checkForFood(board, target);
+
+		if (food) {
+			snake_.grow(1);
+		}
+
 		simulation_.updateSnakePosition(board, snake_, target);
 		updateDeltaTime_ = updateDeltaTime_ - (secondAsMilliseconds / snakeSpeed);
 	}
