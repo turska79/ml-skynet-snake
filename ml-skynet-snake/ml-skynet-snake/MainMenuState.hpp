@@ -8,7 +8,12 @@ class MainMenuState : public State
 {
 public:
 	explicit MainMenuState(Game& game) noexcept;
-	virtual ~MainMenuState() {};
+	virtual ~MainMenuState() = default;
+	MainMenuState(const MainMenuState&) = default;
+	MainMenuState& operator=(const MainMenuState&) = default;
+	MainMenuState(MainMenuState&&) = default;
+	MainMenuState& operator=(MainMenuState&&) = default;
+
 	void enter() override;
 	void update(Renderer& renderer, uint32_t deltaTime) override;
 	void exit() override;

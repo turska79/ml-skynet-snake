@@ -30,7 +30,7 @@ const Point<std::size_t> Simulation::getNextSnakePosition(const Board& board, co
 
 const bool Simulation::checkForCollision(Board& board, const Point<std::size_t>& target) const
 {
-	Cell* cell = board.findCell(target);
+	const Cell* cell = board.findCell(target);
 
 	if (cell->type_ == Cell::Type::wall || cell->type_ == Cell::Type::head)
 		return true;
@@ -40,7 +40,7 @@ const bool Simulation::checkForCollision(Board& board, const Point<std::size_t>&
 
 const bool Simulation::checkForFood(Board& board, const Point<std::size_t>& target) const
 {
-	Cell* cell = board.findCell(target);
+	const Cell* cell = board.findCell(target);
 
 	if (cell->type_ == Cell::Type::food)
 		return true;

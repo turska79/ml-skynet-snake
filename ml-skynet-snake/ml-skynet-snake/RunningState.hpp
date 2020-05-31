@@ -13,7 +13,12 @@ class RunningState : public State
 {
 public:
 	explicit RunningState(Game& game);
-	virtual ~RunningState() {};
+	virtual ~RunningState() = default;
+	RunningState(const RunningState&) = default;
+	RunningState& operator=(const RunningState&) = default;
+	RunningState(RunningState&&) = default;
+	RunningState& operator=(RunningState&&) = default;
+
 	void enter() override;
 	void update(Renderer& renderer, uint32_t deltaTime) override;
 	void exit() override;

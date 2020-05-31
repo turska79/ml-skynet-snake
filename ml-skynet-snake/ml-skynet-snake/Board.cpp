@@ -45,7 +45,7 @@ Point<std::size_t> Board::findRandomEmptyCell()
 		emptyCell.x_ = randomX;
 		emptyCell.y_ = randomY;
 
-		Cell* cell = findCell(emptyCell);
+		const Cell* cell = findCell(emptyCell);
 		if (cell && cell->type_ == Cell::Type::empty) {
 			break;
 		}

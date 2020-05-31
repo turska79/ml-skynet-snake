@@ -5,16 +5,15 @@
 
 void Input::prepareForUpdate() noexcept
 {
-	memcpy_s(keyboard_.previousState_, SDL_NUM_SCANCODES, keyboard_.currentState_, SDL_NUM_SCANCODES);
+	keyboard_.previousState_ = keyboard_.currentState_;
 }
 
-void Input::update() noexcept
+void Input::update()
 {
 	prepareForUpdate();
 
 	const uint8_t* current = SDL_GetKeyboardState(nullptr);
-
-	memcpy_s(keyboard_.currentState_, SDL_NUM_SCANCODES, current, SDL_NUM_SCANCODES);
+	std::copy(current, current + SDL_NUM_SCANCODES, std::begin(keyboard_.currentState_));
 }
 
 const Keyboard& Input::getKeyboard() const noexcept

@@ -5,7 +5,7 @@
 class Input 
 {
 public:
-	void update() noexcept;
+	void update();
 	const Keyboard& getKeyboard() const noexcept;
 
 private:
