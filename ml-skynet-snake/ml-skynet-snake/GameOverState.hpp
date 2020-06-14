@@ -20,6 +20,6 @@ public:
 	void handleInput(const Keyboard& keyboard) override;
 
 private:
-	FontPtr calibri_;
+
 };
 

@@ -9,7 +9,7 @@
 class Renderer
 {
 public:
-	Renderer(std::size_t windowWidth, std::size_t windowHeight, SDL_Color& background) noexcept;
+	Renderer(std::size_t windowWidth, std::size_t windowHeight, std::size_t gridStartOffset, SDL_Color& background) noexcept;
 
 	void renderBackground() noexcept;
 	void renderCells(const std::list<std::unique_ptr<Cell>>& cells);
@@ -27,6 +27,7 @@ private:
 
 	std::size_t windowWidth_;
 	std::size_t windowHeight_;
+	std::size_t gridStartOffset_;
 	SDL_Color backGround_;
 };
 

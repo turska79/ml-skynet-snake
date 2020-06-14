@@ -2,15 +2,17 @@
 #include "Renderer.hpp"
 #include "MainMenuState.hpp"
 #include "Timer.hpp"
+#include "FontCache.hpp"
 #include <SDL.h>
-#include <SDL_ttf.h>
 #include <iostream>
 #include <string>
+
+FontCache fontCache;
 
 Game::Game(Settings& settings) :
 	settings_(settings),
 	board_(settings),
-	renderer_(settings.windowWidth_, settings.windowHeight_, settings.backGround_)
+	renderer_(settings.windowWidth_, settings.windowHeight_, settings.gridStartOffset_, settings.backGround_)
 {
 
 }
@@ -19,16 +21,14 @@ void Game::run()
 	std::cout << " Game::run()" << std::endl;
 	Timer fpsTimer;
 	Timer capFramesTimer;
-
-	using FontPtr = std::unique_ptr<TTF_Font, std::integral_constant<decltype(&TTF_CloseFont), &TTF_CloseFont>>;
-	FontPtr calibri(TTF_OpenFont("C:\\WINDOWS\\Fonts\\Calibrib.ttf", 20));
-
+	
 	const SDL_Color black = { 0, 0, 0,255 };
 	uint32_t currentTime = SDL_GetTicks();
-
+	constexpr unsigned int fontSize{ 20 };
 	constexpr unsigned int targetFramesPerSecond{ 60 };
 	constexpr unsigned int secondAsMilliseconds{ 1000 };
 
+	TTF_Font* font = fontCache.getFont(20);
 
 	pushState<MainMenuState>(*this);
 	
@@ -39,7 +39,6 @@ void Game::run()
 
 	while (running_) {
 		capFramesTimer.start();
-		renderer_.clear();
 
 		const uint32_t newTime = SDL_GetTicks();
 		const uint32_t deltaTime = newTime - currentTime;
@@ -62,8 +61,8 @@ void Game::run()
 		fpsTtext.append(std::to_string(static_cast<unsigned int>(std::round(avgFPS))));
 
 		renderer_.renderBackground();
-		renderer_.renderCells(board_.grid_);
-		renderer_.renderText(20, 20, fpsTtext, *calibri, black);
+		renderer_.renderCells(board_.grid());
+		renderer_.renderText(0, 0, fpsTtext, *font, black);
 
 		currentState()->update(renderer_, deltaTime);
 
@@ -83,6 +82,7 @@ void Game::run()
 
 void Game::exit() noexcept
 {
+	fontCache.clear();
 	states_.clear();
 }
 

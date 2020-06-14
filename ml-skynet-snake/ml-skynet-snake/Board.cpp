@@ -54,6 +54,11 @@ Point<std::size_t> Board::findRandomEmptyCell()
 	return emptyCell;
 }
 
+std::list<std::unique_ptr<Cell>>& Board::grid() noexcept
+{
+	return grid_;
+}
+
 void Board::createBoard(std::size_t gridWidth, std::size_t gridHeight)
 {
 	/*

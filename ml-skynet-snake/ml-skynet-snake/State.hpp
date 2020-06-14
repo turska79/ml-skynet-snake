@@ -1,14 +1,14 @@
 #pragma once
 
 #include <cstdint>
-#include <SDL_ttf.h>
+//#include <SDL_ttf.h>
 #include <memory>
 
 class Keyboard;
 class Renderer;
 class Game;
 
-using FontPtr = std::unique_ptr<TTF_Font, std::integral_constant<decltype(&TTF_CloseFont), &TTF_CloseFont>>;
+//using FontPtr = std::unique_ptr<TTF_Font, std::integral_constant<decltype(&TTF_CloseFont), &TTF_CloseFont>>;
 
 class State
 {

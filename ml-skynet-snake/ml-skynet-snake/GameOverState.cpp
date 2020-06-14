@@ -1,28 +1,31 @@
 #include "GameOverState.hpp"
 #include "Game.hpp"
+#include "FontCache.hpp"
 #include <SDL.h>
-#include <SDL_ttf.h>
 #include <iostream>
+
+extern FontCache fontCache;
+constexpr unsigned int fontSize{ 20 };
 
 GameOverState::GameOverState(Game& game) noexcept : State(game)
 {
+
 }
 
 void GameOverState::enter()
 {
 	std::cout << " GameOverState::enter()" << std::endl;
-	constexpr unsigned int fontSize{ 20 };
-
-	FontPtr font(TTF_OpenFont("C:\\WINDOWS\\Fonts\\Calibrib.ttf", fontSize));
-	calibri_ = std::move(font);
 }
 
 void GameOverState::update(Renderer& renderer, uint32_t deltaTime)
 {
 	SDL_Color black = { 0, 0, 0, 255 };
+	constexpr unsigned int x{ 340 };
+	constexpr unsigned int y{ 300 };
+
 	std::string text{ "Game over - Press Space bar to start" };
 
-	renderer.renderText(20, 40, text, *calibri_, black);
+	renderer.renderText(x, y, text, *fontCache.getFont(fontSize), black);
 }
 
 void GameOverState::exit()
