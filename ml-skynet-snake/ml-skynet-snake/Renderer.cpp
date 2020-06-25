@@ -1,5 +1,6 @@
 #include "Renderer.hpp"
 #include <SDL.h>
+#include <vector>
 
 Renderer::Renderer(std::size_t windowWidth, std::size_t windowHeight, std::size_t gridStartOffset, SDL_Color& background) noexcept : windowWidth_(windowWidth), windowHeight_(windowHeight), gridStartOffset_(gridStartOffset), backGround_(background)
 {
@@ -74,4 +75,40 @@ void Renderer::present() noexcept
 void Renderer::clear() noexcept
 {
 	SDL_RenderClear(renderer_.get());
+}
+
+void Renderer::DrawDottedLine(int x0, int y0, int x1, int y1)
+{
+	int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+	int dy = -abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+	int err = dx + dy, e2;
+
+	int count{ 0 };
+	std::vector<SDL_Point> points;
+
+	while (1) {
+		points.emplace_back(SDL_Point{ x0 * 20 + static_cast<int>(gridStartOffset_) + 10, y0 * 20 + 10 });
+
+		if (x0 == x1 && y0 == y1)
+			break;
+		
+		e2 = 2 * err;
+		
+		if (e2 > dy) {
+			err += dy; 
+			x0 += sx;
+		}
+
+		if (e2 < dx) { 
+			err += dx;
+			y0 += sy;
+		}
+
+		count = (count + 1) % 20;
+	}
+
+	SDL_SetRenderDrawColor(renderer_.get(), 0, 0, 0, 255);
+
+	SDL_Point* pointsToDraw = &points[0];
+	SDL_RenderDrawPoints(renderer_.get(), pointsToDraw, points.size());
 }

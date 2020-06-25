@@ -19,16 +19,17 @@ public:
 	RunningState(RunningState&&) = default;
 	RunningState& operator=(RunningState&&) = default;
 
-	void enter() override;
-	void update(Renderer& renderer, uint32_t deltaTime) override;
+	virtual void enter() override;
+	virtual void update(Renderer& renderer, uint32_t deltaTime) override;
 	void exit() override;
-	void handleInput(const Keyboard& keyboard) override;
+	virtual void handleInput(const Keyboard& keyboard) override;
 
-private:
+protected:
 	void resetBoard() const;
 	void initSnake();
 	void initFood();
 	void newRandomPositionForFood();
+	void printCurrentScoreToScreen(Renderer& renderer);
 
 	Snake snake_;
 	Simulation simulation_;

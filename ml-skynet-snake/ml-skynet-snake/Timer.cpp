@@ -1,24 +1,28 @@
 #include "Timer.hpp"
 #include <SDL.h>
-
+/*/
+const uint32_t newTime = SDL_GetTicks();
+const uint32_t deltaTime = newTime - currentTime;
+fps = 1000.0f / deltaTime;
+currentTime = newTime;
+*/
 void Timer::start() noexcept
 {
 	started = true;
-
 	paused = false;
 
-	startTicks = SDL_GetTicks();
-	pausedTicks = 0;
+	startTicks_ = SDL_GetTicks();
+	currentTime_ = startTicks_;
+	pausedTicks_ = 0;
 }
 
 void Timer::stop() noexcept
 {
 	started = false;
-
 	paused = false;
 
-	startTicks = 0;
-	pausedTicks = 0;
+	startTicks_ = 0;
+	pausedTicks_ = 0;
 }
 
 void Timer::pause() noexcept
@@ -26,8 +30,8 @@ void Timer::pause() noexcept
 	if (started && !paused) {
 		paused = true;
 
-		pausedTicks = SDL_GetTicks() - startTicks;
-		startTicks = 0;
+		pausedTicks_ = SDL_GetTicks() - startTicks_;
+		startTicks_ = 0;
 	}
 }
 
@@ -36,25 +40,33 @@ void Timer::unpause() noexcept
 	if (started && paused) {
 		paused = false;
 
-		startTicks = SDL_GetTicks() - pausedTicks;
+		startTicks_ = SDL_GetTicks() - pausedTicks_;
 
-		pausedTicks = 0;
+		pausedTicks_ = 0;
 	}
 }
 
-uint32_t Timer::getTicks() noexcept
+uint32_t Timer::getTicksSinceStart() noexcept
 {
 	uint32_t time{ 0 };
 
 	if (started) {
 		if (paused) {
-			time = pausedTicks;
+			time = pausedTicks_;
 		} else {
-			time = SDL_GetTicks() - startTicks;
+			time = SDL_GetTicks() - startTicks_;
 		}
 	}
 
 	return time;
+}
+
+uint32_t Timer::deltaTime() noexcept
+{
+	const uint32_t newTime = SDL_GetTicks();
+	const uint32_t deltaTime = newTime - currentTime_;
+	currentTime_ = newTime;
+	return deltaTime;
 }
 
 bool Timer::isStarted() noexcept

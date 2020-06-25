@@ -8,7 +8,7 @@ Board::Board(const Settings& settings)
 	createBoard(settings.gridWidth_, settings.gridHeight_);
 }
 
-Cell* Board::findCell(const Point<std::size_t>& coordinate)
+Cell* Board::findCell(const Point<std::size_t>& coordinate) const
 {
 	const auto& it = std::find_if(grid_.begin(), grid_.end(), [&coordinate](const std::unique_ptr<Cell>& cell) noexcept {
 		if (coordinate.x_ == cell->x_ && coordinate.y_ == cell->y_)

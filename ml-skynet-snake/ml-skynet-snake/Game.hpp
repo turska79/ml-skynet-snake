@@ -6,6 +6,7 @@
 #include "Input.hpp"
 #include "Simulation.hpp"
 #include "GameStates.h"
+#include "Timer.hpp"
 #include <vector>
 #include <memory>
 
@@ -20,13 +21,21 @@ public:
 	void exit() noexcept;
 	
 	Board& board() noexcept;
+	Renderer& renderer() noexcept;
 private:
+	void runGameLoop();
+public:
+	void gameLoop();
+private:
+	void capFrameRate();
 	void handleEvents();
 	void handleInput();
 	State* currentState() const;
 	const bool checkForQuit() const;
-
 	bool running_{ true };
+	Timer fpsTimer_;
+	Timer capFramesTimer_;
+
 	Renderer renderer_;
 	Settings settings_;
 	Board board_;

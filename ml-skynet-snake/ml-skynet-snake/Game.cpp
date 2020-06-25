@@ -8,6 +8,11 @@
 #include <string>
 
 FontCache fontCache;
+constexpr unsigned int targetFramesPerSecond{ 60 };
+constexpr unsigned int secondAsMilliseconds{ 1000 };
+constexpr uint32_t targetFrameTime = secondAsMilliseconds / targetFramesPerSecond;
+const SDL_Color black = { 0, 0, 0,255 };
+constexpr unsigned int fontSize{ 20 };
 
 Game::Game(Settings& settings) :
 	settings_(settings),
@@ -19,65 +24,59 @@ Game::Game(Settings& settings) :
 void Game::run()
 {
 	std::cout << " Game::run()" << std::endl;
-	Timer fpsTimer;
-	Timer capFramesTimer;
-	
-	const SDL_Color black = { 0, 0, 0,255 };
-	uint32_t currentTime = SDL_GetTicks();
-	constexpr unsigned int fontSize{ 20 };
-	constexpr unsigned int targetFramesPerSecond{ 60 };
-	constexpr unsigned int secondAsMilliseconds{ 1000 };
-
-	TTF_Font* font = fontCache.getFont(20);
-
 	pushState<MainMenuState>(*this);
-	
-	const uint32_t targetFrameTime = secondAsMilliseconds / targetFramesPerSecond;
-	uint32_t countedFrames{ 0 };
-	
-	fpsTimer.start();
+	runGameLoop();
+	exit();
+	std::cout << " Game::run() exit" << std::endl;
+}
+
+void Game::runGameLoop()
+{
+	float fps{ 0 };
+	fpsTimer_.start();
+	capFramesTimer_.start();
 
 	while (running_) {
-		capFramesTimer.start();
-
-		const uint32_t newTime = SDL_GetTicks();
-		const uint32_t deltaTime = newTime - currentTime;
-		currentTime = newTime;
-
-		handleEvents();
+		gameLoop();
 
 		if (running_ == false) {
 			break;
 		}
-		
-		handleInput();
-		
-		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-		if (avgFPS > 2000000) {
-			avgFPS = 0;
-		}
-
-		std::string fpsTtext{"FPS: "};
-		fpsTtext.append(std::to_string(static_cast<unsigned int>(std::round(avgFPS))));
-
-		renderer_.renderBackground();
-		renderer_.renderCells(board_.grid());
-		renderer_.renderText(0, 0, fpsTtext, *font, black);
-
-		currentState()->update(renderer_, deltaTime);
-
-		renderer_.present();
-		
-		++countedFrames;
-		const uint32_t frameTicks = capFramesTimer.getTicks();
-		
-		if (frameTicks < targetFrameTime) {
-			SDL_Delay(targetFrameTime - frameTicks);
-		}
 	}
+}
 
-	exit();
-	std::cout << " Game::run() exit" << std::endl;
+void Game::gameLoop()
+{
+	const uint32_t deltaTime = fpsTimer_.deltaTime();
+	float fps{ 1000.0f / deltaTime };
+	TTF_Font* font = fontCache.getFont(20);
+
+	handleEvents();
+	handleInput();
+
+	std::string fpsTtext{ "FPS: " };
+	fpsTtext.append(std::to_string(static_cast<unsigned int>(std::round(fps))));
+
+	std::cout << fpsTtext << std::endl;
+
+	renderer_.renderBackground();
+	renderer_.renderCells(board_.grid());
+	renderer_.renderText(0, 0, fpsTtext, *font, black);
+
+	currentState()->update(renderer_, deltaTime);
+
+	renderer_.present();
+
+	capFrameRate();
+}
+
+void Game::capFrameRate()
+{
+	const uint32_t frameTicks = capFramesTimer_.deltaTime();
+
+	if (frameTicks < targetFrameTime) {
+		SDL_Delay(targetFrameTime - frameTicks);
+	}
 }
 
 void Game::exit() noexcept
@@ -89,6 +88,11 @@ void Game::exit() noexcept
 Board& Game::board() noexcept
 {
 	return board_;
+}
+
+Renderer& Game::renderer() noexcept
+{
+	return renderer_;
 }
 
 void Game::handleEvents()
@@ -134,3 +138,5 @@ const bool Game::checkForQuit() const
 
 	return running;
 }
+
+

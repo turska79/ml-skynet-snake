@@ -16,6 +16,7 @@ public:
 	void renderText(const unsigned int x, const unsigned int y, const std::string& text, TTF_Font &font, const SDL_Color& color) noexcept;
 	void present() noexcept;
 	void clear() noexcept;
+	void DrawDottedLine(int x0, int y0, int x1, int y1);
 	
 	using WindowPtr = std::unique_ptr<SDL_Window, std::integral_constant<decltype(&SDL_DestroyWindow), &SDL_DestroyWindow>>;
 	using RendererPtr = std::unique_ptr<SDL_Renderer, std::integral_constant<decltype(&SDL_DestroyRenderer), &SDL_DestroyRenderer>>;

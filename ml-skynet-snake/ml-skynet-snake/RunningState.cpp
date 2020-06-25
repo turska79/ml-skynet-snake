@@ -12,7 +12,7 @@ constexpr unsigned int secondAsMilliseconds{ 1000 };
 constexpr unsigned int fontSize{ 20 };
 constexpr SDL_Color black = { 0, 0, 0,255 };
 
-RunningState::RunningState(Game& game) : State(game)
+RunningState::RunningState(Game& game) : State(game), snake_(game.board())
 {
 
 }
@@ -37,8 +37,7 @@ void RunningState::initSnake()
 	initialPosition.x_ = 10;
 	initialPosition.y_ = 10;
 
-	Board& board = game_.board();
-	snake_.init(initialPosition, Snake::Direction::right, board);
+	snake_.init(initialPosition, Snake::Direction::right);
 }
 
 void RunningState::initFood()
@@ -57,6 +56,15 @@ void RunningState::newRandomPositionForFood()
 	food_.updatePosition(board, position);
 }
 
+void RunningState::printCurrentScoreToScreen(Renderer& renderer)
+{
+	std::string score = "Score: ";
+	score.append(std::to_string(snake_.length()));
+	constexpr unsigned int x{ 0 };
+	constexpr unsigned int y{ 40 };
+	renderer.renderText(x, y, score, *fontCache.getFont(fontSize), black);
+}
+
 void RunningState::update(Renderer& renderer, uint32_t deltaTime)
 {
 	updateDeltaTime_ += deltaTime;
@@ -64,9 +72,13 @@ void RunningState::update(Renderer& renderer, uint32_t deltaTime)
 
 	if (updateDeltaTime_ > (secondAsMilliseconds / snakeSpeed)) {
 		Board& board = game_.board();
-		const Point<std::size_t> target = simulation_.getNextSnakePosition(board, snake_);
 
-		const bool collision = simulation_.checkForCollision(board, target);
+		auto position = snake_.getPosition();
+		SnakeMovement::Direction direction = snake_.getDirection();
+
+		const Point<std::size_t> target = simulation_.getNextSnakePosition(position, direction);
+
+		const bool collision = simulation_.checkForCollisionWithWall(board, target);
 
 		if (collision) {
 			game_.pushState<GameOverState>(game_);
@@ -80,15 +92,11 @@ void RunningState::update(Renderer& renderer, uint32_t deltaTime)
 			newRandomPositionForFood();
 		}
 
-		simulation_.updateSnakePosition(board, snake_, target);
+		simulation_.updateSnakePosition(snake_, target);
 		updateDeltaTime_ = updateDeltaTime_ - (secondAsMilliseconds / snakeSpeed);
 	}
 
-	std::string score = "Score: ";
-	score.append(std::to_string(snake_.length()));
-	constexpr unsigned int x{ 0 };
-	constexpr unsigned int y{ 40 };
-	renderer.renderText(x, y, score, *fontCache.getFont(fontSize), black);
+	printCurrentScoreToScreen(renderer);
 }
 
 void RunningState::exit()

@@ -9,7 +9,7 @@ struct Settings;
 
 struct Cell : public Point<std::size_t>
 {
-	enum class Type { wall, head, body, food, empty } type_;
+	enum class Type { wall, head, body, food, empty } type_{ Type::empty };
 	
 	Cell(Type type, std::size_t x, std::size_t y) noexcept : type_(type) { x_ = x; y_ = y; };
 };
@@ -19,7 +19,7 @@ class Board
 public:
 	explicit Board(const Settings& settings);
 	
-	Cell* findCell(const Point<std::size_t>& coordinate);
+	Cell* findCell(const Point<std::size_t>& coordinate) const;
 	void resetBoard();
 	Point<std::size_t> findRandomEmptyCell();
 	std::list<std::unique_ptr<Cell>>& grid() noexcept;

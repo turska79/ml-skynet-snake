@@ -1,6 +1,7 @@
 #include "MainMenuState.hpp"
 #include "Game.hpp"
 #include "RunningState.hpp"
+#include "RunningStateAI.h"
 #include "FontCache.hpp"
 #include <iostream>
 
@@ -37,7 +38,7 @@ void MainMenuState::handleInput(const Keyboard& keyboard)
 	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_SPACE) == keyboard::ButtonState::pressed) {
 		game_.pushState<RunningState>(game_);
 	} else if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_A) == keyboard::ButtonState::pressed) {
-
+		game_.pushState<RunningStateAI>(game_);
 	}
 		
 }
