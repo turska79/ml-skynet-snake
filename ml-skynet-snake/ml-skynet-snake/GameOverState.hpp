@@ -15,7 +15,7 @@ public:
 	GameOverState& operator=(GameOverState&&) = default;
 
 	void enter() override;
-	void update(Renderer& renderer, uint32_t deltaTime) override;
+	void update(Renderer& renderer) override;
 	void exit() override;
 	void handleInput(const Keyboard& keyboard) override;
 

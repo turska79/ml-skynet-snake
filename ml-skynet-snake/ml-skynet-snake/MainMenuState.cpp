@@ -18,7 +18,7 @@ void MainMenuState::enter()
 	std::cout << " MainMenuState::enter()" << std::endl;
 }
 
-void MainMenuState::update(Renderer& renderer, uint32_t deltaTime)
+void MainMenuState::update(Renderer& renderer)
 {
 	SDL_Color black = { 0, 0, 0, 255 };
 	constexpr unsigned int x{ 340 };

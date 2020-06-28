@@ -22,7 +22,7 @@ public:
 	RunningStateAI& operator=(RunningStateAI&&) = default;
 
 	void enter() override;
-	void update(Renderer& renderer, uint32_t deltaTime) override;
+	void update(Renderer& renderer) override;
 	void handleInput(const Keyboard& keyboard) override;
 private:
 	bool running_{ false };

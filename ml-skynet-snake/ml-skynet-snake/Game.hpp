@@ -7,6 +7,8 @@
 #include "Simulation.hpp"
 #include "GameStates.h"
 #include "Timer.hpp"
+#include "Scheduler.hpp"
+#include "Snake.hpp"
 #include <vector>
 #include <memory>
 
@@ -22,10 +24,13 @@ public:
 	
 	Board& board() noexcept;
 	Renderer& renderer() noexcept;
+	Simulation& simulation() noexcept;
+	Snake& snake() noexcept;
 private:
 	void runGameLoop();
 public:
 	void gameLoop();
+	void renderBoard();
 private:
 	void capFrameRate();
 	void handleEvents();
@@ -40,5 +45,8 @@ private:
 	Settings settings_;
 	Board board_;
 	Input input_;
+	Simulation simulation_;
+	Snake snake_;
+	//Scheduler<MyTask> scheduler_;
 };
 

@@ -87,7 +87,7 @@ const unsigned int Snake::getSpeed() const noexcept
 	return speed_;
 }
 
-void Snake::grow(const unsigned int length)
+void Snake::grow(const unsigned int length) noexcept
 {
 	body_.emplace_back(Point<std::size_t>(headPosition_));
 }
@@ -107,7 +107,7 @@ void Snake::runAi()
 	learningAgent_->Episode();
 }
 
-void Snake::updatePosition(const Point<std::size_t> newHeadPosition)
+void Snake::updatePosition(const Point<std::size_t> newPosition)
 {
 	Cell* currentHeadCell = board_.findCell(headPosition_);
 
@@ -122,7 +122,7 @@ void Snake::updatePosition(const Point<std::size_t> newHeadPosition)
 		body_.pop_front();
 	}
 
-	headPosition_ = newHeadPosition;
+	headPosition_ = newPosition;
 	Cell* newHeadCell = board_.findCell(headPosition_);
 	newHeadCell->type_ = Cell::Type::head;
 }

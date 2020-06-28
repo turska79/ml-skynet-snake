@@ -15,13 +15,13 @@ public:
 	Snake(Board& board);
 	
 	void init(const Point<std::size_t> position, const SnakeMovement::Direction direction);
-	void updatePosition(const Point<std::size_t> newHeadPosition);
+	void updatePosition(const Point<std::size_t> newPosition) override;
 	void setDirection(const SnakeMovement::Direction direction) noexcept override;
 	const SnakeMovement::Direction getDirection() const noexcept override;
 	Point<std::size_t> getPosition() const noexcept override;
 	//Point<std::size_t> getFirstBodyPosition() noexcept;
 	const unsigned int getSpeed() const noexcept;
-	void grow(const unsigned int length);
+	void grow(const unsigned int length) noexcept override;
 	const unsigned int length() const noexcept;
 	SnakeBrain& brain() noexcept;
 	void runAi();

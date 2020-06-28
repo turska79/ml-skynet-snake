@@ -139,7 +139,7 @@ private:
 	Renderer* renderer_{ nullptr };
 	Simulation* simulation_{ nullptr };
 	SnakeVision snakeVision_;
-	Game* game_;
-	Snake* snake_;
+	Game* game_{ nullptr };
+	Snake* snake_{ nullptr };
 };
 

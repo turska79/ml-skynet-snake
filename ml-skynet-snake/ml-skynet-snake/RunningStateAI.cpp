@@ -100,9 +100,9 @@ void RunningStateAI::enter()
 	}*/
 }
 
-void RunningStateAI::update(Renderer& renderer, uint32_t deltaTime)
+void RunningStateAI::update(Renderer& renderer)
 {
-	if (running_ == false) {
+/*	if (running_ == false) {
 		running_ = true;
 		snake_.runAi();
 	}
@@ -141,6 +141,7 @@ void RunningStateAI::update(Renderer& renderer, uint32_t deltaTime)
 	}
 
 	printCurrentScoreToScreen(renderer);
+	*/
 }
 
 void RunningStateAI::handleInput(const Keyboard& keyboard)

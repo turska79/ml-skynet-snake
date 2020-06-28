@@ -194,6 +194,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RunningState.cpp" />
     <ClCompile Include="RunningStateAI.cpp" />
+    <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Snake.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="RunningState.hpp" />
     <ClInclude Include="RunningStateAI.h" />
+    <ClInclude Include="Scheduler.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Simulation.hpp" />
     <ClInclude Include="Snake.hpp" />

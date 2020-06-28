@@ -2,19 +2,39 @@
 
 #include <cstddef>
 #include "Point.hpp"
+#include "Board.hpp"
 #include "SnakeMovement.hpp"
+#include "Timer.hpp"
 
 class Board;
-class Snake;
 
 class Simulation
 {
 public:
-	const Point<std::size_t> getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeMovement::Direction direction) const noexcept;
-	const bool checkForCollisionWithWall(const Board& board, const Point<std::size_t>& target) const;
-	const bool checkForCollisionWithSnakeBody(const Board& board, const Point<std::size_t>& target) const;
-	const bool checkForFood(const Board& board, const Point<std::size_t>& target) const;
-	void updateSnakePosition(Snake& snake, const Point<std::size_t> target);
+	Simulation(Board& board);
+	void start();
+	//stop();
+	void update(SnakeMovement& snakeMovement);
 
+	//void updateSnakePosition(Snake& snake, const Point<std::size_t> target);
+	//const bool checkForCollisionWithWall() const;
+	//const bool checkForCollisionWithSnakeBody() const;
+	
+	const Point<std::size_t> getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeMovement::Direction direction) const noexcept;
+
+	const bool collision() const;
+
+	const bool checkForCollisionWithWall(const Point<std::size_t>& target) const;
+	const bool checkForCollisionWithSnakeBody(const Point<std::size_t>& target) const;
+	const bool checkForCollisionWithFood(const Point<std::size_t>& target) const;
+
+private:
+	Timer timer_;
+
+	double snakeSpeed_{ 10 };
+	bool collision_{ false };
+	bool running_{ false };
+	uint32_t updateDeltaTime_;
+	Board& board_;
 };
 

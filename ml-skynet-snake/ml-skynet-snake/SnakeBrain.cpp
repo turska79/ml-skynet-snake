@@ -123,7 +123,7 @@ double SnakeBrain::Sample(const State& state, const Action& action, State& nextS
 		auto data = nextState.Data();
 		std::copy(std::begin(vision), std::end(vision), std::begin(data));
 
-		food = simulation_->checkForFood(*board_, target);
+		//food = simulation_->checkForFood(*board_, target);
 
 		//simulation_->updateSnakePosition(*snake_, target);
 	}
@@ -181,7 +181,7 @@ bool SnakeBrain::IsTerminal(const State& state) const
 	target.x_ = static_cast<std::size_t>(state.coordinateX());
 	target.y_ = static_cast<std::size_t>(state.coordinateY());
 	
-	const bool collision = simulation_->checkForCollisionWithWall(*board_, target);
+	const bool collision = false;// simulation_->checkForCollisionWithWall(*board_, target);
 	return collision;
 }
 

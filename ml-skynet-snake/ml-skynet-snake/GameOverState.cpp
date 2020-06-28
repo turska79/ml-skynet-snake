@@ -17,7 +17,7 @@ void GameOverState::enter()
 	std::cout << " GameOverState::enter()" << std::endl;
 }
 
-void GameOverState::update(Renderer& renderer, uint32_t deltaTime)
+void GameOverState::update(Renderer& renderer)
 {
 	SDL_Color black = { 0, 0, 0, 255 };
 	constexpr unsigned int x{ 340 };

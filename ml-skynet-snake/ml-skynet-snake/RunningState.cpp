@@ -2,17 +2,19 @@
 #include "GameOverState.hpp"
 #include "Game.hpp"
 #include "FontCache.hpp"
+#include "Simulation.hpp"
+#include "Snake.hpp"
 #include <iostream>
 #include <string>
 #include <iomanip>
 #include <sstream>
 
 extern FontCache fontCache;
-constexpr unsigned int secondAsMilliseconds{ 1000 };
+//constexpr unsigned int secondAsMilliseconds{ 1000 };
 constexpr unsigned int fontSize{ 20 };
 constexpr SDL_Color black = { 0, 0, 0,255 };
 
-RunningState::RunningState(Game& game) : State(game), snake_(game.board())
+RunningState::RunningState(Game& game) : State(game), snake_(game.snake()), simulation_(game.simulation())
 {
 
 }
@@ -23,6 +25,7 @@ void RunningState::enter()
 	resetBoard();
 	initSnake();
 	initFood();
+	simulation_.start();
 }
 
 void RunningState::resetBoard() const
@@ -65,8 +68,10 @@ void RunningState::printCurrentScoreToScreen(Renderer& renderer)
 	renderer.renderText(x, y, score, *fontCache.getFont(fontSize), black);
 }
 
-void RunningState::update(Renderer& renderer, uint32_t deltaTime)
+void RunningState::update(Renderer& renderer)
 {
+	//simulation_.update();
+	/*
 	updateDeltaTime_ += deltaTime;
 	const unsigned int snakeSpeed = snake_.getSpeed();
 
@@ -94,6 +99,28 @@ void RunningState::update(Renderer& renderer, uint32_t deltaTime)
 
 		simulation_.updateSnakePosition(snake_, target);
 		updateDeltaTime_ = updateDeltaTime_ - (secondAsMilliseconds / snakeSpeed);
+	}
+
+	printCurrentScoreToScreen(renderer);
+	*/
+	
+	Board& board = game_.board();
+	const bool collision = simulation_.collision();
+
+	if (collision) {
+		game_.pushState<GameOverState>(game_);
+		return;
+	}
+
+	auto position = snake_.getPosition();
+	SnakeMovement::Direction direction = snake_.getDirection();
+
+	const Point<std::size_t> target = simulation_.getNextSnakePosition(position, direction);
+	const bool food = simulation_.checkForCollisionWithFood(target);
+
+	if (food) {
+		snake_.grow(1);
+		newRandomPositionForFood();
 	}
 
 	printCurrentScoreToScreen(renderer);

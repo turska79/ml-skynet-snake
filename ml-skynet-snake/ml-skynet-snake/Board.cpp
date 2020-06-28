@@ -59,6 +59,19 @@ std::list<std::unique_ptr<Cell>>& Board::grid() noexcept
 	return grid_;
 }
 
+const bool Board::checkForFood(const Point<std::size_t>& target)
+{
+	const Cell* cell = findCell(target);
+
+	if (cell->type_ == Cell::Type::food) {
+		//std::cout << "Simulation::checkForFood targetx: " << std::to_string(static_cast<int>(target.x_)) << " y: " << std::to_string(static_cast<int>(target.y_)) << std::endl;
+		//std::cout << "Simulation::checkForFood Cell x: " << std::to_string(static_cast<int>(cell->x_)) << " y: " << std::to_string(static_cast<int>(cell->y_)) << std::endl;
+		return true;
+	}
+
+	return false;
+}
+
 void Board::createBoard(std::size_t gridWidth, std::size_t gridHeight)
 {
 	/*
