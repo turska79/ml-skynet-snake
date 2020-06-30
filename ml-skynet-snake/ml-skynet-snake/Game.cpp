@@ -3,24 +3,10 @@
 #include "MainMenuState.hpp"
 #include "Timer.hpp"
 #include "FontCache.hpp"
+#include "Scheduler.hpp"
 #include <SDL.h>
 #include <iostream>
 #include <string>
-
-#include <chrono>
-/*
-void Spin(float milliseconds)
-{
-	milliseconds /= 1000.0f;
-	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-	double ms = 0;
-	while (ms < milliseconds)
-	{
-		std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
-		ms = time_span.count();
-	}
-}*/
 
 FontCache fontCache;
 constexpr unsigned int targetFramesPerSecond{ 60 };
@@ -41,8 +27,6 @@ Game::Game(Settings& settings) :
 void Game::run()
 {
 	std::cout << " Game::run()" << std::endl;
-
-	//JobSystem::Execute([] { Spin(0); });
 
 	pushState<MainMenuState>(*this);
 	runGameLoop();
@@ -69,11 +53,9 @@ void Game::gameLoop()
 	handleEvents();
 	handleInput();
 
-	//simulation_.update((SnakeMovement&)snake_);
 	JobSystem::Execute([this] { simulation_.update((SnakeMovement&)snake_); });
 	JobSystem::Execute([this] { renderBoard(); });
 
-	//renderBoard();
 	JobSystem::Wait();
 	currentState()->update(renderer_);
 

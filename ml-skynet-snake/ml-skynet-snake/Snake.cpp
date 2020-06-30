@@ -13,7 +13,6 @@ Snake::Snake(Board& board) : board_(board)
 	model.Add< mlpack::ann::ReLULayer<>>();
 	model.Add< mlpack::ann::Linear<>>(128, 4);
 
-	// Set up the policy and replay method.
 	mlpack::rl::GreedyPolicy<SnakeBrain> policy(1.0, 1000, 0.1, 0.99);
 	mlpack::rl::RandomReplay<SnakeBrain> replayMethod(10, 10000);
 
@@ -73,14 +72,6 @@ Point<std::size_t> Snake::getPosition() const noexcept
 {
 	return headPosition_;
 }
-/*
-Point<std::size_t> Snake::getFirstBodyPosition() noexcept
-{
-	if (body_.empty() == false) {
-		return body_.back();
-	}
-	return Point<std::size_t>();
-}*/
 
 const unsigned int Snake::getSpeed() const noexcept
 {

@@ -10,7 +10,6 @@
 #include <sstream>
 
 extern FontCache fontCache;
-//constexpr unsigned int secondAsMilliseconds{ 1000 };
 constexpr unsigned int fontSize{ 20 };
 constexpr SDL_Color black = { 0, 0, 0,255 };
 
@@ -70,40 +69,6 @@ void RunningState::printCurrentScoreToScreen(Renderer& renderer)
 
 void RunningState::update(Renderer& renderer)
 {
-	//simulation_.update();
-	/*
-	updateDeltaTime_ += deltaTime;
-	const unsigned int snakeSpeed = snake_.getSpeed();
-
-	if (updateDeltaTime_ > (secondAsMilliseconds / snakeSpeed)) {
-		Board& board = game_.board();
-
-		auto position = snake_.getPosition();
-		SnakeMovement::Direction direction = snake_.getDirection();
-
-		const Point<std::size_t> target = simulation_.getNextSnakePosition(position, direction);
-
-		const bool collision = simulation_.checkForCollisionWithWall(board, target);
-
-		if (collision) {
-			game_.pushState<GameOverState>(game_);
-			return;
-		}
-
-		const bool food = simulation_.checkForFood(board, target);
-
-		if (food) {
-			snake_.grow(1);
-			newRandomPositionForFood();
-		}
-
-		simulation_.updateSnakePosition(snake_, target);
-		updateDeltaTime_ = updateDeltaTime_ - (secondAsMilliseconds / snakeSpeed);
-	}
-
-	printCurrentScoreToScreen(renderer);
-	*/
-	
 	Board& board = game_.board();
 	const bool collision = simulation_.collision();
 

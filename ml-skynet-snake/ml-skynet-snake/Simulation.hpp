@@ -13,12 +13,7 @@ class Simulation
 public:
 	Simulation(Board& board);
 	void start();
-	//stop();
 	void update(SnakeMovement& snakeMovement);
-
-	//void updateSnakePosition(Snake& snake, const Point<std::size_t> target);
-	//const bool checkForCollisionWithWall() const;
-	//const bool checkForCollisionWithSnakeBody() const;
 	
 	const Point<std::size_t> getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeMovement::Direction direction) const noexcept;
 

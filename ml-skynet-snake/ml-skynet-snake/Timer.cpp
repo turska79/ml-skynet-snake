@@ -1,11 +1,6 @@
 #include "Timer.hpp"
 #include <SDL.h>
-/*/
-const uint32_t newTime = SDL_GetTicks();
-const uint32_t deltaTime = newTime - currentTime;
-fps = 1000.0f / deltaTime;
-currentTime = newTime;
-*/
+
 void Timer::start() noexcept
 {
 	started = true;

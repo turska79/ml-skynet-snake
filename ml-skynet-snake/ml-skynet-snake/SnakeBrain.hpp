@@ -31,9 +31,7 @@ class SnakeBrain
 {
 public:
 	SnakeBrain() = default;
-	//SnakeBrain(Board* board, SnakePosition* snakePosition);
 	~SnakeBrain();
-	//void runAI();
 	void setBoard(Board* board);
 	void setSnakeMovementInterface(SnakeMovement* snakeMovement);
 	void setRenderer(Renderer* renderer);

@@ -7,7 +7,6 @@
 #include "Simulation.hpp"
 #include "GameStates.h"
 #include "Timer.hpp"
-#include "Scheduler.hpp"
 #include "Snake.hpp"
 #include <vector>
 #include <memory>
@@ -47,6 +46,5 @@ private:
 	Input input_;
 	Simulation simulation_;
 	Snake snake_;
-	//Scheduler<MyTask> scheduler_;
 };
 

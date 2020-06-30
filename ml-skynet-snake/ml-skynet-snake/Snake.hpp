@@ -19,7 +19,6 @@ public:
 	void setDirection(const SnakeMovement::Direction direction) noexcept override;
 	const SnakeMovement::Direction getDirection() const noexcept override;
 	Point<std::size_t> getPosition() const noexcept override;
-	//Point<std::size_t> getFirstBodyPosition() noexcept;
 	const unsigned int getSpeed() const noexcept;
 	void grow(const unsigned int length) noexcept override;
 	const unsigned int length() const noexcept;

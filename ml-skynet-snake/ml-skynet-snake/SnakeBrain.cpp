@@ -128,7 +128,7 @@ double SnakeBrain::Sample(const State& state, const Action& action, State& nextS
 		//simulation_->updateSnakePosition(*snake_, target);
 	}
 
-	game_->gameLoop();
+	//game_->gameLoop();
 
 	// Do not reward agent if it failed.
 	

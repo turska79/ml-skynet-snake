@@ -23,11 +23,12 @@ void Simulation::update(SnakeMovement& snakeMovement)
 		return;
 	}
 
-	/*uint32_t deltaTime = timer_.deltaTime();
+	const uint32_t deltaTime = timer_.deltaTime();
 
-	if (!collision_ && deltaTime > (secondAsMilliseconds / snakeSpeed_)) {
-		//float deltaTime = std::min(frameTime, dt_);
-		
+	updateDeltaTime_ += deltaTime;
+
+	if (!collision_ && updateDeltaTime_ > (secondAsMilliseconds / snakeSpeed_)) {
+
 		auto position = snakeMovement.getPosition();
 		SnakeMovement::Direction direction = snakeMovement.getDirection();
 
@@ -36,60 +37,16 @@ void Simulation::update(SnakeMovement& snakeMovement)
 		collision_ = checkForCollisionWithWall(target);
 
 		if (collision_) {
-			//game_.pushState<GameOverState>(game_);
 			return;
 		}
 
-		//const bool food = checkForFood(target);
-
-		//if (food) {
-			//snake_.grow(1);
-			//newRandomPositionForFood();
-		//}
-
-		//updateSnakePosition(snake_, target);
 		snakeMovement.updatePosition(target);
-
-		//frameTime -= deltaTime;
-		//t_ += deltaTime;
-	}*/
-	
-	const uint32_t deltaTime = timer_.deltaTime();
-
-	updateDeltaTime_ += deltaTime;
-
-	if (!collision_ && updateDeltaTime_ > (secondAsMilliseconds / snakeSpeed_)) {
-		//Board& board = game_.board();
-
-		auto position = snakeMovement.getPosition();
-		SnakeMovement::Direction direction = snakeMovement.getDirection();
-
-		const Point<std::size_t> target = getNextSnakePosition(position, direction);
-
-		collision_ = checkForCollisionWithWall(target);
-
-		//if (collision_) {
-			//game_.pushState<GameOverState>(game_);
-		//	return;
-		//}
-		/*
-		const bool food = checkForCollisionWithFood(target);
-
-		if (food) {
-			snake_.grow(1);
-			newRandomPositionForFood();
-		}*
-
-		//updateSnakePosition(snake_, target);
-		if (!collision_) {
-			snakeMovement.updatePosition(target);
-		}
 
 		updateDeltaTime_ = updateDeltaTime_ - (secondAsMilliseconds / snakeSpeed_);
 
 		if (updateDeltaTime_ > 500) {
 			updateDeltaTime_ = 0;
-		}*/
+		}
 	}
 	
 }
@@ -121,16 +78,6 @@ const bool Simulation::collision() const
 {
 	return collision_;
 }
-/*
-const bool Simulation::checkForCollisionWithWall() const
-{
-	return false;
-}
-
-const bool Simulation::checkForCollisionWithSnakeBody() const
-{
-	return false;
-}*/
 
 const bool Simulation::checkForCollisionWithFood(const Point<std::size_t>& target) const
 {
@@ -161,11 +108,3 @@ const bool Simulation::checkForCollisionWithSnakeBody(const Point<std::size_t>& 
 
 	return false;
 }
-
-/*
-void Simulation::updateSnakePosition(Snake& snake, const Point<std::size_t> target)
-{
-	snake.updatePosition(target);
-}
-*/
-

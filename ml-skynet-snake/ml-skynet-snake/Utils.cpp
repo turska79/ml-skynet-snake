@@ -26,7 +26,7 @@ float utils::math::snakeAngleToFood(const Point<std::size_t> body, const Point<s
 
 	return static_cast<float>(angle * (180.0 / pi));
 }
-
+/*
 void utils::training::generateData(Board& board, unsigned int games)
 {
 	std::ofstream fs;
@@ -91,3 +91,4 @@ void utils::training::writeData(const bool left, const bool front, const bool ri
 	fs << left << "," << front << "," << right << std::endl;
 	fs.close();
 }
+*/

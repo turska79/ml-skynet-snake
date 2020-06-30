@@ -1,8 +1,6 @@
 #pragma once
 
 #include "State.hpp"
-//#include "Snake.hpp"
-//#include "Simulation.hpp"
 #include "Food.hpp"
 
 class Renderer;
@@ -36,6 +34,5 @@ protected:
 	Snake& snake_;
 	Simulation& simulation_;
 	Food food_;
-//	uint32_t updateDeltaTime_{ 0 };
 };
 

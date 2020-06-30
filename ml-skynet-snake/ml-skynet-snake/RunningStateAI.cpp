@@ -5,69 +5,10 @@
 #include "GameOverState.hpp"
 #include <iostream>
 #include <iterator>
-/*
-#include <mlpack/core.hpp>
 
-#include <mlpack/methods/ann/ffn.hpp>
-#include <mlpack/methods/ann/init_rules/gaussian_init.hpp>
-#include <mlpack/methods/ann/layer/layer.hpp>
-#include <mlpack/methods/ann/loss_functions/mean_squared_error.hpp>
-#include <mlpack/methods/reinforcement_learning/q_learning.hpp>
-#include <mlpack/methods/reinforcement_learning/environment/mountain_car.hpp>
-#include <mlpack/methods/reinforcement_learning/environment/acrobot.hpp>
-#include <mlpack/methods/reinforcement_learning/environment/cart_pole.hpp>
-#include <mlpack/methods/reinforcement_learning/environment/double_pole_cart.hpp>
-#include <mlpack/methods/reinforcement_learning/policy/greedy_policy.hpp>
-#include <mlpack/methods/reinforcement_learning/training_config.hpp>
-
-#include <ensmallen.hpp>
-
-using namespace mlpack;
-using namespace mlpack::ann;
-using namespace ens;
-using namespace mlpack::rl;
-
-using namespace mlpack;
-using namespace mlpack::ann;
-using namespace ens;
-using namespace mlpack::rl;
-*/
 RunningStateAI::RunningStateAI(Game& game) : RunningState(game)
 {
-	/*
-	// Set up the feed forward neural network.
-	FFN<MeanSquaredError<>, GaussianInitialization> model(MeanSquaredError<>(), GaussianInitialization(0, 0.001));    // Gaussian Initialization is how we initialize the weights in the neural network, with mean 0 and standard deviation 0.001
-	model.Add<Linear<>>(4, 128);
-	model.Add<ReLULayer<>>();
-	model.Add<Linear<>>(128, 128);
-	model.Add<ReLULayer<>>();
-	model.Add<Linear<>>(128, 2);
 
-	// Set up the policy and replay method.
-	GreedyPolicy<CartPole> policy(1.0, 1000, 0.1, 0.99);
-	RandomReplay<CartPole> replayMethod(10, 10000);
-
-	TrainingConfig config;
-	config.StepSize() = 0.01;
-	config.Discount() = 0.9;
-	config.TargetNetworkSyncInterval() = 100;
-	config.ExplorationSteps() = 100;
-	config.DoubleQLearning() = false;
-	config.StepLimit() = 200;
-
-	// Set up DQN agent.
-	QLearning<CartPole, decltype(model), AdamUpdate, decltype(policy)>
-		agent(std::move(config), std::move(model), std::move(policy),
-			std::move(replayMethod));
-
-	long episodes{ 0 };
-
-	while (true)
-	{
-		double episodeReturn = agent.Episode();
-		double averageReturn(episodeReturn);
-		episodes += 1;
-	}*/
 }
 
 void RunningStateAI::enter()
@@ -82,22 +23,6 @@ void RunningStateAI::enter()
 	brain.setGame(&game_);
 	brain.setSnake(&snake_);
 
-	/*
-	arma::mat input_training_data;
-	arma::mat output_training_data;
-
-	mlpack::data::Load("training_data_input.csv", input_training_data, true);
-	mlpack::data::Load("training_data_output.csv", output_training_data, true);
-
-	model.Add<mlpack::ann::Linear<> >(input_training_data.n_rows, 3);
-	model.Add<mlpack::ann::ReLULayer<> >();
-	model.Add<mlpack::ann::ReLULayer<> >();
-	model.Add<mlpack::ann::TanHLayer<> >();
-
-	for (int i = 0; i < 10; ++i)
-	{
-		model.Train(input_training_data, output_training_data);
-	}*/
 }
 
 void RunningStateAI::update(Renderer& renderer)

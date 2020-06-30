@@ -81,7 +81,6 @@ namespace JobSystem
 
 				std::function<void()> job; // the current job for the thread, it's empty at start.
 
-										   // This is the infinite loop that a worker thread will do 
 				while (true)
 				{
 					if (jobPool.pop_front(job)) // try to grab a job from the jobPool queue
