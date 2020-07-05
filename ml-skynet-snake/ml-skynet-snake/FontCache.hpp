@@ -2,6 +2,7 @@
 #include <map>
 #include <memory>
 #include <SDL_ttf.h>
+#include <mutex>
 
 using FontPtr = std::unique_ptr<TTF_Font, std::integral_constant<decltype(&TTF_CloseFont), &TTF_CloseFont>>;
 
@@ -13,5 +14,6 @@ public:
 	void clear() noexcept;
 private:
 	std::map<int, FontPtr> cache_;
+	std::mutex lock;
 };
 

@@ -32,6 +32,7 @@ public:
 	void renderBoard();
 private:
 	void capFrameRate();
+	void printCurrentScoreToScreen();
 	void handleEvents();
 	void handleInput();
 	State* currentState() const;

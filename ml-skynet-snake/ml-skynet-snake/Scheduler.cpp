@@ -59,7 +59,7 @@ namespace JobSystem
 	ThreadSafeRingBuffer<std::function<void()>, 256> jobPool;    // a thread safe queue to put pending jobs onto the end (with a capacity of 256 jobs). A worker thread can grab a job from the beginning
 	std::condition_variable wakeCondition;    // used in conjunction with the wakeMutex below. Worker threads just sleep when there is no job, and the main thread can wake them up
 	std::mutex wakeMutex;    // used in conjunction with the wakeCondition above
-	uint64_t currentLabel = 0;    // tracks the state of execution of the main thread
+	std::atomic<uint64_t> currentLabel = 0;    // tracks the state of execution of the main thread
 	std::atomic<uint64_t> finishedLabel;    // track the state of execution across background worker threads
 
 
@@ -129,7 +129,9 @@ namespace JobSystem
 
 	void Wait()
 	{
-		while (IsBusy()) { poll(); }
+		while (IsBusy()) {
+			poll();
+		}
 	}
 
 	void Dispatch(uint32_t jobCount, uint32_t groupSize, const std::function<void(JobDispatchArgs)>& job)

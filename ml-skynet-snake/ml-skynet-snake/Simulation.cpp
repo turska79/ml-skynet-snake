@@ -14,12 +14,14 @@ void Simulation::start()
 {
 	running_ = true;
 	collision_ = false;
+	updateDeltaTime_ = 0;
 	timer_.start();
 }
 
 void Simulation::update(SnakeMovement& snakeMovement)
 {
 	if (!running_) {
+		std::cout << "Simulation::update() not yet running" << std::endl;
 		return;
 	}
 
@@ -28,13 +30,14 @@ void Simulation::update(SnakeMovement& snakeMovement)
 	updateDeltaTime_ += deltaTime;
 
 	if (!collision_ && updateDeltaTime_ > (secondAsMilliseconds / snakeSpeed_)) {
-
 		auto position = snakeMovement.getPosition();
 		SnakeMovement::Direction direction = snakeMovement.getDirection();
 
 		const Point<std::size_t> target = getNextSnakePosition(position, direction);
 
-		collision_ = checkForCollisionWithWall(target);
+		if (checkForCollisionWithSnakeBody(target) || checkForCollisionWithWall(target)) {
+			collision_ = true;
+		}
 
 		if (collision_) {
 			return;
@@ -48,7 +51,6 @@ void Simulation::update(SnakeMovement& snakeMovement)
 			updateDeltaTime_ = 0;
 		}
 	}
-	
 }
 
 const Point<std::size_t> Simulation::getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeMovement::Direction direction) const noexcept
@@ -83,8 +85,9 @@ const bool Simulation::checkForCollisionWithFood(const Point<std::size_t>& targe
 {
 	const Cell* cell = board_.findCell(target);
 
-	if (cell->type_ == Cell::Type::food)
+	if (cell->type_ == Cell::Type::food) {
 		return true;
+	}
 
 	return false;
 }
@@ -93,8 +96,9 @@ const bool Simulation::checkForCollisionWithWall(const Point<std::size_t>& targe
 {
 	const Cell* cell = board_.findCell(target);
 
-	if (cell->type_ == Cell::Type::wall)
+	if (cell->type_ == Cell::Type::wall) {
 		return true;
+	}
 
 	return false;
 }
@@ -103,8 +107,9 @@ const bool Simulation::checkForCollisionWithSnakeBody(const Point<std::size_t>& 
 {
 	const Cell* cell = board_.findCell(target);
 
-	if (cell->type_ == Cell::Type::body)
+	if (cell->type_ == Cell::Type::body) {
 		return true;
+	}
 
 	return false;
 }

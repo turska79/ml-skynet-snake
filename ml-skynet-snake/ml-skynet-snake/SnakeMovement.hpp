@@ -6,6 +6,7 @@
 class SnakeMovement {
 public:
 	enum class Direction { up, down, left, right };
+	virtual void init(const Point<std::size_t> position, const Direction direction) = 0;
 
 	virtual Point<std::size_t> getPosition() const noexcept = 0;
 	virtual void updatePosition(const Point<std::size_t> newPosition) = 0;
@@ -13,4 +14,17 @@ public:
 	virtual const Direction getDirection() const noexcept = 0;
 
 	virtual void grow(const unsigned int length) noexcept  = 0;
+};
+
+class SnakeControl
+{
+	enum class Direction { up, down, left, right };
+	virtual void init(const Point<std::size_t> position, const Direction direction) = 0;
+
+	virtual Point<std::size_t> getPosition() const noexcept = 0;
+	virtual void updatePosition(const Point<std::size_t> newPosition) = 0;
+	virtual void setDirection(const Direction direction) noexcept = 0;
+	virtual const Direction getDirection() const noexcept = 0;
+
+	virtual void grow(const unsigned int length) noexcept = 0;
 };

@@ -6,55 +6,6 @@
 #include "Game.hpp"
 #include "Snake.hpp"
 
-//SnakeBrain::SnakeBrain(Board* board, SnakePosition* snakePosition) : board_(board), snakePosition_(snakePosition)
-//{
-	// Set up the feed forward neural network.
-	/*mlpack::ann::FFN< mlpack::ann::MeanSquaredError<>, mlpack::ann::GaussianInitialization> model(mlpack::ann::MeanSquaredError<>(), mlpack::ann::GaussianInitialization(0, 0.001));    // Gaussian Initialization is how we initialize the weights in the neural network, with mean 0 and standard deviation 0.001
-	model.Add< mlpack::ann::Linear<>>(24, 128);
-	model.Add< mlpack::ann::ReLULayer<>>();
-	model.Add< mlpack::ann::Linear<>>(128, 128);
-	model.Add< mlpack::ann::ReLULayer<>>();
-	model.Add< mlpack::ann::Linear<>>(128, 4);
-
-	// Set up the policy and replay method.
-	mlpack::rl::GreedyPolicy<SnakeBrain::LearningAgent> policy(1.0, 1000, 0.1, 0.99);
-	mlpack::rl::RandomReplay<SnakeBrain::LearningAgent> replayMethod(10, 10000);
-
-	mlpack::rl::TrainingConfig config;
-	config.StepSize() = 1;
-	config.Discount() = 0.9;
-	config.TargetNetworkSyncInterval() = 100;
-	config.ExplorationSteps() = 100;
-	config.DoubleQLearning() = false;
-	config.StepLimit() = 500;
-	*/
-	//std::array<float, 24> vision;
-	// Set up DQN agent.
-	//QLearning<CartPole, decltype(model), AdamUpdate, decltype(policy)>
-	//	agent(std::move(config), std::move(model), std::move(policy),
-	//		std::move(replayMethod));
-
-	// mlpack::rl::QLearning<SnakeDirection, mlpack::ann::FFN<mlpack::ann::MeanSquaredError<>, mlpack::ann::GaussianInitialization>, ens::AdamUpdate, mlpack::rl::GreedyPolicy<SnakeDirection> >*
-	//learningAgent_ = new mlpack::rl::QLearning<SnakeBrain::LearningAgent, decltype(model), ens::AdamUpdate, decltype(policy)> (std::move(config), std::move(model), std::move(policy), std::move(replayMethod));
-//}
-
-SnakeBrain::~SnakeBrain()
-{
-	//delete learningAgent_;
-}
-
-//void SnakeBrain::runAI()
-//{
-//	std::array<float, 24> vision = snakeVision_.lookInAllDirections();
-
-	//SnakeBrain& env = learningAgent_->Environment();
-	//std::copy(std::begin(vision), std::end(vision), std::begin(env.vision_));
-
-	//auto value = learningAgent_->Episode();
-
-	
-//}
-
 void SnakeBrain::setBoard(Board* board)
 {
 	board_ = board;
@@ -85,6 +36,24 @@ void SnakeBrain::setSnake(Snake* snake)
 	snake_ = snake;
 }
 
+SnakeVision& SnakeBrain::snakeVision()
+{
+	return snakeVision_;
+}
+
+void SnakeBrain::ProceedToNextMove()
+{
+	//std::cout << "SnakeBrain::ProceedToNextMove()" << std::endl;
+	moveCv_->notify_one();
+}
+
+
+SnakeBrain::SnakeBrain()
+{
+	moveMutex_ = new std::mutex;
+	moveCv_ = new std::condition_variable;
+}
+
 double SnakeBrain::Sample(const State& state, const Action& action, State& nextState)
 {
 	// Update the number of steps performed.
@@ -95,15 +64,19 @@ double SnakeBrain::Sample(const State& state, const Action& action, State& nextS
 
 	if (action == up) {
 		direction = SnakeMovement::Direction::up;
+		//std::cout << "SnakeBrain::Sample() Direction: up" << std::endl;
 	}
 	else if (action == down) {
 		direction = SnakeMovement::Direction::down;
+		//std::cout << "SnakeBrain::Sample() Direction: down" << std::endl;
 	}
 	else if (action == right) {
 		direction = SnakeMovement::Direction::right;
+		//std::cout << "SnakeBrain::Sample() Direction: right" << std::endl;
 	}
 	else if (action == left) {
 		direction = SnakeMovement::Direction::left;
+		//std::cout << "SnakeBrain::Sample() Direction: left" << std::endl;
 	}
 	
 	snake_->setDirection(direction);
@@ -116,27 +89,29 @@ double SnakeBrain::Sample(const State& state, const Action& action, State& nextS
 	y = static_cast<double>(target.y_);
 
 	bool done = IsTerminal(nextState);
-	bool food{ false };
 
-	if (done == false) {
-		auto vision = snakeVision_.lookInAllDirections(*board_, target, *simulation_, *renderer_);
-		auto data = nextState.Data();
-		std::copy(std::begin(vision), std::end(vision), std::begin(data));
-
-		//food = simulation_->checkForFood(*board_, target);
-
-		//simulation_->updateSnakePosition(*snake_, target);
-	}
-
-	//game_->gameLoop();
-
-	// Do not reward agent if it failed.
-	
 	if (done && maxSteps != 0 && stepsPerformed >= maxSteps) {
 		return doneReward;
 	} else if (done) {
-		return -10;
-	} else if (food) {
+		return -100;
+	}
+	
+	std::unique_lock<std::mutex> lk(*moveMutex_);
+	moveCv_->wait(lk);
+
+	bool food{ false };
+
+	Cell* cell = board_->findCell(target);
+	
+	if (cell->type_ != Cell::Type::wall) {
+		auto vision = snakeVision_.lookInAllDirections(*board_, target, *simulation_, *renderer_);
+		auto data = nextState.Data();
+		std::copy(std::begin(vision), std::end(vision), std::begin(data));
+	}
+
+	food = simulation_->checkForCollisionWithFood(target);
+	
+	if (food) {
 		if (stepsPerformed > 100) {
 			stepsPerformed -= 100;
 		} else {
@@ -173,16 +148,15 @@ SnakeBrain::State SnakeBrain::InitialSample()
 bool SnakeBrain::IsTerminal(const State& state) const
 {
 	if (maxSteps != 0 && stepsPerformed >= maxSteps) {
-		std::cout << "Episode terminated due to the maximum number of steps being taken.";
+		std::cout << "Episode terminated due to the maximum number of steps being taken." << std::endl;
 		return true;
 	}
 
-	Point<std::size_t> target;
-	target.x_ = static_cast<std::size_t>(state.coordinateX());
-	target.y_ = static_cast<std::size_t>(state.coordinateY());
+	//Point<std::size_t> target;
+	//target.x_ = static_cast<std::size_t>(state.coordinateX());
+	//target.y_ = static_cast<std::size_t>(state.coordinateY());
 	
-	const bool collision = false;// simulation_->checkForCollisionWithWall(*board_, target);
-	return collision;
+	return simulation_->collision();
 }
 
 size_t SnakeBrain::StepsPerformed() const

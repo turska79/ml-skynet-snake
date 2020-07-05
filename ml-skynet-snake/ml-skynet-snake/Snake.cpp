@@ -6,21 +6,21 @@
 
 Snake::Snake(Board& board) : board_(board)
 {
-	mlpack::ann::FFN< mlpack::ann::MeanSquaredError<>, mlpack::ann::GaussianInitialization> model(mlpack::ann::MeanSquaredError<>(), mlpack::ann::GaussianInitialization(0, 0.001));    // Gaussian Initialization is how we initialize the weights in the neural network, with mean 0 and standard deviation 0.001
-	model.Add< mlpack::ann::Linear<>>(26, 128);
+	mlpack::ann::FFN< mlpack::ann::MeanSquaredError<>, mlpack::ann::GaussianInitialization> model(mlpack::ann::MeanSquaredError<>(), mlpack::ann::GaussianInitialization(0, 0.001));
+	model.Add< mlpack::ann::Linear<>>(26, 16);
 	model.Add< mlpack::ann::ReLULayer<>>();
-	model.Add< mlpack::ann::Linear<>>(128, 128);
+	model.Add< mlpack::ann::Linear<>>(16, 8);
 	model.Add< mlpack::ann::ReLULayer<>>();
-	model.Add< mlpack::ann::Linear<>>(128, 4);
+	model.Add< mlpack::ann::Linear<>>(8, 4);
 
-	mlpack::rl::GreedyPolicy<SnakeBrain> policy(1.0, 1000, 0.1, 0.99);
-	mlpack::rl::RandomReplay<SnakeBrain> replayMethod(10, 10000);
+	mlpack::rl::GreedyPolicy<SnakeBrain> policy(1.0, 100, 0.1, 0.99);
+	mlpack::rl::RandomReplay<SnakeBrain> replayMethod(30, 1000);
 
 	mlpack::rl::TrainingConfig config;
-	config.StepSize() = 1;
-	config.Discount() = 0.9;
-	config.TargetNetworkSyncInterval() = 100;
-	config.ExplorationSteps() = 100;
+	config.StepSize() = 0.1;
+	config.Discount() = 0.5;
+	config.TargetNetworkSyncInterval() = 10;
+	config.ExplorationSteps() = 10;
 	config.DoubleQLearning() = false;
 	config.StepLimit() = 500;
 
@@ -93,7 +93,7 @@ SnakeBrain& Snake::brain() noexcept
 	return learningAgent_->Environment();
 }
 
-void Snake::runAi()
+void Snake::runLearningAgentForSingleGame()
 {
 	learningAgent_->Episode();
 }
@@ -116,5 +116,7 @@ void Snake::updatePosition(const Point<std::size_t> newPosition)
 	headPosition_ = newPosition;
 	Cell* newHeadCell = board_.findCell(headPosition_);
 	newHeadCell->type_ = Cell::Type::head;
+
+	brain().ProceedToNextMove();
 }
 

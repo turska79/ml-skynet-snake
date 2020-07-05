@@ -31,6 +31,7 @@ void Game::run()
 	pushState<MainMenuState>(*this);
 	runGameLoop();
 	exit();
+
 	std::cout << " Game::run() exit" << std::endl;
 }
 
@@ -58,7 +59,9 @@ void Game::gameLoop()
 
 	JobSystem::Wait();
 	currentState()->update(renderer_);
-
+	
+	printCurrentScoreToScreen();
+	
 	renderer_.present();
 
 	capFrameRate();
@@ -85,6 +88,15 @@ void Game::capFrameRate()
 	if (frameTicks < targetFrameTime) {
 		SDL_Delay(targetFrameTime - frameTicks);
 	}
+}
+
+void Game::printCurrentScoreToScreen()
+{
+	std::string score = "Score: ";
+	score.append(std::to_string(snake_.length()));
+	constexpr unsigned int x{ 0 };
+	constexpr unsigned int y{ 40 };
+	renderer_.renderText(x, y, score, *fontCache.getFont(fontSize), black);
 }
 
 void Game::exit() noexcept

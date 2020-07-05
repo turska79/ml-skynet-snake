@@ -6,7 +6,7 @@
 class Renderer;
 class Keyboard;
 class Game;
-class Snake;
+class SnakeMovement;
 class Simulation;
 
 class RunningState : public State
@@ -29,9 +29,9 @@ protected:
 	void initSnake();
 	void initFood();
 	void newRandomPositionForFood();
-	void printCurrentScoreToScreen(Renderer& renderer);
 
-	Snake& snake_;
+	//Snake& snake_;
+	SnakeMovement& snakeMovement_;
 	Simulation& simulation_;
 	Food food_;
 };

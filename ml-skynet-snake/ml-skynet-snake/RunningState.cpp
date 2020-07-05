@@ -3,7 +3,8 @@
 #include "Game.hpp"
 #include "FontCache.hpp"
 #include "Simulation.hpp"
-#include "Snake.hpp"
+//#include "Snake.hpp"
+#include "SnakeMovement.hpp"
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -13,14 +14,13 @@ extern FontCache fontCache;
 constexpr unsigned int fontSize{ 20 };
 constexpr SDL_Color black = { 0, 0, 0,255 };
 
-RunningState::RunningState(Game& game) : State(game), snake_(game.snake()), simulation_(game.simulation())
+RunningState::RunningState(Game& game) : State(game), snakeMovement_(game.snake()), simulation_(game.simulation())
 {
 
 }
 
 void RunningState::enter()
 {
-	std::cout << " RunningState::enter()" << std::endl;
 	resetBoard();
 	initSnake();
 	initFood();
@@ -39,7 +39,7 @@ void RunningState::initSnake()
 	initialPosition.x_ = 10;
 	initialPosition.y_ = 10;
 
-	snake_.init(initialPosition, Snake::Direction::right);
+	snakeMovement_.init(initialPosition, Snake::Direction::right);
 }
 
 void RunningState::initFood()
@@ -58,15 +58,6 @@ void RunningState::newRandomPositionForFood()
 	food_.updatePosition(board, position);
 }
 
-void RunningState::printCurrentScoreToScreen(Renderer& renderer)
-{
-	std::string score = "Score: ";
-	score.append(std::to_string(snake_.length()));
-	constexpr unsigned int x{ 0 };
-	constexpr unsigned int y{ 40 };
-	renderer.renderText(x, y, score, *fontCache.getFont(fontSize), black);
-}
-
 void RunningState::update(Renderer& renderer)
 {
 	Board& board = game_.board();
@@ -77,28 +68,27 @@ void RunningState::update(Renderer& renderer)
 		return;
 	}
 
-	auto position = snake_.getPosition();
-	SnakeMovement::Direction direction = snake_.getDirection();
+	auto position = snakeMovement_.getPosition();
+	SnakeMovement::Direction direction = snakeMovement_.getDirection();
 
 	const Point<std::size_t> target = simulation_.getNextSnakePosition(position, direction);
 	const bool food = simulation_.checkForCollisionWithFood(target);
 
 	if (food) {
-		snake_.grow(1);
+		snakeMovement_.grow(1);
 		newRandomPositionForFood();
 	}
 
-	printCurrentScoreToScreen(renderer);
+	//printCurrentScoreToScreen(renderer);
 }
 
 void RunningState::exit()
 {
-	std::cout << " RunningState::exit()" << std::endl;
 }
 
 void RunningState::handleInput(const Keyboard& keyboard)
 {
-	Snake::Direction direction{ snake_.getDirection() };
+	Snake::Direction direction{ snakeMovement_.getDirection() };
 
 	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_RIGHT) == keyboard::ButtonState::pressed && direction != Snake::Direction::left) {
 		std::cout << "snake pressed: right" << std::endl;
@@ -114,7 +104,7 @@ void RunningState::handleInput(const Keyboard& keyboard)
 		direction = Snake::Direction::down;
 	}
 
-	snake_.setDirection(direction);
+	snakeMovement_.setDirection(direction);
 }
 
 
