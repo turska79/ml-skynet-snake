@@ -1,13 +1,13 @@
 #pragma once
 
 #include "State.hpp"
-#include "Snake.hpp"
-#include "Simulation.hpp"
-#include "Food.hpp"
+#include "../Food.hpp"
 
 class Renderer;
 class Keyboard;
 class Game;
+class SnakeControl;
+class Simulation;
 
 class RunningState : public State
 {
@@ -19,20 +19,27 @@ public:
 	RunningState(RunningState&&) = default;
 	RunningState& operator=(RunningState&&) = default;
 
-	void enter() override;
-	void update(Renderer& renderer, uint32_t deltaTime) override;
-	void exit() override;
-	void handleInput(const Keyboard& keyboard) override;
+	void snakeCollisionCallback();
 
-private:
+	virtual void enter() override;
+	virtual void update(Renderer& renderer) override;
+	void exit() override;
+	virtual void handleInput(const Keyboard& keyboard) override;
+
+protected:
 	void resetBoard() const;
 	void initSnake();
-	void initFood();
 	void newRandomPositionForFood();
 
-	Snake snake_;
-	Simulation simulation_;
+	void registerCallbacks();
+	void unregisterCallbacks();
+	void registerCollisionCallback();
+	void unregisterCollisionCallback();
+	void registerFoodEatenCallback();
+	void unregisterFoodEatenCallback();
+
+	SnakeControl& snakeControl_;
+	Simulation& simulation_;
 	Food food_;
-	uint32_t updateDeltaTime_{ 0 };
 };
 

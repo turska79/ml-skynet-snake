@@ -1,54 +1,128 @@
 #include "Simulation.hpp"
-#include "Board.hpp"
-#include "Snake.hpp"
+#include "InterruptibleThread.hpp"
+#include "utils/Utils.hpp"
 #include <iostream>
+#include <algorithm>
+#include <SDL_timer.h>
 
-const Point<std::size_t> Simulation::getNextSnakePosition(const Board& board, const Snake& snake) const noexcept
+constexpr unsigned int secondAsMilliseconds{ 1000 };
+constexpr uint32_t targetUpdateRate = secondAsMilliseconds / 30;
+
+Simulation::Simulation(Board& board, SnakeControl& snakeControl) : board_(board), snakeControl_(snakeControl)
 {
-	const Snake::Direction direction = snake.getDirection();
-	Point<std::size_t> position = snake.getHeadPosition();
+}
 
-	switch (direction) {
-	case Snake::Direction::right:
-		position.x_ += 1;
-		break;
-	case Snake::Direction::left:
-		position.x_ -= 1;
-		break;
-	case Snake::Direction::up:
-		position.y_ -= 1;
-		break;
-	case Snake::Direction::down:
-		position.y_ += 1;
-		break;
-	default:
-		break;
+void Simulation::start()
+{
+	std::cout << "Simulation::start()" << std::endl;
+	const std::lock_guard<std::mutex> lock(threadHandlingMutex_);
+
+	if (simulationThread_) {
+		simulationThread_->interrupt();
+		delete simulationThread_;
 	}
 
-	return position;
+	simulationThread_ = new thread::interruptibleThread(&Simulation::run, this);
 }
 
-const bool Simulation::checkForCollision(Board& board, const Point<std::size_t>& target) const
+void Simulation::stop()
 {
-	const Cell* cell = board.findCell(target);
+	std::cout << "Simulation::stop()" << std::endl;
+	const std::lock_guard<std::mutex> lock(threadHandlingMutex_);
 
-	if (cell->type_ == Cell::Type::wall || cell->type_ == Cell::Type::head)
+	if (simulationThread_) {
+		simulationThread_->interrupt();
+	}
+
+	updateRate_ = 0;
+}
+
+void Simulation::addObject(std::reference_wrapper<simulationObject> object)
+{
+	objects_.emplace_back(object);
+}
+
+void Simulation::detachObject(std::reference_wrapper<simulationObject> object)
+{
+	objects_.erase(std::find_if(objects_.cbegin(), objects_.cend(), [&](const std::reference_wrapper<simulationObject> &i)
+	{
+		return std::addressof(i.get()) == std::addressof(object.get());
+	}));
+}
+
+void Simulation::run()
+{
+	runSimulationLoop();
+}
+
+void Simulation::runSimulationLoop()
+{
+	bool running{ true };
+
+	while (running) {
+		thread::utils::interruptionPoint();
+
+		uint32_t now = SDL_GetTicks();
+
+		if (nextSimulationStep_ <= now) {
+			int computer_is_too_slow_limit = utils::commonConstants::lowSpeedLimit;
+
+			while ((nextSimulationStep_ <= now) && (computer_is_too_slow_limit--)) {
+				thread::utils::interruptionPoint();
+
+				updateObjects(now - lastSimulationUpdate_);
+				nextSimulationStep_ += utils::commonConstants::simulationRefreshRateTargetTimeStep;
+			}
+
+			uint32_t deltaTime = now - lastSimulationUpdate_;
+
+			lastSimulationUpdate_ = now;
+			
+			if (deltaTime > 0) {
+				updateRate_ = 1000 / deltaTime;
+			}
+		}
+		else {
+			SDL_Delay(nextSimulationStep_ - now);
+		}
+	}
+}
+
+void Simulation::updateObjects(const uint32_t deltaTime)
+{
+	for (auto& object : objects_) {
+		thread::utils::interruptionPoint();
+
+		object.get().update(deltaTime);
+	}
+}
+const bool Simulation::checkCellType(const utils::Point<std::size_t>& target, Cell::Type type) const
+{
+	const Cell* cell = board_.findCell(target);
+
+	if (cell->type_ == type) {
 		return true;
+	}
 
 	return false;
 }
 
-const bool Simulation::checkForFood(Board& board, const Point<std::size_t>& target) const
+const bool Simulation::checkForCollisionWithFood(const utils::Point<std::size_t>& target) const
 {
-	const Cell* cell = board.findCell(target);
-
-	if (cell->type_ == Cell::Type::food)
-		return true;
-
-	return false;
+	return checkCellType(target, Cell::Type::food);
 }
 
-void Simulation::updateSnakePosition(Board& board, Snake& snake, const Point<std::size_t> target)
+const uint32_t Simulation::updateRate()
 {
-	snake.updatePosition(board, target);
+	return updateRate_;
+}
+
+const bool Simulation::checkForCollisionWithWall(const utils::Point<std::size_t>& target) const
+{
+	return checkCellType(target, Cell::Type::wall);
+}
+
+const bool Simulation::checkForCollisionWithSnakeBody(const utils::Point<std::size_t>& target) const
+{
+	return checkCellType(target, Cell::Type::body);
 }

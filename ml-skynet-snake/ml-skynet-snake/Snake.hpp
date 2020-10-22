@@ -2,32 +2,60 @@
 
 #include <cstddef>
 #include <list>
-#include "Point.hpp"
+#include "utils/Point.hpp"
+#include "SnakeControl.hpp"
+#include "SimulationObject.hpp"
+#include "subjects/SnakePositionUpdatedSubject.hpp"
+#include "subjects/SnakeCollisionSubject.hpp"
+#include "subjects/FoodEatenSubject.hpp"
 
 class Board;
-class Keyboard;
 
-class Snake
+class Snake : public SnakeControl, public simulationObject
 {
 public:
-	enum class Direction { up, down, left, right };
+	Snake(Board& board);
+	
+	void init(const utils::Point<std::size_t> position, const SnakeControl::Direction direction) override;
+	void updatePosition(const utils::Point<std::size_t> newPosition) override;
+	void setDirection(const SnakeControl::Direction direction) noexcept override;
+	const SnakeControl::Direction getDirection() const noexcept override;
+	utils::Point<std::size_t> getPosition() const noexcept override;
+	void grow(const unsigned int length) noexcept override;
 
-	void init(const Point<std::size_t> position, const Direction direction, Board& board);
-	void updatePosition(Board& board, const Point<std::size_t> newHeadPosition);
-	void setDirection(const Direction direction) noexcept;
-	const Snake::Direction getDirection() const noexcept;
-	Point<std::size_t> getHeadPosition() const noexcept;
-	Point<std::size_t> getFirstBodyPosition() noexcept;
-	const unsigned int getSpeed() const noexcept;
-	void grow(const unsigned int length);
 	const unsigned int length() const noexcept;
+
+//	virtual void attach(SnakeObserver *observer) override;
+//	virtual void detach(SnakeObserver *observer) override;
+//	virtual void notify() override;
+
+	virtual void update(const uint32_t delta) noexcept override;
+	//SnakeBrain& brain() noexcept;
+	//void runLearningAgentForSingleGame();
+	subjects::SnakePositionUpdatedSubject& positionUpdateSubject() noexcept;
+	subjects::SnakeCollisionSubject& snakeCollisionSubject() noexcept;
+	subjects::FoodEatenSubject& foodEatenSubject() noexcept;
 private:
-	Point<std::size_t> headPosition_{ 0,0 };
-	std::list<Point<std::size_t>> body_;
-	Direction direction_{ Direction::right };
-public:
-	Direction previousDirection_{ Direction::right };
-private:
-	unsigned int speed_{ 10 };
+	const utils::Point<std::size_t> getNextSnakePosition(const utils::Point<std::size_t> currentPosition, const SnakeControl::Direction direction) const noexcept;
+	const bool checkForCollision(const utils::Point<std::size_t> target);
+	void notifyPositionObservers() noexcept;
+	void notifyCollisionObservers() noexcept;
+	void notifyFoodEatenObservers() noexcept;
+
+	subjects::SnakePositionUpdatedSubject positionUpdateSubject_;
+	subjects::SnakeCollisionSubject snakeCollisionSubject_;
+	subjects::FoodEatenSubject foodEatenSubject_;
+
+	uint32_t lastUpdateTime_{ 0 };
+	utils::Point<std::size_t> headPosition_{ 0,0 };
+	std::list<utils::Point<std::size_t>> body_;
+	SnakeControl::Direction direction_{ SnakeControl::Direction::right };
+
+//	std::list<SnakeObserver *> observers_;
+	const unsigned int updateRate{ 100 };
+	Board& board_;
+
+	
 };
+
 

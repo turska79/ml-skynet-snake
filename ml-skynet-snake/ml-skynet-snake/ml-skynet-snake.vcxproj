@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,37 +19,38 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{033C4A17-E3F9-4A3F-9325-AAB6355421E9}</ProjectGuid>
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{63b4dd96-86e5-4b87-99fc-2ce3f758ccb8}</ProjectGuid>
     <RootNamespace>mlskynetsnake</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -69,155 +70,155 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <CustomBuildAfterTargets>
-    </CustomBuildAfterTargets>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <CustomBuildAfterTargets>
-    </CustomBuildAfterTargets>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;C:\Users\turska\source\SDL2_ttf-2.0.15\lib\x64;C:\Users\turska\source\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;C:\Users\turska\source\SDL2_ttf-2.0.15\lib\x64;C:\Users\turska\source\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <EnablePREfast>true</EnablePREfast>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <AdditionalOptions>/bigobj</AdditionalOptions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x86;C:\Users\turska\source\SDL2_ttf-2.0.15\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <CustomBuildStep>
-      <Command>
-      </Command>
-    </CustomBuildStep>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <EnablePREfast>true</EnablePREfast>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;C:\Users\turska\source\SDL2_ttf-2.0.15\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <SubSystem>Console</SubSystem>
-    </Link>
-    <CustomBuildStep>
-      <Command>
-      </Command>
-    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <EnablePREfast>true</EnablePREfast>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <AdditionalOptions>/bigobj</AdditionalOptions>
     </ClCompile>
     <Link>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x86;C:\Users\turska\source\SDL2_ttf-2.0.15\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <CustomBuildStep>
-      <Command>
-      </Command>
-    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/bigobj</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <EnablePREfast>true</EnablePREfast>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/bigobj</AdditionalOptions>
     </ClCompile>
     <Link>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;C:\Users\turska\source\SDL2_ttf-2.0.15\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <CustomBuildStep>
-      <Command>
-      </Command>
-    </CustomBuildStep>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Board.cpp" />
-    <ClCompile Include="FontCache.cpp" />
-    <ClCompile Include="Food.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameOverState.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="KeyboardState.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainMenuState.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="RunningState.cpp" />
-    <ClCompile Include="Settings.cpp" />
-    <ClCompile Include="Simulation.cpp" />
-    <ClCompile Include="Snake.cpp" />
-    <ClCompile Include="Timer.cpp" />
-  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="FontCache.hpp" />
     <ClInclude Include="Food.hpp" />
     <ClInclude Include="Game.hpp" />
-    <ClInclude Include="GameOverState.hpp" />
-    <ClInclude Include="GameStates.h" />
     <ClInclude Include="Input.hpp" />
+    <ClInclude Include="InterruptibleThread.hpp" />
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="KeyboardState.hpp" />
-    <ClInclude Include="MainMenuState.hpp" />
-    <ClInclude Include="Point.hpp" />
     <ClInclude Include="Renderer.hpp" />
-    <ClInclude Include="RunningState.hpp" />
-    <ClInclude Include="sdl_cleanup_utility.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Simulation.hpp" />
+    <ClInclude Include="SimulationObject.hpp" />
     <ClInclude Include="Snake.hpp" />
-    <ClInclude Include="State.hpp" />
-    <ClInclude Include="Timer.hpp" />
+    <ClInclude Include="SnakeBrain.hpp" />
+    <ClInclude Include="SnakeControl.hpp" />
+    <ClInclude Include="SnakeVision.hpp" />
+    <ClInclude Include="states\GameOverState.hpp" />
+    <ClInclude Include="states\GameStates.hpp" />
+    <ClInclude Include="states\MainMenuState.hpp" />
+    <ClInclude Include="states\RunningState.hpp" />
+    <ClInclude Include="states\RunningStateAI.hpp" />
+    <ClInclude Include="states\State.hpp" />
+    <ClInclude Include="SubjectBase.hpp" />
+    <ClInclude Include="subjects\FoodEatenSubject.hpp" />
+    <ClInclude Include="subjects\SnakeCollisionSubject.hpp" />
+    <ClInclude Include="subjects\SnakePositionUpdatedSubject.hpp" />
+    <ClInclude Include="subjects\SubjectBase.hpp" />
+    <ClInclude Include="ThreadInterrupted.hpp" />
+    <ClInclude Include="utils\Point.hpp" />
+    <ClInclude Include="utils\Utils.hpp" />
+    <ClInclude Include="utils\vec2.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="FontCache.cpp" />
+    <ClCompile Include="Food.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InterruptibleThread.cpp" />
+    <ClCompile Include="KeyboardState.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="Simulation.cpp" />
+    <ClCompile Include="Snake.cpp" />
+    <ClCompile Include="SnakeBrain.cpp" />
+    <ClCompile Include="SnakeVision.cpp" />
+    <ClCompile Include="states\GameOverState.cpp" />
+    <ClCompile Include="states\MainMenuState.cpp" />
+    <ClCompile Include="states\RunningState.cpp" />
+    <ClCompile Include="states\RunningStateAI.cpp" />
+    <ClCompile Include="subjects\FoodEatenSubject.cpp" />
+    <ClCompile Include="subjects\SnakeCollisionSubject.cpp" />
+    <ClCompile Include="subjects\SnakePositionUpdatedSubject.cpp" />
+    <ClCompile Include="utils\Utils.cpp" />
+    <ClCompile Include="utils\vec2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

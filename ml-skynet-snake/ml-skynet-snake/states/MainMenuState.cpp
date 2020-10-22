@@ -1,7 +1,8 @@
 #include "MainMenuState.hpp"
-#include "Game.hpp"
+#include "../Game.hpp"
 #include "RunningState.hpp"
-#include "FontCache.hpp"
+#include "RunningStateAI.hpp"
+#include "../FontCache.hpp"
 #include <iostream>
 
 extern FontCache fontCache;
@@ -17,7 +18,7 @@ void MainMenuState::enter()
 	std::cout << " MainMenuState::enter()" << std::endl;
 }
 
-void MainMenuState::update(Renderer& renderer, uint32_t deltaTime)
+void MainMenuState::update(Renderer& renderer)
 {
 	SDL_Color black = { 0, 0, 0, 255 };
 	constexpr unsigned int x{ 340 };
@@ -37,7 +38,7 @@ void MainMenuState::handleInput(const Keyboard& keyboard)
 	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_SPACE) == keyboard::ButtonState::pressed) {
 		game_.pushState<RunningState>(game_);
 	} else if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_A) == keyboard::ButtonState::pressed) {
-
+		game_.pushState<RunningStateAI>(game_);
 	}
 		
 }
