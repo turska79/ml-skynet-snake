@@ -1,8 +1,8 @@
 #include "MainMenuState.hpp"
-#include "Game.hpp"
+#include "../Game.hpp"
 #include "RunningState.hpp"
-#include "RunningStateAI.h"
-#include "FontCache.hpp"
+#include "RunningStateAI.hpp"
+#include "../FontCache.hpp"
 #include <iostream>
 
 extern FontCache fontCache;

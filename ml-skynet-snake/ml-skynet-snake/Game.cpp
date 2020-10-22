@@ -1,9 +1,8 @@
 #include "Game.hpp"
 #include "Renderer.hpp"
-#include "MainMenuState.hpp"
-#include "Timer.hpp"
+#include "states/MainMenuState.hpp"
 #include "FontCache.hpp"
-#include "Utils.hpp"
+#include "utils/Utils.hpp"
 #include <SDL.h>
 #include <iostream>
 #include <string>

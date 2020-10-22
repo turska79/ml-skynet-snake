@@ -3,17 +3,16 @@
 #include "Simulation.hpp"
 #include "Renderer.hpp"
 
-const Vec2<int> left{ -1, 0 };
-const Vec2<int> leftUp{ -1, -1 };
-const Vec2<int> up{ 0, -1 };
-const Vec2<int> rightUp{ 1, -1 };
-const Vec2<int> right{ 1, 0 };
-const Vec2<int> rightDown{ 1, 1 };
-const Vec2<int> down{ 0, 1 };
-const Vec2<int> downLeft{ -1, 1 };
+const utils::Vec2<int> left{ -1, 0 };
+const utils::Vec2<int> leftUp{ -1, -1 };
+const utils::Vec2<int> up{ 0, -1 };
+const utils::Vec2<int> rightUp{ 1, -1 };
+const utils::Vec2<int> right{ 1, 0 };
+const utils::Vec2<int> rightDown{ 1, 1 };
+const utils::Vec2<int> down{ 0, 1 };
+const utils::Vec2<int> downLeft{ -1, 1 };
 
-
-std::array<float, 24> SnakeVision::lookInAllDirections(const Board& board, const Point<std::size_t>& fromPosition, const Simulation& simulation, Renderer& renderer)
+std::array<float, 24> SnakeVision::lookInAllDirections(const Board& board, const utils::Point<std::size_t>& fromPosition, const Simulation& simulation, Renderer& renderer)
 {
 	std::array<float, 24> vision;
 	constexpr unsigned int numberOfLookParameters{ 3 };
@@ -53,7 +52,7 @@ std::array<float, 24> SnakeVision::lookInAllDirections(const Board& board, const
 	return vision;
 }
 
-std::array<float, 3> SnakeVision::lookInDirection(const Board& board, const Point<std::size_t>& fromPosition, const Simulation& simulation, Renderer& renderer, Vec2<int> direction)
+std::array<float, 3> SnakeVision::lookInDirection(const Board& board, const utils::Point<std::size_t>& fromPosition, const Simulation& simulation, Renderer& renderer, utils::Vec2<int> direction)
 {
 	constexpr bool notFound(false);
 	constexpr unsigned int food{ 0 };
@@ -62,18 +61,18 @@ std::array<float, 3> SnakeVision::lookInDirection(const Board& board, const Poin
 	constexpr unsigned int distance{ 2 };
 
 	std::array<float, 3> look{ 0 };
-	Vec2<int> position(static_cast<int>(fromPosition.x_), static_cast<int>(fromPosition.y_));
+	utils::Vec2<int> position(static_cast<int>(fromPosition.x_), static_cast<int>(fromPosition.y_));
 
 	float distanceToWall{ 1 };
 
 	position += direction;
 
-	while (!simulation.checkForCollisionWithWall(Point<std::size_t>(position.x, position.y))) {
-		if (look[food] == notFound && simulation.checkForCollisionWithFood(Point<std::size_t>(position.x, position.y))) {
+	while (!simulation.checkForCollisionWithWall(utils::Point<std::size_t>(position.x, position.y))) {
+		if (look[food] == notFound && simulation.checkForCollisionWithFood(utils::Point<std::size_t>(position.x, position.y))) {
 			look[food] = found;
 		}
 		
-		if (look[body] == notFound && simulation.checkForCollisionWithSnakeBody(Point<std::size_t>(position.x, position.y))) {
+		if (look[body] == notFound && simulation.checkForCollisionWithSnakeBody(utils::Point<std::size_t>(position.x, position.y))) {
 			look[body] = found;
 		}
 		
@@ -86,7 +85,7 @@ std::array<float, 3> SnakeVision::lookInDirection(const Board& board, const Poin
 	return look;
 }
 
-std::list<VisionPoints> SnakeVision::pointsForRendering(const Board& board, const Point<std::size_t>& fromPosition, const Simulation& simulation)
+std::list<VisionPoints> SnakeVision::pointsForRendering(const Board& board, const utils::Point<std::size_t>& fromPosition, const Simulation& simulation)
 {
 	std::list<VisionPoints> points;
 	VisionPoints point;
@@ -104,13 +103,13 @@ std::list<VisionPoints> SnakeVision::pointsForRendering(const Board& board, cons
 	return points;
 }
 
-VisionPoints SnakeVision::pointsForRenderingDirection(const Board& board, const Point<std::size_t>& fromPosition, const Simulation& simulation, const Vec2<int> direction)
+VisionPoints SnakeVision::pointsForRenderingDirection(const Board& board, const utils::Point<std::size_t>& fromPosition, const Simulation& simulation, const utils::Vec2<int> direction)
 {
-	Vec2<int> position(static_cast<int>(fromPosition.x_), static_cast<int>(fromPosition.y_));
+	utils::Vec2<int> position(static_cast<int>(fromPosition.x_), static_cast<int>(fromPosition.y_));
 	
 	position += direction;
 
-	while (!simulation.checkForCollisionWithWall(Point<std::size_t>(position.x, position.y))) {
+	while (!simulation.checkForCollisionWithWall(utils::Point<std::size_t>(position.x, position.y))) {
 		position += (direction);
 	}
 

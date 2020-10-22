@@ -1,10 +1,9 @@
 #include "Utils.hpp"
-#include "Board.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
 
-Point<long> utils::math::directionVectorBetweenPoints(const Point<std::size_t> from, const Point<std::size_t> to) noexcept
+utils::Point<long> utils::math::directionVectorBetweenPoints(const Point<std::size_t> from, const Point<std::size_t> to) noexcept
 {
 	return Point<long>(to.x_ - from.x_, to.y_ - from.y_);
 }

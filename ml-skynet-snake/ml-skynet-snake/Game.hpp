@@ -5,8 +5,7 @@
 #include "Settings.hpp"
 #include "Input.hpp"
 #include "Simulation.hpp"
-#include "GameStates.h"
-#include "Timer.hpp"
+#include "states/GameStates.hpp"
 #include "Snake.hpp"
 #include <vector>
 #include <memory>

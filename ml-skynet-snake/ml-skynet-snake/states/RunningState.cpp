@@ -1,10 +1,10 @@
 #include "RunningState.hpp"
 #include "GameOverState.hpp"
-#include "Game.hpp"
-#include "FontCache.hpp"
-#include "Simulation.hpp"
+#include "../Game.hpp"
+#include "../FontCache.hpp"
+#include "../Simulation.hpp"
 //#include "Snake.hpp"
-#include "SnakeControl.hpp"
+#include "../SnakeControl.hpp"
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -46,9 +46,7 @@ void RunningState::resetBoard() const
 
 void RunningState::initSnake()
 {
-	Point<std::size_t> initialPosition;
-	initialPosition.x_ = 10;
-	initialPosition.y_ = 10;
+	utils::Point<std::size_t> initialPosition{ 10, 10 };
 
 	snakeControl_.init(initialPosition, SnakeControl::Direction::right);
 }
@@ -56,7 +54,7 @@ void RunningState::initSnake()
 void RunningState::newRandomPositionForFood()
 {
 	Board& board = game_.board();
-	const Point<std::size_t> position = board.findRandomEmptyCell();
+	const utils::Point<std::size_t> position = board.findRandomEmptyCell();
 
 	food_.updatePosition(board, position);
 }
@@ -76,28 +74,28 @@ void RunningState::unregisterCallbacks()
 void RunningState::registerCollisionCallback()
 {
 	Snake& snake = game_.snake();
-	SnakeCollisionSubject& collisionSubject = snake.snakeCollisionSubject();
+	subjects::SnakeCollisionSubject& collisionSubject = snake.snakeCollisionSubject();
 	collisionSubject.addObserver(this, &RunningState::snakeCollisionCallback);
 }
 
 void RunningState::unregisterCollisionCallback()
 {
 	Snake& snake = game_.snake();
-	SnakeCollisionSubject& collisionSubject = snake.snakeCollisionSubject();
+	subjects::SnakeCollisionSubject& collisionSubject = snake.snakeCollisionSubject();
 	collisionSubject.removeObserver(this, &RunningState::snakeCollisionCallback);
 }
 
 void RunningState::registerFoodEatenCallback()
 {
 	Snake& snake = game_.snake();
-	FoodEatenSubject& foodEatenSubject = snake.foodEatenSubject();
+	subjects::FoodEatenSubject& foodEatenSubject = snake.foodEatenSubject();
 	foodEatenSubject.addObserver(this, &RunningState::newRandomPositionForFood);
 }
 
 void RunningState::unregisterFoodEatenCallback()
 {
 	Snake& snake = game_.snake();
-	FoodEatenSubject& foodEatenSubject = snake.foodEatenSubject();
+	subjects::FoodEatenSubject& foodEatenSubject = snake.foodEatenSubject();
 	foodEatenSubject.removeObserver(this, &RunningState::newRandomPositionForFood);
 }
 

@@ -43,7 +43,7 @@ model.Add<Linear<>>(128, 3);		// "3" indicates there are three possible actions 
 	*/
 }
 
-void Snake::init(const Point<std::size_t> position, const Direction direction)
+void Snake::init(const utils::Point<std::size_t> position, const Direction direction)
 {
 	body_.clear();
 
@@ -54,7 +54,7 @@ void Snake::init(const Point<std::size_t> position, const Direction direction)
 	
 	setDirection(direction);
 	
-	Point<std::size_t> bodyPosition = headPosition_;
+	utils::Point<std::size_t> bodyPosition = headPosition_;
 	bodyPosition.x_ -= 1;
 	cell = board_.findCell(bodyPosition);
 	cell->type_ = Cell::Type::body;
@@ -76,14 +76,14 @@ const SnakeControl::Direction Snake::getDirection() const noexcept
 	return direction_;
 }
 
-Point<std::size_t> Snake::getPosition() const noexcept
+utils::Point<std::size_t> Snake::getPosition() const noexcept
 {
 	return headPosition_;
 }
 
 void Snake::grow(const unsigned int length) noexcept
 {
-	body_.emplace_back(Point<std::size_t>(headPosition_));
+	body_.emplace_back(utils::Point<std::size_t>(headPosition_));
 }
 
 const unsigned int Snake::length() const noexcept
@@ -99,7 +99,7 @@ void Snake::update(const uint32_t delta) noexcept
 		auto position = getPosition();
 		SnakeControl::Direction direction = getDirection(); 
 		
-		const Point<std::size_t> target = getNextSnakePosition(position, direction);
+		const utils::Point<std::size_t> target = getNextSnakePosition(position, direction);
 
 		const bool collision = checkForCollision(target);
 		
@@ -122,24 +122,24 @@ void Snake::update(const uint32_t delta) noexcept
 	}
 }
 
-SnakePositionUpdatedSubject& Snake::positionUpdateSubject() noexcept
+subjects::SnakePositionUpdatedSubject& Snake::positionUpdateSubject() noexcept
 {
 	return positionUpdateSubject_;
 }
 
-SnakeCollisionSubject & Snake::snakeCollisionSubject() noexcept
+subjects::SnakeCollisionSubject & Snake::snakeCollisionSubject() noexcept
 {
 	return snakeCollisionSubject_;
 }
 
-FoodEatenSubject& Snake::foodEatenSubject() noexcept
+subjects::FoodEatenSubject& Snake::foodEatenSubject() noexcept
 {
 	return foodEatenSubject_;
 }
 
-const Point<std::size_t> Snake::getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeControl::Direction direction) const noexcept
+const utils::Point<std::size_t> Snake::getNextSnakePosition(const utils::Point<std::size_t> currentPosition, const SnakeControl::Direction direction) const noexcept
 {
-	Point<std::size_t> position = currentPosition;
+	utils::Point<std::size_t> position = currentPosition;
 
 	switch (direction) {
 	case SnakeControl::Direction::right:
@@ -165,7 +165,7 @@ const Point<std::size_t> Snake::getNextSnakePosition(const Point<std::size_t> cu
 	return position;
 }
 
-const bool Snake::checkForCollision(const Point<std::size_t> target)
+const bool Snake::checkForCollision(const utils::Point<std::size_t> target)
 {
 	const Cell* cell = board_.findCell(target);
 	
@@ -203,7 +203,7 @@ void Snake::runLearningAgentForSingleGame()
 	learningAgent_->Episode();
 }
 */
-void Snake::updatePosition(const Point<std::size_t> newPosition)
+void Snake::updatePosition(const utils::Point<std::size_t> newPosition)
 {
 	//std::cout << "Snake::updatePosition()" << std::endl;
 

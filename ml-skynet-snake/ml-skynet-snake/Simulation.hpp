@@ -5,11 +5,10 @@
 #include <atomic>
 #include <list>
 #include <functional>
-#include "Point.hpp"
+#include "utils/Point.hpp"
 #include "Board.hpp"
 #include "SnakeControl.hpp"
 #include "SimulationObject.hpp"
-#include "Timer.hpp"
 
 namespace thread {
 	class interruptibleThread;
@@ -26,16 +25,16 @@ public:
 	
 	//const Point<std::size_t> getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeControl::Direction direction) const noexcept;
 
-	const bool checkForCollisionWithWall(const Point<std::size_t>& target) const;
-	const bool checkForCollisionWithSnakeBody(const Point<std::size_t>& target) const;
-	const bool checkForCollisionWithFood(const Point<std::size_t>& target) const;
+	const bool checkForCollisionWithWall(const utils::Point<std::size_t>& target) const;
+	const bool checkForCollisionWithSnakeBody(const utils::Point<std::size_t>& target) const;
+	const bool checkForCollisionWithFood(const utils::Point<std::size_t>& target) const;
 
 	const uint32_t updateRate();
 private:
 	void run();
 	void runSimulationLoop();
 	void updateObjects(const uint32_t deltaTime);
-	const bool checkCellType(const Point<std::size_t>& target, Cell::Type type) const;
+	const bool checkCellType(const utils::Point<std::size_t>& target, Cell::Type type) const;
 	
 	thread::interruptibleThread* simulationThread_{ nullptr };
 	std::mutex threadHandlingMutex_;

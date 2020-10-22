@@ -1,7 +1,7 @@
 #pragma once
 
 #include "State.hpp"
-#include "Food.hpp"
+#include "../Food.hpp"
 
 class Renderer;
 class Keyboard;

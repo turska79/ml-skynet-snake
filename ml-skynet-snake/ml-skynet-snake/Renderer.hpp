@@ -4,6 +4,7 @@
 #include <list>
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <string>
 #include "Board.hpp"
 
 class Renderer

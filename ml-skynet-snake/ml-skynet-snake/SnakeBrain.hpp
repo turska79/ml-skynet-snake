@@ -76,7 +76,7 @@ public:
 
 	private:
 		arma::colvec data;
-		Point<std::size_t> position;
+		utils::Point<std::size_t> position;
 	};
 
 	enum Action

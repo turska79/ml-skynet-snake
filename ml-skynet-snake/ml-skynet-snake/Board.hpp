@@ -3,11 +3,11 @@
 #include <cstddef>
 #include <list>
 #include <memory>
-#include "Point.hpp"
+#include "utils/Point.hpp"
 
 struct Settings;
 
-struct Cell : public Point<std::size_t>
+struct Cell : public utils::Point<std::size_t>
 {
 	enum class Type { wall, head, body, food, empty } type_{ Type::empty };
 	
@@ -19,11 +19,11 @@ class Board
 public:
 	explicit Board(const Settings& settings);
 	
-	Cell* findCell(const Point<std::size_t>& coordinate);
+	Cell* findCell(const utils::Point<std::size_t>& coordinate);
 	void resetBoard();
-	Point<std::size_t> findRandomEmptyCell();
+	utils::Point<std::size_t> findRandomEmptyCell();
 	std::list<std::unique_ptr<Cell>>& grid() noexcept;
-	const bool isFoodCell(const Point<std::size_t>& target);
+	const bool isFoodCell(const utils::Point<std::size_t>& target);
 private:
 	void createBoard(std::size_t gridWidth_, std::size_t gridHeight);
 	std::size_t gridWidth_{ 0 };

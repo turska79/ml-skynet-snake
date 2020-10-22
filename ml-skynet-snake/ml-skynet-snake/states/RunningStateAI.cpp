@@ -1,11 +1,11 @@
-#include "RunningStateAI.h"
-#include "Utils.hpp"
-#include "Game.hpp"
-#include "Board.hpp"
+#include "RunningStateAI.hpp"
+#include "../utils/Utils.hpp"
+#include "../Game.hpp"
+#include "../Board.hpp"
 #include "GameOverState.hpp"
 //#include "Scheduler.hpp"
-#include "FontCache.hpp"
-#include "SnakeControl.hpp"
+#include "../FontCache.hpp"
+#include "../SnakeControl.hpp"
 #include <iostream>
 #include <iterator>
 

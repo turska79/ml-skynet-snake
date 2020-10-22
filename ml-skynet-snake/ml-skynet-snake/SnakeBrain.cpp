@@ -171,7 +171,7 @@ bool SnakeBrain::IsTerminal(const State& state) const
 		return true;
 	}
 
-	Point<std::size_t> current{ snakeControl_->getPosition() };
+	utils::Point<std::size_t> current{ snakeControl_->getPosition() };
 	//auto target = simulation_->getNextSnakePosition(current, snakeControl_->getDirection());
 	/*
 	target.x_ = static_cast<std::size_t>(state.coordinateX());

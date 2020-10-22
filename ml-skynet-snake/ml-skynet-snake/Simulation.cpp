@@ -1,6 +1,6 @@
 #include "Simulation.hpp"
 #include "InterruptibleThread.hpp"
-#include "Utils.hpp"
+#include "utils/Utils.hpp"
 #include <iostream>
 #include <algorithm>
 #include <SDL_timer.h>
@@ -96,7 +96,7 @@ void Simulation::updateObjects(const uint32_t deltaTime)
 		object.get().update(deltaTime);
 	}
 }
-const bool Simulation::checkCellType(const Point<std::size_t>& target, Cell::Type type) const
+const bool Simulation::checkCellType(const utils::Point<std::size_t>& target, Cell::Type type) const
 {
 	const Cell* cell = board_.findCell(target);
 
@@ -107,7 +107,7 @@ const bool Simulation::checkCellType(const Point<std::size_t>& target, Cell::Typ
 	return false;
 }
 
-const bool Simulation::checkForCollisionWithFood(const Point<std::size_t>& target) const
+const bool Simulation::checkForCollisionWithFood(const utils::Point<std::size_t>& target) const
 {
 	return checkCellType(target, Cell::Type::food);
 }
@@ -117,12 +117,12 @@ const uint32_t Simulation::updateRate()
 	return updateRate_;
 }
 
-const bool Simulation::checkForCollisionWithWall(const Point<std::size_t>& target) const
+const bool Simulation::checkForCollisionWithWall(const utils::Point<std::size_t>& target) const
 {
 	return checkCellType(target, Cell::Type::wall);
 }
 
-const bool Simulation::checkForCollisionWithSnakeBody(const Point<std::size_t>& target) const
+const bool Simulation::checkForCollisionWithSnakeBody(const utils::Point<std::size_t>& target) const
 {
 	return checkCellType(target, Cell::Type::body);
 }

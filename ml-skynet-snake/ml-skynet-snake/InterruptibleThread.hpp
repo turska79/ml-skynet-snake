@@ -144,6 +144,5 @@ namespace thread {
 	protected:
 		std::thread* internalThread_{ nullptr };;
 		utils::InterruptFlag* exitSignal_{ nullptr };
-		bool running_[false];
 	};
 }
