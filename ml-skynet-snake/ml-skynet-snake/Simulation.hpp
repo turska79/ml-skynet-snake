@@ -1,35 +1,52 @@
 #pragma once
 
 #include <cstddef>
+#include <mutex>
+#include <atomic>
+#include <list>
+#include <functional>
 #include "Point.hpp"
 #include "Board.hpp"
-#include "SnakeMovement.hpp"
+#include "SnakeControl.hpp"
+#include "SimulationObject.hpp"
 #include "Timer.hpp"
 
-class Board;
+namespace thread {
+	class interruptibleThread;
+}
 
 class Simulation
 {
 public:
-	Simulation(Board& board);
+	Simulation(Board& board, SnakeControl& snakeControl);
 	void start();
-	void update(SnakeMovement& snakeMovement);
+	void stop();
+	void addObject(std::reference_wrapper<simulationObject> object);
+	void detachObject(std::reference_wrapper<simulationObject> object);
 	
-	const Point<std::size_t> getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeMovement::Direction direction) const noexcept;
-
-	const bool collision() const;
+	//const Point<std::size_t> getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeControl::Direction direction) const noexcept;
 
 	const bool checkForCollisionWithWall(const Point<std::size_t>& target) const;
 	const bool checkForCollisionWithSnakeBody(const Point<std::size_t>& target) const;
 	const bool checkForCollisionWithFood(const Point<std::size_t>& target) const;
 
+	const uint32_t updateRate();
 private:
-	Timer timer_;
+	void run();
+	void runSimulationLoop();
+	void updateObjects(const uint32_t deltaTime);
+	const bool checkCellType(const Point<std::size_t>& target, Cell::Type type) const;
+	
+	thread::interruptibleThread* simulationThread_{ nullptr };
+	std::mutex threadHandlingMutex_;
+	
+	uint32_t nextSimulationStep_{ 0 };
+	uint32_t lastSimulationUpdate_{ 0 };
+	uint32_t updateRate_{ 0 };
 
-	double snakeSpeed_{ 10 };
-	bool collision_{ false };
-	bool running_{ false };
-	uint32_t updateDeltaTime_;
+	std::list<std::reference_wrapper<simulationObject>> objects_;
+
 	Board& board_;
+	SnakeControl& snakeControl_;
 };
 

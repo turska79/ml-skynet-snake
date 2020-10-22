@@ -2,21 +2,22 @@
 #include "Settings.hpp"
 #include <algorithm>
 #include <random>
+#include <execution>
 
 Board::Board(const Settings& settings)
 {
 	createBoard(settings.gridWidth_, settings.gridHeight_);
 }
 
-Cell* Board::findCell(const Point<std::size_t>& coordinate) const
+Cell* Board::findCell(const Point<std::size_t>& toFind)
 {
-	const auto& it = std::find_if(grid_.begin(), grid_.end(), [&coordinate](const std::unique_ptr<Cell>& cell) noexcept {
-		if (coordinate.x_ == cell->x_ && coordinate.y_ == cell->y_)
+	auto const& it = std::find_if(grid_.begin(), grid_.end(), [&toFind](std::unique_ptr<Cell>& cell) noexcept {
+		if (toFind.x_ == cell->x_ && toFind.y_ == cell->y_)
 			return true;
 		else
 			return false;
 	});
-	
+
 	if (it != grid_.end())
 		return it->get();
 
@@ -46,6 +47,7 @@ Point<std::size_t> Board::findRandomEmptyCell()
 		emptyCell.y_ = randomY;
 
 		const Cell* cell = findCell(emptyCell);
+
 		if (cell && cell->type_ == Cell::Type::empty) {
 			break;
 		}
@@ -59,7 +61,7 @@ std::list<std::unique_ptr<Cell>>& Board::grid() noexcept
 	return grid_;
 }
 
-const bool Board::checkForFood(const Point<std::size_t>& target)
+const bool Board::isFoodCell(const Point<std::size_t>& target)
 {
 	const Cell* cell = findCell(target);
 

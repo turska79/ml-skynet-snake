@@ -185,6 +185,7 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="FontCache.cpp" />
     <ClCompile Include="Food.cpp" />
+    <ClCompile Include="FoodEatenSubject.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -194,13 +195,14 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RunningState.cpp" />
     <ClCompile Include="RunningStateAI.cpp" />
-    <ClCompile Include="Scheduler.cpp" />
+    <ClCompile Include="InterruptibleThread.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="SnakeBrain.cpp" />
+    <ClCompile Include="SnakeCollisionSubject.cpp" />
+    <ClCompile Include="SnakePositionUpdatedSubject.cpp" />
     <ClCompile Include="SnakeVision.cpp" />
-    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="vec2.cpp" />
   </ItemGroup>
@@ -208,6 +210,7 @@
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="FontCache.hpp" />
     <ClInclude Include="Food.hpp" />
+    <ClInclude Include="FoodEatenSubject.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameOverState.hpp" />
     <ClInclude Include="GameStates.h" />
@@ -215,19 +218,23 @@
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="KeyboardState.hpp" />
     <ClInclude Include="MainMenuState.hpp" />
+    <ClInclude Include="SnakeCollisionSubject.hpp" />
+    <ClInclude Include="SnakePositionUpdatedSubject.hpp" />
+    <ClInclude Include="SubjectBase.hpp" />
     <ClInclude Include="Point.hpp" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="RunningState.hpp" />
     <ClInclude Include="RunningStateAI.h" />
-    <ClInclude Include="Scheduler.hpp" />
+    <ClInclude Include="InterruptibleThread.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Simulation.hpp" />
+    <ClInclude Include="SimulationObject.hpp" />
     <ClInclude Include="Snake.hpp" />
     <ClInclude Include="SnakeBrain.hpp" />
-    <ClInclude Include="SnakeMovement.hpp" />
+    <ClInclude Include="SnakeControl.hpp" />
     <ClInclude Include="SnakeVision.hpp" />
     <ClInclude Include="State.hpp" />
-    <ClInclude Include="Timer.hpp" />
+    <ClInclude Include="ThreadInterrupted.hpp" />
     <ClInclude Include="Utils.hpp" />
     <ClInclude Include="vec2.hpp" />
   </ItemGroup>

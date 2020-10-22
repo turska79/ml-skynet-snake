@@ -7,7 +7,7 @@ Renderer::Renderer(std::size_t windowWidth, std::size_t windowHeight, std::size_
 	WindowPtr window(SDL_CreateWindow("SkyNet Snake", 100, 100, static_cast<int>(windowWidth_), static_cast<int>(windowHeight_), SDL_WINDOW_SHOWN));
 	window_ = std::move(window);
 
-	RendererPtr renderer(SDL_CreateRenderer(window_.get(), -1, SDL_RENDERER_ACCELERATED));
+	RendererPtr renderer(SDL_CreateRenderer(window_.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
 	renderer_ = std::move(renderer);
 }
 

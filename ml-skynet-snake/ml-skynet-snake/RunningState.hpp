@@ -6,7 +6,7 @@
 class Renderer;
 class Keyboard;
 class Game;
-class SnakeMovement;
+class SnakeControl;
 class Simulation;
 
 class RunningState : public State
@@ -19,6 +19,8 @@ public:
 	RunningState(RunningState&&) = default;
 	RunningState& operator=(RunningState&&) = default;
 
+	void snakeCollisionCallback();
+
 	virtual void enter() override;
 	virtual void update(Renderer& renderer) override;
 	void exit() override;
@@ -27,11 +29,16 @@ public:
 protected:
 	void resetBoard() const;
 	void initSnake();
-	void initFood();
 	void newRandomPositionForFood();
 
-	//Snake& snake_;
-	SnakeMovement& snakeMovement_;
+	void registerCallbacks();
+	void unregisterCallbacks();
+	void registerCollisionCallback();
+	void unregisterCollisionCallback();
+	void registerFoodEatenCallback();
+	void unregisterFoodEatenCallback();
+
+	SnakeControl& snakeControl_;
 	Simulation& simulation_;
 	Food food_;
 };

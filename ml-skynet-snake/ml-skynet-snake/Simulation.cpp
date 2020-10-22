@@ -1,115 +1,128 @@
 #include "Simulation.hpp"
-#include "Board.hpp"
-#include "Snake.hpp"
+#include "InterruptibleThread.hpp"
+#include "Utils.hpp"
 #include <iostream>
 #include <algorithm>
+#include <SDL_timer.h>
 
 constexpr unsigned int secondAsMilliseconds{ 1000 };
+constexpr uint32_t targetUpdateRate = secondAsMilliseconds / 30;
 
-Simulation::Simulation(Board& board) : board_(board)
+Simulation::Simulation(Board& board, SnakeControl& snakeControl) : board_(board), snakeControl_(snakeControl)
 {
 }
 
 void Simulation::start()
 {
-	running_ = true;
-	collision_ = false;
-	updateDeltaTime_ = 0;
-	timer_.start();
-}
+	std::cout << "Simulation::start()" << std::endl;
+	const std::lock_guard<std::mutex> lock(threadHandlingMutex_);
 
-void Simulation::update(SnakeMovement& snakeMovement)
-{
-	if (!running_) {
-		std::cout << "Simulation::update() not yet running" << std::endl;
-		return;
+	if (simulationThread_) {
+		simulationThread_->interrupt();
+		delete simulationThread_;
 	}
 
-	const uint32_t deltaTime = timer_.deltaTime();
+	simulationThread_ = new thread::interruptibleThread(&Simulation::run, this);
+}
 
-	updateDeltaTime_ += deltaTime;
+void Simulation::stop()
+{
+	std::cout << "Simulation::stop()" << std::endl;
+	const std::lock_guard<std::mutex> lock(threadHandlingMutex_);
 
-	if (!collision_ && updateDeltaTime_ > (secondAsMilliseconds / snakeSpeed_)) {
-		auto position = snakeMovement.getPosition();
-		SnakeMovement::Direction direction = snakeMovement.getDirection();
+	if (simulationThread_) {
+		simulationThread_->interrupt();
+	}
 
-		const Point<std::size_t> target = getNextSnakePosition(position, direction);
+	updateRate_ = 0;
+}
 
-		if (checkForCollisionWithSnakeBody(target) || checkForCollisionWithWall(target)) {
-			collision_ = true;
+void Simulation::addObject(std::reference_wrapper<simulationObject> object)
+{
+	objects_.emplace_back(object);
+}
+
+void Simulation::detachObject(std::reference_wrapper<simulationObject> object)
+{
+	objects_.erase(std::find_if(objects_.cbegin(), objects_.cend(), [&](const std::reference_wrapper<simulationObject> &i)
+	{
+		return std::addressof(i.get()) == std::addressof(object.get());
+	}));
+}
+
+void Simulation::run()
+{
+	runSimulationLoop();
+}
+
+void Simulation::runSimulationLoop()
+{
+	bool running{ true };
+
+	while (running) {
+		thread::utils::interruptionPoint();
+
+		uint32_t now = SDL_GetTicks();
+
+		if (nextSimulationStep_ <= now) {
+			int computer_is_too_slow_limit = utils::commonConstants::lowSpeedLimit;
+
+			while ((nextSimulationStep_ <= now) && (computer_is_too_slow_limit--)) {
+				thread::utils::interruptionPoint();
+
+				updateObjects(now - lastSimulationUpdate_);
+				nextSimulationStep_ += utils::commonConstants::simulationRefreshRateTargetTimeStep;
+			}
+
+			uint32_t deltaTime = now - lastSimulationUpdate_;
+
+			lastSimulationUpdate_ = now;
+			
+			if (deltaTime > 0) {
+				updateRate_ = 1000 / deltaTime;
+			}
 		}
-
-		if (collision_) {
-			return;
-		}
-
-		snakeMovement.updatePosition(target);
-
-		updateDeltaTime_ = updateDeltaTime_ - (secondAsMilliseconds / snakeSpeed_);
-
-		if (updateDeltaTime_ > 500) {
-			updateDeltaTime_ = 0;
+		else {
+			SDL_Delay(nextSimulationStep_ - now);
 		}
 	}
 }
 
-const Point<std::size_t> Simulation::getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeMovement::Direction direction) const noexcept
+void Simulation::updateObjects(const uint32_t deltaTime)
 {
-	Point<std::size_t> position = currentPosition;
+	for (auto& object : objects_) {
+		thread::utils::interruptionPoint();
 
-	switch (direction) {
-	case SnakeMovement::Direction::right:
-		position.x_ += 1;
-		break;
-	case SnakeMovement::Direction::left:
-		position.x_ -= 1;
-		break;
-	case SnakeMovement::Direction::up:
-		position.y_ -= 1;
-		break;
-	case SnakeMovement::Direction::down:
-		position.y_ += 1;
-		break;
-	default:
-		break;
+		object.get().update(deltaTime);
+	}
+}
+const bool Simulation::checkCellType(const Point<std::size_t>& target, Cell::Type type) const
+{
+	const Cell* cell = board_.findCell(target);
+
+	if (cell->type_ == type) {
+		return true;
 	}
 
-	return position;
-}
-const bool Simulation::collision() const
-{
-	return collision_;
+	return false;
 }
 
 const bool Simulation::checkForCollisionWithFood(const Point<std::size_t>& target) const
 {
-	const Cell* cell = board_.findCell(target);
+	return checkCellType(target, Cell::Type::food);
+}
 
-	if (cell->type_ == Cell::Type::food) {
-		return true;
-	}
-
-	return false;
+const uint32_t Simulation::updateRate()
+{
+	return updateRate_;
 }
 
 const bool Simulation::checkForCollisionWithWall(const Point<std::size_t>& target) const
 {
-	const Cell* cell = board_.findCell(target);
-
-	if (cell->type_ == Cell::Type::wall) {
-		return true;
-	}
-
-	return false;
+	return checkCellType(target, Cell::Type::wall);
 }
 
 const bool Simulation::checkForCollisionWithSnakeBody(const Point<std::size_t>& target) const
 {
-	const Cell* cell = board_.findCell(target);
-
-	if (cell->type_ == Cell::Type::body) {
-		return true;
-	}
-
-	return false;
+	return checkCellType(target, Cell::Type::body);
 }

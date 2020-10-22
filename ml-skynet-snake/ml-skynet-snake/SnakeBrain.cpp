@@ -2,7 +2,7 @@
 #include "Board.hpp"
 #include "Renderer.hpp"
 #include "Simulation.hpp"
-#include "SnakeMovement.hpp"
+#include "SnakeControl.hpp"
 #include "Game.hpp"
 #include "Snake.hpp"
 
@@ -11,9 +11,11 @@ void SnakeBrain::setBoard(Board* board)
 	board_ = board;
 }
 
-void SnakeBrain::setSnakeMovementInterface(SnakeMovement* snakeMovement)
+void SnakeBrain::setSnakeMovementInterface(SnakeControl* snakeControl)
 {
-	snakeMovement_ = snakeMovement;
+	snakeControl_ = snakeControl;
+//	SnakeObserver* observer = static_cast<SnakeObserver*>(this);
+//	snakeControl_->attach(observer);
 }
 
 void SnakeBrain::setRenderer(Renderer* renderer)
@@ -40,10 +42,21 @@ SnakeVision& SnakeBrain::snakeVision()
 {
 	return snakeVision_;
 }
+/*
+void SnakeBrain::positionUpdated()
+{
+	ProceedToNextMove();
+}
+
+void SnakeBrain::collision()
+{
+	//ProceedToNextMove();
+}*/
+
 
 void SnakeBrain::ProceedToNextMove()
 {
-	//std::cout << "SnakeBrain::ProceedToNextMove()" << std::endl;
+	std::cout << "SnakeBrain::ProceedToNextMove()" << std::endl;
 	moveCv_->notify_one();
 }
 
@@ -59,35 +72,35 @@ double SnakeBrain::Sample(const State& state, const Action& action, State& nextS
 	// Update the number of steps performed.
 	stepsPerformed++;
 
-	auto position = snakeMovement_->getPosition();
-	SnakeMovement::Direction direction;
+	auto position = snakeControl_->getPosition();
+	SnakeControl::Direction direction;
 
 	if (action == up) {
-		direction = SnakeMovement::Direction::up;
+		direction = SnakeControl::Direction::up;
 		//std::cout << "SnakeBrain::Sample() Direction: up" << std::endl;
 	}
 	else if (action == down) {
-		direction = SnakeMovement::Direction::down;
+		direction = SnakeControl::Direction::down;
 		//std::cout << "SnakeBrain::Sample() Direction: down" << std::endl;
 	}
 	else if (action == right) {
-		direction = SnakeMovement::Direction::right;
+		direction = SnakeControl::Direction::right;
 		//std::cout << "SnakeBrain::Sample() Direction: right" << std::endl;
 	}
 	else if (action == left) {
-		direction = SnakeMovement::Direction::left;
+		direction = SnakeControl::Direction::left;
 		//std::cout << "SnakeBrain::Sample() Direction: left" << std::endl;
 	}
 	
 	snake_->setDirection(direction);
 
-	auto target = simulation_->getNextSnakePosition(position, direction);
-	double& x = nextState.coordinateX();
-	double& y = nextState.coordinateY();
+//	auto target = simulation_->getNextSnakePosition(position, direction);
+	/*auto& x = nextState.coordinateX();
+	auto& y = nextState.coordinateY();
 
 	x = static_cast<double>(target.x_);
 	y = static_cast<double>(target.y_);
-
+	*/
 	bool done = IsTerminal(nextState);
 
 	if (done && maxSteps != 0 && stepsPerformed >= maxSteps) {
@@ -96,16 +109,19 @@ double SnakeBrain::Sample(const State& state, const Action& action, State& nextS
 		return -100;
 	}
 	
+	std::cout << "SnakeBrain::Sample() before wait" << std::endl;
 	std::unique_lock<std::mutex> lk(*moveMutex_);
 	moveCv_->wait(lk);
 
-	bool food{ false };
+	std::cout << "SnakeBrain::Sample() after wait" << std::endl;
 
+	bool food{ false };
+	/*
 	Cell* cell = board_->findCell(target);
 	
 	if (cell->type_ != Cell::Type::wall) {
 		auto vision = snakeVision_.lookInAllDirections(*board_, target, *simulation_, *renderer_);
-		auto data = nextState.Data();
+		auto& data = nextState.Data();
 		std::copy(std::begin(vision), std::end(vision), std::begin(data));
 	}
 
@@ -120,7 +136,7 @@ double SnakeBrain::Sample(const State& state, const Action& action, State& nextS
 
 		return foodReward;
 	}
-	
+	*/
 	return 0;
 }
 
@@ -134,15 +150,18 @@ SnakeBrain::State SnakeBrain::InitialSample()
 {
 	stepsPerformed = 0;
 
-	auto vision = snakeVision_.lookInAllDirections(*board_, snakeMovement_->getPosition(), *simulation_, *renderer_);
-	auto position = snakeMovement_->getPosition();
+	auto vision = snakeVision_.lookInAllDirections(*board_, snakeControl_->getPosition(), *simulation_, *renderer_);
+	auto position = snakeControl_->getPosition();
 
-	arma::colvec data(26);
+	arma::colvec data(24);
 	std::copy(std::begin(vision), std::end(vision), std::begin(data));
-	data[24] = position.x_;
-	data[25] = position.y_;
+	//data[24] = position.x_;
+	//data[25] = position.y_;
 
-	return State(data);
+	//State state(data);
+	//state.coordinateX() = position.x_;
+	//state.coordinateY() = position.y_;
+	return State (data);
 }
 
 bool SnakeBrain::IsTerminal(const State& state) const
@@ -152,11 +171,14 @@ bool SnakeBrain::IsTerminal(const State& state) const
 		return true;
 	}
 
-	//Point<std::size_t> target;
-	//target.x_ = static_cast<std::size_t>(state.coordinateX());
-	//target.y_ = static_cast<std::size_t>(state.coordinateY());
-	
-	return simulation_->collision();
+	Point<std::size_t> current{ snakeControl_->getPosition() };
+	//auto target = simulation_->getNextSnakePosition(current, snakeControl_->getDirection());
+	/*
+	target.x_ = static_cast<std::size_t>(state.coordinateX());
+	target.y_ = static_cast<std::size_t>(state.coordinateY());
+	*/
+	//return simulation_->checkForCollisionWithWall(target);
+	return false;
 }
 
 size_t SnakeBrain::StepsPerformed() const

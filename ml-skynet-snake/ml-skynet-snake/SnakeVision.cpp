@@ -64,10 +64,9 @@ std::array<float, 3> SnakeVision::lookInDirection(const Board& board, const Poin
 	std::array<float, 3> look{ 0 };
 	Vec2<int> position(static_cast<int>(fromPosition.x_), static_cast<int>(fromPosition.y_));
 
-	float distanceToWall{ 0 };
+	float distanceToWall{ 1 };
 
 	position += direction;
-	distanceToWall += 1;
 
 	while (!simulation.checkForCollisionWithWall(Point<std::size_t>(position.x, position.y))) {
 		if (look[food] == notFound && simulation.checkForCollisionWithFood(Point<std::size_t>(position.x, position.y))) {
@@ -75,7 +74,7 @@ std::array<float, 3> SnakeVision::lookInDirection(const Board& board, const Poin
 		}
 		
 		if (look[body] == notFound && simulation.checkForCollisionWithSnakeBody(Point<std::size_t>(position.x, position.y))) {
-			look[body] = 1 / distanceToWall;;
+			look[body] = found;
 		}
 		
 		position += (direction);

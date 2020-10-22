@@ -3,54 +3,59 @@
 #include <cstddef>
 #include <list>
 #include "Point.hpp"
-#include "SnakeBrain.hpp"
-#include "SnakeMovement.hpp"
-
-#pragma warning (push, 0)
-#include <mlpack/core.hpp>
-#include <mlpack/methods/ann/ffn.hpp>
-#include <mlpack/methods/ann/init_rules/gaussian_init.hpp>
-#include <mlpack/methods/ann/layer/layer.hpp>
-#include <mlpack/methods/ann/loss_functions/mean_squared_error.hpp>
-#include <mlpack/methods/reinforcement_learning/q_learning.hpp>
-#include <mlpack/methods/reinforcement_learning/environment/mountain_car.hpp>
-//#include <mlpack/methods/reinforcement_learning/environment/acrobot.hpp>
-//#include <mlpack/methods/reinforcement_learning/environment/cart_pole.hpp>
-//#include <mlpack/methods/reinforcement_learning/environment/double_pole_cart.hpp>
-#include <mlpack/methods/reinforcement_learning/policy/greedy_policy.hpp>
-#include <mlpack/methods/reinforcement_learning/training_config.hpp>
-
-#include <ensmallen.hpp>
-#pragma warning (pop)
+#include "SnakeControl.hpp"
+#include "SimulationObject.hpp"
+#include "SnakePositionUpdatedSubject.hpp"
+#include "SnakeCollisionSubject.hpp"
+#include "FoodEatenSubject.hpp"
 
 class Board;
-class Keyboard;
 
-class Snake : public SnakeMovement
+class Snake : public SnakeControl, public simulationObject
 {
 public:
 	Snake(Board& board);
 	
-	void init(const Point<std::size_t> position, const SnakeMovement::Direction direction) override;
+	void init(const Point<std::size_t> position, const SnakeControl::Direction direction) override;
 	void updatePosition(const Point<std::size_t> newPosition) override;
-	void setDirection(const SnakeMovement::Direction direction) noexcept override;
-	const SnakeMovement::Direction getDirection() const noexcept override;
+	void setDirection(const SnakeControl::Direction direction) noexcept override;
+	const SnakeControl::Direction getDirection() const noexcept override;
 	Point<std::size_t> getPosition() const noexcept override;
-	const unsigned int getSpeed() const noexcept;
 	void grow(const unsigned int length) noexcept override;
+
 	const unsigned int length() const noexcept;
-	SnakeBrain& brain() noexcept;
-	void runLearningAgentForSingleGame();
+
+//	virtual void attach(SnakeObserver *observer) override;
+//	virtual void detach(SnakeObserver *observer) override;
+//	virtual void notify() override;
+
+	virtual void update(const uint32_t delta) noexcept override;
+	//SnakeBrain& brain() noexcept;
+	//void runLearningAgentForSingleGame();
+	SnakePositionUpdatedSubject& positionUpdateSubject() noexcept;
+	SnakeCollisionSubject& snakeCollisionSubject() noexcept;
+	FoodEatenSubject& foodEatenSubject() noexcept;
 private:
+	const Point<std::size_t> getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeControl::Direction direction) const noexcept;
+	const bool checkForCollision(const Point<std::size_t> target);
+	void notifyPositionObservers() noexcept;
+	void notifyCollisionObservers() noexcept;
+	void notifyFoodEatenObservers() noexcept;
+
+	SnakePositionUpdatedSubject positionUpdateSubject_;
+	SnakeCollisionSubject snakeCollisionSubject_;
+	FoodEatenSubject foodEatenSubject_;
+
+	uint32_t lastUpdateTime_{ 0 };
 	Point<std::size_t> headPosition_{ 0,0 };
 	std::list<Point<std::size_t>> body_;
-	SnakeMovement::Direction direction_{ SnakeMovement::Direction::right };
-public:
-	SnakeMovement::Direction previousDirection_{ SnakeMovement::Direction::right };
-private:
-	unsigned int speed_{ 10 };
+	SnakeControl::Direction direction_{ SnakeControl::Direction::right };
+
+//	std::list<SnakeObserver *> observers_;
+	const unsigned int updateRate{ 100 };
 	Board& board_;
 
-	mlpack::rl::QLearning<SnakeBrain, mlpack::ann::FFN<mlpack::ann::MeanSquaredError<>, mlpack::ann::GaussianInitialization>, ens::AdamUpdate, mlpack::rl::GreedyPolicy<SnakeBrain> >* learningAgent_ { nullptr };
+	
 };
+
 

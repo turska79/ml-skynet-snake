@@ -25,21 +25,23 @@ public:
 	Renderer& renderer() noexcept;
 	Simulation& simulation() noexcept;
 	Snake& snake() noexcept;
+	State* currentState() const;
 private:
 	void runGameLoop();
 public:
 	void gameLoop();
 	void renderBoard();
 private:
-	void capFrameRate();
 	void printCurrentScoreToScreen();
+	void printFpsRateToScreen();
 	void handleEvents();
 	void handleInput();
-	State* currentState() const;
+	
 	const bool checkForQuit() const;
+	
 	bool running_{ true };
-	Timer fpsTimer_;
-	Timer capFramesTimer_;
+	uint32_t nextGameStep{ 0 };
+	uint32_t lastRender_{ 0 };
 
 	Renderer renderer_;
 	Settings settings_;

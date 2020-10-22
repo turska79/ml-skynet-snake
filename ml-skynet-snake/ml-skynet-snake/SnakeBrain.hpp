@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SnakeVision.hpp"
+//#include "Observer.hpp"
 #include <vector>
 #include <array>
 #include <mutex>
@@ -11,13 +12,13 @@
 #pragma warning (pop)
 
 class Board;
-class SnakeMovement;
+class SnakeControl;
 class Renderer;
 class Simulation;
 class Game;
 class Snake;
 
-class SnakeBrain
+class SnakeBrain //: public SnakeObserver
 {
 public:
 
@@ -45,37 +46,37 @@ public:
 			std::copy(std::begin(data), iter, std::begin(vision));
 			return vision;
 		}
-
-		double coordinateX() const
+		/*
+		std::size_t coordinateX() const
 		{
-			return data[24];
+			return position.x_;
 		}
 
-		double& coordinateX()
+		std::size_t& coordinateX()
 		{
-			return data[24];
+			return position.x_;
 		}
 
-		double coordinateY() const
+		std::size_t coordinateY() const
 		{
-			return data[25];
+			return position.y_;
 		}
 	
-		double& coordinateY()
+		std::size_t& coordinateY()
 		{
-			return data[25];
+			return position.y_;
 		}
-
+		*/
 		const arma::colvec& Encode() const
 		{ 
 			return data;
 		}
 
-		static constexpr size_t dimension{ 26 };
+		static constexpr size_t dimension{ 24 };
 
 	private:
 		arma::colvec data;
-
+		Point<std::size_t> position;
 	};
 
 	enum Action
@@ -102,12 +103,15 @@ public:
 
 	void ProceedToNextMove();
 	void setBoard(Board* board);
-	void setSnakeMovementInterface(SnakeMovement* snakeMovement);
+	void setSnakeMovementInterface(SnakeControl* SnakeControl);
 	void setRenderer(Renderer* renderer);
 	void setSimulation(Simulation* simulation);
 	void setGame(Game* game);
 	void setSnake(Snake* snake);
 	SnakeVision& snakeVision();
+
+	//virtual void positionUpdated() override;
+	//virtual void collision() override;
 private:
 		
 	double doneReward{ -30 };
@@ -116,7 +120,7 @@ private:
 	size_t stepsPerformed{ 0 };
 
 	Board* board_{ nullptr };
-	SnakeMovement* snakeMovement_{ nullptr };
+	SnakeControl* snakeControl_{ nullptr };
 	Renderer* renderer_{ nullptr };
 	Simulation* simulation_{ nullptr };
 	SnakeVision snakeVision_;

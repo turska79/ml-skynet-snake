@@ -19,11 +19,11 @@ class Board
 public:
 	explicit Board(const Settings& settings);
 	
-	Cell* findCell(const Point<std::size_t>& coordinate) const;
+	Cell* findCell(const Point<std::size_t>& coordinate);
 	void resetBoard();
 	Point<std::size_t> findRandomEmptyCell();
 	std::list<std::unique_ptr<Cell>>& grid() noexcept;
-	const bool checkForFood(const Point<std::size_t>& target);
+	const bool isFoodCell(const Point<std::size_t>& target);
 private:
 	void createBoard(std::size_t gridWidth_, std::size_t gridHeight);
 	std::size_t gridWidth_{ 0 };

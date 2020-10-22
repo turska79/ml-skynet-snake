@@ -45,9 +45,6 @@
     <ClCompile Include="RunningState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameOverState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -75,7 +72,16 @@
     <ClCompile Include="SnakeBrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scheduler.cpp">
+    <ClCompile Include="InterruptibleThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SnakePositionUpdatedSubject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SnakeCollisionSubject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FoodEatenSubject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -113,9 +119,6 @@
     <ClInclude Include="RunningState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameOverState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -149,10 +152,28 @@
     <ClInclude Include="SnakeBrain.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SnakeMovement.hpp">
+    <ClInclude Include="SnakeControl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scheduler.hpp">
+    <ClInclude Include="InterruptibleThread.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadInterrupted.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulationObject.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SubjectBase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SnakePositionUpdatedSubject.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SnakeCollisionSubject.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FoodEatenSubject.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

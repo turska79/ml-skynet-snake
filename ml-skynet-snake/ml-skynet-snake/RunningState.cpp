@@ -4,26 +4,37 @@
 #include "FontCache.hpp"
 #include "Simulation.hpp"
 //#include "Snake.hpp"
-#include "SnakeMovement.hpp"
+#include "SnakeControl.hpp"
 #include <iostream>
 #include <string>
 #include <iomanip>
 #include <sstream>
 
 extern FontCache fontCache;
-constexpr unsigned int fontSize{ 20 };
-constexpr SDL_Color black = { 0, 0, 0,255 };
 
-RunningState::RunningState(Game& game) : State(game), snakeMovement_(game.snake()), simulation_(game.simulation())
+RunningState::RunningState(Game& game) : State(game), snakeControl_(game.snake()), simulation_(game.simulation())
 {
 
+}
+
+void RunningState::snakeCollisionCallback()
+{
+	if (game_.currentState() != this) {
+		return;
+	}
+
+	Simulation& simulation = game_.simulation();
+	simulation.stop();
+
+	game_.pushState<GameOverState>(game_);
 }
 
 void RunningState::enter()
 {
 	resetBoard();
 	initSnake();
-	initFood();
+	newRandomPositionForFood();
+	registerCallbacks();
 	simulation_.start();
 }
 
@@ -39,15 +50,7 @@ void RunningState::initSnake()
 	initialPosition.x_ = 10;
 	initialPosition.y_ = 10;
 
-	snakeMovement_.init(initialPosition, Snake::Direction::right);
-}
-
-void RunningState::initFood()
-{
-	Board& board = game_.board();
-	const Point<std::size_t> position = board.findRandomEmptyCell();
-
-	food_.init(board, position);
+	snakeControl_.init(initialPosition, SnakeControl::Direction::right);
 }
 
 void RunningState::newRandomPositionForFood()
@@ -58,37 +61,58 @@ void RunningState::newRandomPositionForFood()
 	food_.updatePosition(board, position);
 }
 
+void RunningState::registerCallbacks()
+{
+	registerCollisionCallback();
+	registerFoodEatenCallback();
+}
+
+void RunningState::unregisterCallbacks()
+{
+	unregisterCollisionCallback();
+	unregisterFoodEatenCallback();
+}
+
+void RunningState::registerCollisionCallback()
+{
+	Snake& snake = game_.snake();
+	SnakeCollisionSubject& collisionSubject = snake.snakeCollisionSubject();
+	collisionSubject.addObserver(this, &RunningState::snakeCollisionCallback);
+}
+
+void RunningState::unregisterCollisionCallback()
+{
+	Snake& snake = game_.snake();
+	SnakeCollisionSubject& collisionSubject = snake.snakeCollisionSubject();
+	collisionSubject.removeObserver(this, &RunningState::snakeCollisionCallback);
+}
+
+void RunningState::registerFoodEatenCallback()
+{
+	Snake& snake = game_.snake();
+	FoodEatenSubject& foodEatenSubject = snake.foodEatenSubject();
+	foodEatenSubject.addObserver(this, &RunningState::newRandomPositionForFood);
+}
+
+void RunningState::unregisterFoodEatenCallback()
+{
+	Snake& snake = game_.snake();
+	FoodEatenSubject& foodEatenSubject = snake.foodEatenSubject();
+	foodEatenSubject.removeObserver(this, &RunningState::newRandomPositionForFood);
+}
+
 void RunningState::update(Renderer& renderer)
 {
-	Board& board = game_.board();
-	const bool collision = simulation_.collision();
-
-	if (collision) {
-		game_.pushState<GameOverState>(game_);
-		return;
-	}
-
-	auto position = snakeMovement_.getPosition();
-	SnakeMovement::Direction direction = snakeMovement_.getDirection();
-
-	const Point<std::size_t> target = simulation_.getNextSnakePosition(position, direction);
-	const bool food = simulation_.checkForCollisionWithFood(target);
-
-	if (food) {
-		snakeMovement_.grow(1);
-		newRandomPositionForFood();
-	}
-
-	//printCurrentScoreToScreen(renderer);
 }
 
 void RunningState::exit()
 {
+	unregisterCallbacks();
 }
 
 void RunningState::handleInput(const Keyboard& keyboard)
 {
-	Snake::Direction direction{ snakeMovement_.getDirection() };
+	SnakeControl::Direction direction{ snakeControl_.getDirection() };
 
 	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_RIGHT) == keyboard::ButtonState::pressed && direction != Snake::Direction::left) {
 		std::cout << "snake pressed: right" << std::endl;
@@ -104,7 +128,7 @@ void RunningState::handleInput(const Keyboard& keyboard)
 		direction = Snake::Direction::down;
 	}
 
-	snakeMovement_.setDirection(direction);
+	snakeControl_.setDirection(direction);
 }
 
 
