@@ -112,7 +112,6 @@ namespace thread {
 	public:
 		template<typename F, typename T> interruptibleThread(F function, T instance)
 		{
-			std::cout << "interruptibleThread::interruptibleThread()" << std::endl;
 			std::promise<utils::InterruptFlag*> exitSignal;
 
 			internalThread_ = new std::thread([instance, function, &exitSignal]() {
@@ -120,8 +119,7 @@ namespace thread {
 
 				try {
 					(*instance.*function)();
-					std::cout << "interruptibleThread::func() finished" << std::endl;
-				} catch (const ThreadInterrupted&) {
+				} catch (const thread::utils::ThreadInterrupted&) {
 					std::cout << "interruptibleThread ThreadInterrupted exception" << std::endl;
 				} catch (const std::exception& e) {
 					std::cout << "interruptibleThread exception: " << e.what() << std::endl;
@@ -131,8 +129,6 @@ namespace thread {
 			exitSignal_ = exitSignal.get_future().get();
 		}
 		~interruptibleThread() {
-			std::cout << "interruptibleThread::~interruptibleThread()" << std::endl;
-			
 			if (internalThread_) {
 				internalThread_->join();
 			}

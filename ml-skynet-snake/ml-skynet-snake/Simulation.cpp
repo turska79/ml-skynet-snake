@@ -1,12 +1,14 @@
 #include "Simulation.hpp"
-#include "InterruptibleThread.hpp"
+//#include "InterruptibleThread.hpp"
 #include "utils/Utils.hpp"
 #include <iostream>
 #include <algorithm>
+#include <string>
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
 #include <SDL_timer.h>
+#pragma warning( pop )
 
-constexpr unsigned int secondAsMilliseconds{ 1000 };
-constexpr uint32_t targetUpdateRate = secondAsMilliseconds / 30;
 
 Simulation::Simulation(Board& board, SnakeControl& snakeControl) : board_(board), snakeControl_(snakeControl)
 {
@@ -19,10 +21,9 @@ void Simulation::start()
 
 	if (simulationThread_) {
 		simulationThread_->interrupt();
-		delete simulationThread_;
 	}
 
-	simulationThread_ = new thread::interruptibleThread(&Simulation::run, this);
+	simulationThread_ = std::make_unique<thread::interruptibleThread>(&Simulation::run, this);
 }
 
 void Simulation::stop()
@@ -59,22 +60,28 @@ void Simulation::runSimulationLoop()
 {
 	bool running{ true };
 
+	lastSimulationUpdate_ = SDL_GetTicks();
+	nextSimulationStep_ = SDL_GetTicks();
+
 	while (running) {
 		thread::utils::interruptionPoint();
 
 		uint32_t now = SDL_GetTicks();
 
 		if (nextSimulationStep_ <= now) {
-			int computer_is_too_slow_limit = utils::commonConstants::lowSpeedLimit;
+			int computer_is_too_slow_limit{ utils::commonConstants::lowSpeedLimit };
+			uint32_t deltaTime{ now - lastSimulationUpdate_ };
+			//std::cout << "Simulation::runSimulationLoop() delta: " << std::to_string(deltaTime) << std::endl;
+			unsigned int count{ 0 };
 
 			while ((nextSimulationStep_ <= now) && (computer_is_too_slow_limit--)) {
+				++count;
+				//std::cout << "Simulation::runSimulationLoop() count: " << std::to_string(count) << std::endl;
 				thread::utils::interruptionPoint();
 
-				updateObjects(now - lastSimulationUpdate_);
+				updateObjects(deltaTime);
 				nextSimulationStep_ += utils::commonConstants::simulationRefreshRateTargetTimeStep;
 			}
-
-			uint32_t deltaTime = now - lastSimulationUpdate_;
 
 			lastSimulationUpdate_ = now;
 			
@@ -83,6 +90,7 @@ void Simulation::runSimulationLoop()
 			}
 		}
 		else {
+			//std::cout << "Simulation::runSimulationLoop() sleep: " << std::to_string(nextSimulationStep_ - now)  << std::endl;
 			SDL_Delay(nextSimulationStep_ - now);
 		}
 	}
@@ -96,7 +104,7 @@ void Simulation::updateObjects(const uint32_t deltaTime)
 		object.get().update(deltaTime);
 	}
 }
-const bool Simulation::checkCellType(const utils::Point<std::size_t>& target, Cell::Type type) const
+bool Simulation::checkCellType(const utils::Point<std::size_t>& target, Cell::Type type) const
 {
 	const Cell* cell = board_.findCell(target);
 
@@ -107,22 +115,22 @@ const bool Simulation::checkCellType(const utils::Point<std::size_t>& target, Ce
 	return false;
 }
 
-const bool Simulation::checkForCollisionWithFood(const utils::Point<std::size_t>& target) const
+bool Simulation::checkForCollisionWithFood(const utils::Point<std::size_t>& target) const
 {
 	return checkCellType(target, Cell::Type::food);
 }
 
-const uint32_t Simulation::updateRate()
+uint32_t Simulation::updateRate()
 {
 	return updateRate_;
 }
-
+/*
 const bool Simulation::checkForCollisionWithWall(const utils::Point<std::size_t>& target) const
 {
 	return checkCellType(target, Cell::Type::wall);
-}
+}*/
 
-const bool Simulation::checkForCollisionWithSnakeBody(const utils::Point<std::size_t>& target) const
+bool Simulation::checkForCollisionWithSnakeBody(const utils::Point<std::size_t>& target) const
 {
 	return checkCellType(target, Cell::Type::body);
 }

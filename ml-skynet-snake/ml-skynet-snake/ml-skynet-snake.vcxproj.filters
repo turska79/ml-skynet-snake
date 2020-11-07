@@ -31,6 +31,12 @@
     <Filter Include="Source Files\subjects">
       <UniqueIdentifier>{5d93df7c-993f-4daf-99ff-987d0d5c46ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ml">
+      <UniqueIdentifier>{5ac50566-d8ab-410b-a2a4-f567e1aa3aa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ml">
+      <UniqueIdentifier>{22e82c0b-f9c8-4a1d-a2fe-0dba76744f04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="states\GameOverState.hpp">
@@ -46,9 +52,6 @@
       <Filter>Header Files\states</Filter>
     </ClInclude>
     <ClInclude Include="states\RunningStateAI.hpp">
-      <Filter>Header Files\states</Filter>
-    </ClInclude>
-    <ClInclude Include="states\State.hpp">
       <Filter>Header Files\states</Filter>
     </ClInclude>
     <ClInclude Include="Board.hpp">
@@ -90,16 +93,10 @@
     <ClInclude Include="Snake.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SnakeBrain.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SnakeControl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SnakeVision.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SubjectBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThreadInterrupted.hpp">
@@ -125,6 +122,24 @@
     </ClInclude>
     <ClInclude Include="subjects\SubjectBase.hpp">
       <Filter>Header Files\subjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ml\State.hpp">
+      <Filter>Header Files\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="ml\LearningAgent.hpp">
+      <Filter>Header Files\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="ml\FFNNetwork.hpp">
+      <Filter>Header Files\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="ml\DQN.hpp">
+      <Filter>Header Files\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="states\BaseState.hpp">
+      <Filter>Header Files\states</Filter>
+    </ClInclude>
+    <ClInclude Include="ml\SnakeAction.hpp">
+      <Filter>Header Files\ml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +191,6 @@
     <ClCompile Include="Snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SnakeBrain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SnakeVision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -196,6 +208,21 @@
     </ClCompile>
     <ClCompile Include="subjects\SnakePositionUpdatedSubject.cpp">
       <Filter>Source Files\subjects</Filter>
+    </ClCompile>
+    <ClCompile Include="ml\LearningAgent.cpp">
+      <Filter>Source Files\ml</Filter>
+    </ClCompile>
+    <ClCompile Include="ml\FFNNetwork.cpp">
+      <Filter>Source Files\ml</Filter>
+    </ClCompile>
+    <ClCompile Include="ml\DQN.cpp">
+      <Filter>Source Files\ml</Filter>
+    </ClCompile>
+    <ClCompile Include="ml\State.cpp">
+      <Filter>Source Files\states</Filter>
+    </ClCompile>
+    <ClCompile Include="ml\SnakeAction.cpp">
+      <Filter>Source Files\ml</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

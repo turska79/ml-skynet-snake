@@ -3,6 +3,7 @@
 #include <vector>
 #include <functional>
 #include <memory>
+#include <mutex>
 
 namespace subjects {
 
@@ -30,18 +31,16 @@ namespace subjects {
 	};
 
 	class SubjectBase {
-	protected:
-		using BaseInvokePtr = std::unique_ptr<BaseInvoke>;
-		std::vector<BaseInvokePtr> observers_;
-
 	public:
 		template<class T>
 		void addObserver(T* instance, typename MethodWrapper<T>::methodWrapperArgs0 method) {
+			const std::lock_guard<std::mutex> guard(lock_);
 			observers_.emplace_back(std::make_unique<MethodWrapper<T>>(instance, method));
 		}
 
 		template<class T>
 		void removeObserver(T* instance, typename MethodWrapper<T>::methodWrapperArgs0 method) {
+			const std::lock_guard<std::mutex> guard(lock_);
 			observers_.erase(std::remove_if(observers_.begin(), observers_.end(), [&instance, &method](const BaseInvokePtr& it)
 				{
 					MethodWrapper<T> inputWrapper(instance, method);
@@ -56,10 +55,17 @@ namespace subjects {
 		}
 
 		void invoke() {
+			const std::lock_guard<std::mutex> guard(lock_);
 			for (auto& it : observers_) {
 				it->invoke();
 			}
 		}
+
+	protected:
+		using BaseInvokePtr = std::unique_ptr<BaseInvoke>;
+		std::vector<BaseInvokePtr> observers_;
+
+		std::mutex lock_;
 	};
 
 }

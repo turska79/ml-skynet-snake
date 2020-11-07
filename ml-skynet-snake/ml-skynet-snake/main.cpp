@@ -1,7 +1,12 @@
-#include <iostream>
+
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
 #include <SDL.h>
 #include <SDL_ttf.h>
+#pragma warning( pop )
+
 #include "Game.hpp"
+#include <iostream>
 
 constexpr unsigned int msBetweenUpdates { 17 };
 

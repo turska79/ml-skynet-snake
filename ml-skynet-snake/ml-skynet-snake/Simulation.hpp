@@ -4,16 +4,18 @@
 #include <mutex>
 #include <atomic>
 #include <list>
+#include <memory>
 #include <functional>
 #include "utils/Point.hpp"
 #include "Board.hpp"
 #include "SnakeControl.hpp"
 #include "SimulationObject.hpp"
-
+#include "InterruptibleThread.hpp"
+/*
 namespace thread {
 	class interruptibleThread;
 }
-
+*/
 class Simulation
 {
 public:
@@ -23,20 +25,17 @@ public:
 	void addObject(std::reference_wrapper<simulationObject> object);
 	void detachObject(std::reference_wrapper<simulationObject> object);
 	
-	//const Point<std::size_t> getNextSnakePosition(const Point<std::size_t> currentPosition, const SnakeControl::Direction direction) const noexcept;
+	bool checkForCollisionWithSnakeBody(const utils::Point<std::size_t>& target) const;
+	bool checkForCollisionWithFood(const utils::Point<std::size_t>& target) const;
 
-	const bool checkForCollisionWithWall(const utils::Point<std::size_t>& target) const;
-	const bool checkForCollisionWithSnakeBody(const utils::Point<std::size_t>& target) const;
-	const bool checkForCollisionWithFood(const utils::Point<std::size_t>& target) const;
-
-	const uint32_t updateRate();
+	uint32_t updateRate();
 private:
 	void run();
 	void runSimulationLoop();
 	void updateObjects(const uint32_t deltaTime);
-	const bool checkCellType(const utils::Point<std::size_t>& target, Cell::Type type) const;
+	bool checkCellType(const utils::Point<std::size_t>& target, Cell::Type type) const;
 	
-	thread::interruptibleThread* simulationThread_{ nullptr };
+	std::unique_ptr<thread::interruptibleThread> simulationThread_;
 	std::mutex threadHandlingMutex_;
 	
 	uint32_t nextSimulationStep_{ 0 };

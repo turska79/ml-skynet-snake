@@ -5,14 +5,15 @@
 #include "Settings.hpp"
 #include "Input.hpp"
 #include "Simulation.hpp"
+#include "states/BaseState.hpp"
 #include "states/GameStates.hpp"
 #include "Snake.hpp"
 #include <vector>
 #include <memory>
 
-class State;
+class GameState;
 
-class Game : public GameStates
+class Game : public gamestates::handling::StateStorage<gamestates::state::BaseState>
 {
 public:
 	explicit Game(Settings& settings);
@@ -24,7 +25,7 @@ public:
 	Renderer& renderer() noexcept;
 	Simulation& simulation() noexcept;
 	Snake& snake() noexcept;
-	State* currentState() const;
+	gamestates::state::BaseState* currentState();
 private:
 	void runGameLoop();
 public:
@@ -36,7 +37,7 @@ private:
 	void handleEvents();
 	void handleInput();
 	
-	const bool checkForQuit() const;
+	bool checkForQuit() const;
 	
 	bool running_{ true };
 	uint32_t nextGameStep{ 0 };

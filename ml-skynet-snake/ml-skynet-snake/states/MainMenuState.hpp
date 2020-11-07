@@ -1,22 +1,24 @@
 #pragma once
 
-#include "State.hpp"
+#include "BaseState.hpp"
 
 class Game;
 
-class MainMenuState : public State
-{
-public:
-	explicit MainMenuState(Game& game) noexcept;
-	virtual ~MainMenuState() = default;
-	MainMenuState(const MainMenuState&) = default;
-	MainMenuState& operator=(const MainMenuState&) = default;
-	MainMenuState(MainMenuState&&) = default;
-	MainMenuState& operator=(MainMenuState&&) = default;
+namespace gamestates {
 
-	void enter() override;
-	void update(Renderer& renderer) override;
-	void exit() override;
-	void handleInput(const Keyboard& keyboard) override;
-};
+	namespace state {
+		
+		class MainMenuState : public BaseState
+		{
+		public:
+			explicit MainMenuState(Game& game) noexcept;
+			virtual ~MainMenuState() {};
 
+			void enter() override;
+			void update(Renderer& renderer) override;
+			void exit() override;
+			void handleInput(const Keyboard& keyboard) override;
+		};
+
+	}
+}

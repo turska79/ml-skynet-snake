@@ -3,16 +3,21 @@
 #include "states/MainMenuState.hpp"
 #include "FontCache.hpp"
 #include "utils/Utils.hpp"
+
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
 #include <SDL.h>
+#pragma warning( pop )
+
 #include <iostream>
 #include <string>
 
-FontCache fontCache;
+FontUtils::FontCache fontCache;
 
 Game::Game(Settings& settings) :
 	settings_(settings),
-	board_(settings),
 	renderer_(settings.windowWidth_, settings.windowHeight_, settings.gridStartOffset_, settings.backGround_),
+	board_(settings),
 	simulation_(board_, snake_),
 	snake_(board_)
 {
@@ -20,7 +25,7 @@ Game::Game(Settings& settings) :
 }
 void Game::run()
 {
-	pushState<MainMenuState>(*this);
+	nextState<gamestates::state::MainMenuState>(*this);
 	runGameLoop();
 	exit();
 }
@@ -77,16 +82,16 @@ void Game::printCurrentScoreToScreen()
 void Game::printFpsRateToScreen()
 {
 	uint32_t now{ SDL_GetTicks() };
+	TTF_Font* font = fontCache.getFont(20);
 
 	uint32_t delta = now - lastRender_;
 
 	float fps = { 1000.0f / delta };
-	TTF_Font* font = fontCache.getFont(20);
 
 	std::string fpsTtext{ "FPS: " };
 	fpsTtext.append(std::to_string(static_cast<unsigned int>(std::round(fps))));
-	
 	fpsTtext.append(" / Simulation rate: ");
+
 	const uint32_t simulationRate = simulation_.updateRate();
 	fpsTtext.append(std::to_string(static_cast<unsigned int>(simulationRate)));
 	renderer_.renderText(0, 0, fpsTtext, *font, utils::commonConstants::color::black);
@@ -144,8 +149,10 @@ void Game::handleInput()
 	currentState()->handleInput(keyboard);
 }
 
-State* Game::currentState() const
+gamestates::state::BaseState* Game::currentState()
 {
+	changeState();
+
 	if (states_.empty() == false) {
 		return states_.back().get();
 	}
@@ -153,16 +160,16 @@ State* Game::currentState() const
 	return nullptr;
 }
 
-const bool Game::checkForQuit() const
+bool Game::checkForQuit() const
 {
 	const auto& keyboard = input_.getKeyboard();
-	bool running = false;
+	bool quit{ false };
 
 	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_ESCAPE) == keyboard::ButtonState::pressed) {
-		running = true;
+		quit = true;
 	}
 
-	return running;
+	return quit;
 }
 
 

@@ -3,6 +3,15 @@
 #include <algorithm>
 #include <random>
 #include <execution>
+#include <iostream>
+#include <assert.h>
+
+namespace walls {
+	static constexpr std::size_t topWall{ 0 };
+	static constexpr std::size_t leftWall{ 0 };
+	static std::size_t rightWall{ 0 };
+	static std::size_t bottomWall{ 0 };
+}
 
 Board::Board(const Settings& settings)
 {
@@ -17,6 +26,21 @@ Cell* Board::findCell(const utils::Point<std::size_t>& toFind)
 		else
 			return false;
 	});
+
+	if (it != grid_.end())
+		return it->get();
+
+	return nullptr;
+}
+
+Cell* Board::findFood()
+{
+	auto const& it = std::find_if(grid_.begin(), grid_.end(), [](std::unique_ptr<Cell>& cell) noexcept {
+		if (cell->type_ == Cell::Type::food)
+			return true;
+		else
+			return false;
+		});
 
 	if (it != grid_.end())
 		return it->get();
@@ -61,13 +85,35 @@ std::list<std::unique_ptr<Cell>>& Board::grid() noexcept
 	return grid_;
 }
 
-const bool Board::isFoodCell(const utils::Point<std::size_t>& target)
+const bool Board::isFood(const utils::Point<std::size_t>& target)
 {
 	const Cell* cell = findCell(target);
 
 	if (cell->type_ == Cell::Type::food) {
-		//std::cout << "Simulation::checkForFood targetx: " << std::to_string(static_cast<int>(target.x_)) << " y: " << std::to_string(static_cast<int>(target.y_)) << std::endl;
-		//std::cout << "Simulation::checkForFood Cell x: " << std::to_string(static_cast<int>(cell->x_)) << " y: " << std::to_string(static_cast<int>(cell->y_)) << std::endl;
+		return true;
+	}
+
+	return false;
+}
+
+const bool Board::isWall(const utils::Point<std::size_t>& target)
+{
+	if (target.x_ == walls::leftWall || target.x_ == walls::rightWall) {
+		return true;
+	}
+
+	if (target.y_ == walls::topWall || target.y_ == walls::bottomWall) {
+		return true;
+	}
+
+	return false;
+}
+
+const bool Board::isSnakeBody(const utils::Point<std::size_t>& target)
+{
+	const Cell* cell = findCell(target);
+
+	if (cell->type_ == Cell::Type::body) {
 		return true;
 	}
 
@@ -80,31 +126,35 @@ void Board::createBoard(std::size_t gridWidth, std::size_t gridHeight)
 	x x x x x
 	x o o o x
 	x o o o x
+	x o o o x
 	x x x x x
 	*/
 	
 	gridWidth_ = gridWidth;
 	gridHeight_ = gridHeight;
 
-	constexpr std::size_t topWall{ 0 };
-	constexpr std::size_t leftWall{ 0 };
-	const std::size_t rightWall = gridWidth_ - 1 ;
-	const std::size_t bottomWall = gridHeight_ - 1 ;
+	//std::size_t rightWall = gridWidth_ - 1;
+	//std::size_t bottomWall = gridHeight_ - 1;
+	walls::rightWall = gridWidth_ - 1;
+	walls::bottomWall = gridHeight_ - 1;
 
-	// y
-	for (std::size_t row = 0; row < gridHeight_; ++row) {
-		// x
-		for (std::size_t column = 0; column < gridWidth_; ++column) {
-			if (row == topWall) {
-				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::wall, row, column));
-			} else if (column == leftWall) {
-				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::wall, row, column));
-			} else if (column == rightWall) {
-				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::wall, row, column));
-			} else if (row == bottomWall) {
-				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::wall, row, column));
+	for (std::size_t y = 0; y < gridHeight_; ++y) {
+		for (std::size_t x = 0; x < gridWidth_; ++x) {
+			if (y == walls::topWall) {
+				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::wall, x, y));
+			} else if (x == walls::leftWall) {
+				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::wall, x, y));
+			} else if (x == walls::rightWall) {
+				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::wall, x, y));
+			} else if (y == walls::bottomWall) {
+				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::wall, x, y));
 			} else {
-				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::empty, row, column));
+				Cell* cell = findCell({ x, y });
+				if (cell != nullptr) {
+					std::cout << "Board::createBoard() duplicate cell" << std::endl;
+					assert(cell != nullptr);
+				}
+				grid_.emplace_back(std::make_unique<Cell>(Cell::Type::empty, x, y));
 			}
 		}
 	}

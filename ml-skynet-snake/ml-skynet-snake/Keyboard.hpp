@@ -1,6 +1,9 @@
 #pragma once
 
-#include <SDL.h>
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
+#include <SDL_scancode.h>
+#pragma warning( pop )
 
 namespace keyboard {
 

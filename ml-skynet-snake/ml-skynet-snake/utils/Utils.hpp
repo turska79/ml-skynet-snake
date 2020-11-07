@@ -3,11 +3,11 @@
 #include <utility>
 #include <cmath>
 #include <cstdint>
-#include <SDL_pixels.h>
-#include "Point.hpp"
 
-class Board;
-struct Cell;
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
+#include <SDL_pixels.h>
+#pragma warning( pop )
 
 namespace utils {
 	namespace commonConstants {
@@ -15,7 +15,8 @@ namespace utils {
 		constexpr unsigned int targetFramesPerSecond{ 60 };
 		constexpr uint32_t refreshRateTargetTimeStep{ secondAsMilliseconds / targetFramesPerSecond };
 		constexpr uint32_t simulationRefreshRateTargetTimeStep{ secondAsMilliseconds / 30 };
-		constexpr unsigned int lowSpeedLimit{ 10 };
+		constexpr unsigned int processOneStepPerUpdate{ 1 };
+		constexpr unsigned int lowSpeedLimit{ processOneStepPerUpdate };
 
 		namespace fontSize {
 			constexpr unsigned int twenty{ 20 };
@@ -28,9 +29,5 @@ namespace utils {
 	
 	namespace math {
 		const double pi{ std::atan(1.0) * 4 };
-
-		Point<long> directionVectorBetweenPoints(const Point<std::size_t> from, const Point<std::size_t> to) noexcept;
-		float distanceBetweenPoints(const Point<std::size_t> from, const Point<std::size_t> to) noexcept;
-		float snakeAngleToFood(const Point<std::size_t> head, const Point<std::size_t> body, const Point<std::size_t> food) noexcept;
 	}
 }

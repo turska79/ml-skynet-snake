@@ -31,6 +31,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -38,19 +39,24 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <VCToolsVersion>14.27.29110</VCToolsVersion>
+    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -72,25 +78,29 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>C:\Users\turska\source\vcpkg\installed\x64-windows\include\mlpack;C:\Users\turska\source\vcpkg\installed\x64-windows\include;C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>C:\Users\turska\source\vcpkg\installed\x64-windows\lib\pkgconfig;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>C:\Users\turska\source\vcpkg\installed\x64-windows\include\mlpack;C:\Users\turska\source\vcpkg\installed\x64-windows\include;C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>C:\Users\turska\source\vcpkg\installed\x64-windows\lib\pkgconfig;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;C:\Users\turska\source\SDL2_ttf-2.0.15\lib\x64;C:\Users\turska\source\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\turska\source\vcpkg\installed\x64-windows\include\mlpack;$(VcpkgRoot)include\;C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\turska\source\vcpkg\installed\x64-windows\lib\pkgconfig;C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;C:\Users\turska\source\SDL2_ttf-2.0.15\lib\x64;C:\Users\turska\source\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
-    <LibraryPath>C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;C:\Users\turska\source\SDL2_ttf-2.0.15\lib\x64;C:\Users\turska\source\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\turska\source\vcpkg\installed\x64-windows\include\mlpack;C:\Users\turska\source\vcpkg\installed\x64-windows\include;C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\include;C:\Users\turska\source\SDL2_ttf-2.0.15\include;C:\Users\turska\source\SDL2_image-2.0.5\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>C:\Users\turska\source\vcpkg\installed\x64-windows\lib\pkgconfig;C:\Users\turska\source\SDL2-devel-2.0.12-VC\SDL2-2.0.12\lib\x64;C:\Users\turska\source\SDL2_ttf-2.0.15\lib\x64;C:\Users\turska\source\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
@@ -102,11 +112,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);libarmadillo;armadillo.lib;openblas.lib;lapack.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -121,45 +132,58 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);libarmadillo;armadillo.lib;openblas.lib;lapack.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/bigobj</AdditionalOptions>
+      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <EnforceTypeConversionRules>false</EnforceTypeConversionRules>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;%(AdditionalDependencies);armadillo.lib;openblas.lib;lapack.lib</AdditionalDependencies>
+      <HeapReserveSize>
+      </HeapReserveSize>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);BOOST_PP_VARIADICS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/bigobj</AdditionalOptions>
+      <AdditionalOptions>/bigobj </AdditionalOptions>
+      <EnforceTypeConversionRules>false</EnforceTypeConversionRules>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_image.lib;%(AdditionalDependencies);armadillo.lib;openblas.lib;lapack.lib;armadillo.lib;openblas.lib;lapack.lib</AdditionalDependencies>
+      <HeapReserveSize>
+      </HeapReserveSize>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -171,12 +195,16 @@
     <ClInclude Include="InterruptibleThread.hpp" />
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="KeyboardState.hpp" />
+    <ClInclude Include="ml\DQN.hpp" />
+    <ClInclude Include="ml\FFNNetwork.hpp" />
+    <ClInclude Include="ml\LearningAgent.hpp" />
+    <ClInclude Include="ml\SnakeAction.hpp" />
+    <ClInclude Include="ml\State.hpp" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Simulation.hpp" />
     <ClInclude Include="SimulationObject.hpp" />
     <ClInclude Include="Snake.hpp" />
-    <ClInclude Include="SnakeBrain.hpp" />
     <ClInclude Include="SnakeControl.hpp" />
     <ClInclude Include="SnakeVision.hpp" />
     <ClInclude Include="states\GameOverState.hpp" />
@@ -184,8 +212,7 @@
     <ClInclude Include="states\MainMenuState.hpp" />
     <ClInclude Include="states\RunningState.hpp" />
     <ClInclude Include="states\RunningStateAI.hpp" />
-    <ClInclude Include="states\State.hpp" />
-    <ClInclude Include="SubjectBase.hpp" />
+    <ClInclude Include="states\BaseState.hpp" />
     <ClInclude Include="subjects\FoodEatenSubject.hpp" />
     <ClInclude Include="subjects\SnakeCollisionSubject.hpp" />
     <ClInclude Include="subjects\SnakePositionUpdatedSubject.hpp" />
@@ -204,11 +231,15 @@
     <ClCompile Include="InterruptibleThread.cpp" />
     <ClCompile Include="KeyboardState.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ml\DQN.cpp" />
+    <ClCompile Include="ml\FFNNetwork.cpp" />
+    <ClCompile Include="ml\LearningAgent.cpp" />
+    <ClCompile Include="ml\SnakeAction.cpp" />
+    <ClCompile Include="ml\State.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Snake.cpp" />
-    <ClCompile Include="SnakeBrain.cpp" />
     <ClCompile Include="SnakeVision.cpp" />
     <ClCompile Include="states\GameOverState.cpp" />
     <ClCompile Include="states\MainMenuState.cpp" />
@@ -221,6 +252,5 @@
     <ClCompile Include="utils\vec2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

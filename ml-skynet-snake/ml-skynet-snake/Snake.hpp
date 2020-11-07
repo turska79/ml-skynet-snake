@@ -20,7 +20,8 @@ public:
 	void updatePosition(const utils::Point<std::size_t> newPosition) override;
 	void setDirection(const SnakeControl::Direction direction) noexcept override;
 	const SnakeControl::Direction getDirection() const noexcept override;
-	utils::Point<std::size_t> getPosition() const noexcept override;
+	const utils::Point<std::size_t> getPosition() const noexcept override;
+	const utils::Point<std::size_t> getNextPosition() const noexcept override;
 	void grow(const unsigned int length) noexcept override;
 
 	const unsigned int length() const noexcept;
@@ -36,7 +37,6 @@ public:
 	subjects::SnakeCollisionSubject& snakeCollisionSubject() noexcept;
 	subjects::FoodEatenSubject& foodEatenSubject() noexcept;
 private:
-	const utils::Point<std::size_t> getNextSnakePosition(const utils::Point<std::size_t> currentPosition, const SnakeControl::Direction direction) const noexcept;
 	const bool checkForCollision(const utils::Point<std::size_t> target);
 	void notifyPositionObservers() noexcept;
 	void notifyCollisionObservers() noexcept;

@@ -1,5 +1,10 @@
 #include "Renderer.hpp"
+
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
 #include <SDL.h>
+#pragma warning( pop )
+
 #include <vector>
 
 Renderer::Renderer(std::size_t windowWidth, std::size_t windowHeight, std::size_t gridStartOffset, SDL_Color& background) noexcept : windowWidth_(windowWidth), windowHeight_(windowHeight), gridStartOffset_(gridStartOffset), backGround_(background)
@@ -10,7 +15,6 @@ Renderer::Renderer(std::size_t windowWidth, std::size_t windowHeight, std::size_
 	RendererPtr renderer(SDL_CreateRenderer(window_.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
 	renderer_ = std::move(renderer);
 }
-
 
 void Renderer::renderText(const unsigned int x, const unsigned int y, const std::string& text, TTF_Font &font, const SDL_Color& color) noexcept
 {

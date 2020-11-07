@@ -2,6 +2,10 @@
 
 #include <exception>
 
-class ThreadInterrupted : public std::exception {
-public:
-};
+namespace thread {
+	namespace utils {
+		class ThreadInterrupted : public std::exception {
+		public:
+		};
+	}
+}

@@ -1,8 +1,8 @@
 #include "FontCache.hpp"
 
-TTF_Font* FontCache::getFont(unsigned int fontSize)
+TTF_Font* FontUtils::FontCache::getFont(unsigned int fontSize)
 {
-	const std::lock_guard<std::mutex> lock(lock);
+	const std::lock_guard<std::mutex> guard(lock_);
 	if (cache_.find(fontSize) == cache_.end()) {
 		FontPtr font(TTF_OpenFont("C:\\WINDOWS\\Fonts\\Calibrib.ttf", fontSize));
 		cache_[fontSize] = std::move(font);
@@ -11,8 +11,8 @@ TTF_Font* FontCache::getFont(unsigned int fontSize)
 	return cache_[fontSize].get();
 }
 
-void FontCache::clear() noexcept
+void FontUtils::FontCache::clear() noexcept
 {
-	const std::lock_guard<std::mutex> lock(lock);
+	const std::lock_guard<std::mutex> guard(lock_);
 	cache_.clear();
 }

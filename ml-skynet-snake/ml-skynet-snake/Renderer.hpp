@@ -2,8 +2,13 @@
 
 #include <memory>
 #include <list>
+
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
 #include <SDL.h>
 #include <SDL_ttf.h>
+#pragma warning( pop )
+
 #include <string>
 #include "Board.hpp"
 

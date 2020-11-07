@@ -10,14 +10,15 @@
 #include <iomanip>
 #include <sstream>
 
-extern FontCache fontCache;
+extern FontUtils::FontCache fontCache;
+bool collision = false;
 
-RunningState::RunningState(Game& game) : State(game), snakeControl_(game.snake()), simulation_(game.simulation())
+gamestates::state::RunningState::RunningState(Game& game) noexcept : gamestates::state::BaseState(game), snakeControl_(game.snake()), simulation_(game.simulation())
 {
 
 }
 
-void RunningState::snakeCollisionCallback()
+void gamestates::state::RunningState::snakeCollisionCallback()
 {
 	if (game_.currentState() != this) {
 		return;
@@ -26,11 +27,13 @@ void RunningState::snakeCollisionCallback()
 	Simulation& simulation = game_.simulation();
 	simulation.stop();
 
-	game_.pushState<GameOverState>(game_);
+	collision = true;
 }
 
-void RunningState::enter()
+void gamestates::state::RunningState::enter()
 {
+	std::cout << " RunningState::enter()" << std::endl;
+	collision = false;
 	resetBoard();
 	initSnake();
 	newRandomPositionForFood();
@@ -38,20 +41,20 @@ void RunningState::enter()
 	simulation_.start();
 }
 
-void RunningState::resetBoard() const
+void gamestates::state::RunningState::resetBoard() const
 {
 	Board& board = game_.board();
 	board.resetBoard();
 }
 
-void RunningState::initSnake()
+void gamestates::state::RunningState::initSnake()
 {
 	utils::Point<std::size_t> initialPosition{ 10, 10 };
 
 	snakeControl_.init(initialPosition, SnakeControl::Direction::right);
 }
 
-void RunningState::newRandomPositionForFood()
+void gamestates::state::RunningState::newRandomPositionForFood()
 {
 	Board& board = game_.board();
 	const utils::Point<std::size_t> position = board.findRandomEmptyCell();
@@ -59,56 +62,60 @@ void RunningState::newRandomPositionForFood()
 	food_.updatePosition(board, position);
 }
 
-void RunningState::registerCallbacks()
+void gamestates::state::RunningState::registerCallbacks()
 {
 	registerCollisionCallback();
 	registerFoodEatenCallback();
 }
 
-void RunningState::unregisterCallbacks()
+void gamestates::state::RunningState::unregisterCallbacks()
 {
 	unregisterCollisionCallback();
 	unregisterFoodEatenCallback();
 }
 
-void RunningState::registerCollisionCallback()
+void gamestates::state::RunningState::registerCollisionCallback()
 {
 	Snake& snake = game_.snake();
 	subjects::SnakeCollisionSubject& collisionSubject = snake.snakeCollisionSubject();
 	collisionSubject.addObserver(this, &RunningState::snakeCollisionCallback);
 }
 
-void RunningState::unregisterCollisionCallback()
+void gamestates::state::RunningState::unregisterCollisionCallback()
 {
 	Snake& snake = game_.snake();
 	subjects::SnakeCollisionSubject& collisionSubject = snake.snakeCollisionSubject();
 	collisionSubject.removeObserver(this, &RunningState::snakeCollisionCallback);
 }
 
-void RunningState::registerFoodEatenCallback()
+void gamestates::state::RunningState::registerFoodEatenCallback()
 {
 	Snake& snake = game_.snake();
 	subjects::FoodEatenSubject& foodEatenSubject = snake.foodEatenSubject();
 	foodEatenSubject.addObserver(this, &RunningState::newRandomPositionForFood);
 }
 
-void RunningState::unregisterFoodEatenCallback()
+void gamestates::state::RunningState::unregisterFoodEatenCallback()
 {
 	Snake& snake = game_.snake();
 	subjects::FoodEatenSubject& foodEatenSubject = snake.foodEatenSubject();
 	foodEatenSubject.removeObserver(this, &RunningState::newRandomPositionForFood);
 }
 
-void RunningState::update(Renderer& renderer)
+void gamestates::state::RunningState::update(Renderer& renderer)
 {
+	if (collision) {
+		game_.nextState<GameOverState>(game_);
+	}
 }
 
-void RunningState::exit()
+void gamestates::state::RunningState::exit()
 {
+	std::cout << " RunningState::exit()" << std::endl;
 	unregisterCallbacks();
 }
 
-void RunningState::handleInput(const Keyboard& keyboard)
+void gamestates::state::RunningState::handleInput(const Keyboard& keyboard)
 {
 	SnakeControl::Direction direction{ snakeControl_.getDirection() };
 
