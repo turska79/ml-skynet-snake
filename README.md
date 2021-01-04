@@ -10,7 +10,7 @@ SDL2_ttf
 SDL2
 
 Machine learning with Mlpack sort of works, but its still complete retard when "Ai" is
-playing the game.
+playing the game. Currently machine learning parts are on its on branch.
 
 Machine learning Dependency:
 MlPack
