@@ -1,7 +1,6 @@
 #include "GameOverState.hpp"
 #include "../Game.hpp"
-#include "../FontCache.hpp"
-//#include <SDL.h>
+#include "../utils/FontCache.hpp"
 #include "../utils/Utils.hpp"
 #include <iostream>
 

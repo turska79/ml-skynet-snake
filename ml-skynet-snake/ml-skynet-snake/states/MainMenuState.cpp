@@ -2,7 +2,7 @@
 #include "../Game.hpp"
 #include "RunningState.hpp"
 #include "RunningStateAI.hpp"
-#include "../FontCache.hpp"
+#include "../utils/FontCache.hpp"
 #include "../utils/Utils.hpp"
 #include <iostream>
 

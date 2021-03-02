@@ -3,7 +3,7 @@
   <ItemGroup>
     <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
@@ -13,32 +13,95 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\states">
-      <UniqueIdentifier>{8fa63cce-5abd-4b41-8129-dae729cc2996}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\states">
-      <UniqueIdentifier>{64f49248-1bbc-4f59-be92-1b1bd71bae2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\utils">
-      <UniqueIdentifier>{bca22f53-a214-407d-9d17-07acbe312318}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\utils">
-      <UniqueIdentifier>{84cba035-0a03-40dd-b460-d78d2fb8724c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\subjects">
-      <UniqueIdentifier>{6dc67da3-2145-4a29-ab30-39ee868da120}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\subjects">
-      <UniqueIdentifier>{5d93df7c-993f-4daf-99ff-987d0d5c46ef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\ml">
-      <UniqueIdentifier>{5ac50566-d8ab-410b-a2a4-f567e1aa3aa9}</UniqueIdentifier>
+      <UniqueIdentifier>{5a1d9027-2ef1-460e-a288-ca94ce6a2f8b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\ml">
-      <UniqueIdentifier>{22e82c0b-f9c8-4a1d-a2fe-0dba76744f04}</UniqueIdentifier>
+      <UniqueIdentifier>{bebf0d88-5a53-4211-8ed9-f0f12f1aee1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\simulation">
+      <UniqueIdentifier>{8ce1e06a-93c0-485d-8107-bafee16ff5a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\simulation">
+      <UniqueIdentifier>{f5b8509b-8227-4870-9262-53c53068742e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\states">
+      <UniqueIdentifier>{41937acd-8ba6-4722-a5c8-367c24a2e915}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\states">
+      <UniqueIdentifier>{1ba4ce45-1a9e-4e9e-bceb-2090d2bee799}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\subjects">
+      <UniqueIdentifier>{b2226c54-7b5f-49bb-89d1-f136670927aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\subjects">
+      <UniqueIdentifier>{8ead390d-83de-423b-8c3f-d392feb94ba1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{5a7086d5-70aa-48c9-b471-a61db9da680f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{eed1fa29-6b62-4cf4-9aaf-6264c56b3fed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Board.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Food.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardState.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Snake.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SnakeControl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SnakeVision.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ml\DQN.hpp">
+      <Filter>Header Files\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="ml\FFNNetwork.hpp">
+      <Filter>Header Files\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="ml\LearningAgent.hpp">
+      <Filter>Header Files\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="ml\SnakeAction.hpp">
+      <Filter>Header Files\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="ml\State.hpp">
+      <Filter>Header Files\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="simulation\Simulation.hpp">
+      <Filter>Header Files\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="simulation\SimulationObject.hpp">
+      <Filter>Header Files\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="states\BaseState.hpp">
+      <Filter>Header Files\states</Filter>
+    </ClInclude>
     <ClInclude Include="states\GameOverState.hpp">
       <Filter>Header Files\states</Filter>
     </ClInclude>
@@ -54,63 +117,6 @@
     <ClInclude Include="states\RunningStateAI.hpp">
       <Filter>Header Files\states</Filter>
     </ClInclude>
-    <ClInclude Include="Board.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FontCache.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Food.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InterruptibleThread.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Keyboard.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyboardState.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Simulation.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SimulationObject.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Snake.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SnakeControl.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SnakeVision.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadInterrupted.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\Point.hpp">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\Utils.hpp">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
-    <ClInclude Include="utils\vec2.hpp">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
     <ClInclude Include="subjects\FoodEatenSubject.hpp">
       <Filter>Header Files\subjects</Filter>
     </ClInclude>
@@ -123,42 +129,27 @@
     <ClInclude Include="subjects\SubjectBase.hpp">
       <Filter>Header Files\subjects</Filter>
     </ClInclude>
-    <ClInclude Include="ml\State.hpp">
-      <Filter>Header Files\ml</Filter>
+    <ClInclude Include="utils\FontCache.hpp">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="ml\LearningAgent.hpp">
-      <Filter>Header Files\ml</Filter>
+    <ClInclude Include="utils\InterruptibleThread.hpp">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="ml\FFNNetwork.hpp">
-      <Filter>Header Files\ml</Filter>
+    <ClInclude Include="utils\Point.hpp">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="ml\DQN.hpp">
-      <Filter>Header Files\ml</Filter>
+    <ClInclude Include="utils\ThreadInterrupted.hpp">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="states\BaseState.hpp">
-      <Filter>Header Files\states</Filter>
+    <ClInclude Include="utils\Utils.hpp">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="ml\SnakeAction.hpp">
-      <Filter>Header Files\ml</Filter>
+    <ClInclude Include="utils\vec2.hpp">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="states\GameOverState.cpp">
-      <Filter>Source Files\states</Filter>
-    </ClCompile>
-    <ClCompile Include="states\MainMenuState.cpp">
-      <Filter>Source Files\states</Filter>
-    </ClCompile>
-    <ClCompile Include="states\RunningState.cpp">
-      <Filter>Source Files\states</Filter>
-    </ClCompile>
-    <ClCompile Include="states\RunningStateAI.cpp">
-      <Filter>Source Files\states</Filter>
-    </ClCompile>
     <ClCompile Include="Board.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FontCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Food.cpp">
@@ -168,9 +159,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InterruptibleThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardState.cpp">
@@ -185,20 +173,41 @@
     <ClCompile Include="Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Simulation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SnakeVision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils\Utils.cpp">
-      <Filter>Source Files\utils</Filter>
+    <ClCompile Include="ml\DQN.cpp">
+      <Filter>Source Files\ml</Filter>
     </ClCompile>
-    <ClCompile Include="utils\vec2.cpp">
-      <Filter>Source Files\utils</Filter>
+    <ClCompile Include="ml\FFNNetwork.cpp">
+      <Filter>Source Files\ml</Filter>
+    </ClCompile>
+    <ClCompile Include="ml\LearningAgent.cpp">
+      <Filter>Source Files\ml</Filter>
+    </ClCompile>
+    <ClCompile Include="ml\SnakeAction.cpp">
+      <Filter>Source Files\ml</Filter>
+    </ClCompile>
+    <ClCompile Include="ml\State.cpp">
+      <Filter>Source Files\ml</Filter>
+    </ClCompile>
+    <ClCompile Include="simulation\Simulation.cpp">
+      <Filter>Source Files\simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="states\GameOverState.cpp">
+      <Filter>Source Files\states</Filter>
+    </ClCompile>
+    <ClCompile Include="states\MainMenuState.cpp">
+      <Filter>Source Files\states</Filter>
+    </ClCompile>
+    <ClCompile Include="states\RunningState.cpp">
+      <Filter>Source Files\states</Filter>
+    </ClCompile>
+    <ClCompile Include="states\RunningStateAI.cpp">
+      <Filter>Source Files\states</Filter>
     </ClCompile>
     <ClCompile Include="subjects\FoodEatenSubject.cpp">
       <Filter>Source Files\subjects</Filter>
@@ -209,20 +218,17 @@
     <ClCompile Include="subjects\SnakePositionUpdatedSubject.cpp">
       <Filter>Source Files\subjects</Filter>
     </ClCompile>
-    <ClCompile Include="ml\LearningAgent.cpp">
-      <Filter>Source Files\ml</Filter>
+    <ClCompile Include="utils\FontCache.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="ml\FFNNetwork.cpp">
-      <Filter>Source Files\ml</Filter>
+    <ClCompile Include="utils\InterruptibleThread.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="ml\DQN.cpp">
-      <Filter>Source Files\ml</Filter>
+    <ClCompile Include="utils\Utils.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="ml\State.cpp">
-      <Filter>Source Files\states</Filter>
-    </ClCompile>
-    <ClCompile Include="ml\SnakeAction.cpp">
-      <Filter>Source Files\ml</Filter>
+    <ClCompile Include="utils\vec2.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

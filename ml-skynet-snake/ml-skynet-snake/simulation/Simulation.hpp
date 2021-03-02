@@ -6,16 +6,12 @@
 #include <list>
 #include <memory>
 #include <functional>
-#include "utils/Point.hpp"
-#include "Board.hpp"
-#include "SnakeControl.hpp"
+#include "../utils/Point.hpp"
+#include "../Board.hpp"
+#include "../SnakeControl.hpp"
 #include "SimulationObject.hpp"
-#include "InterruptibleThread.hpp"
-/*
-namespace thread {
-	class interruptibleThread;
-}
-*/
+#include "../utils/InterruptibleThread.hpp"
+
 class Simulation
 {
 public:

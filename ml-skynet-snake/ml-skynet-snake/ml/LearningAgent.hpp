@@ -2,33 +2,37 @@
 
 #include <memory>
 #include <atomic>
+
 #include "SnakeAction.hpp"
+#include "../Snakevision.hpp"
+//#include "FFNNetwork.hpp"
 
 #pragma warning(push)  
 #pragma warning(disable : 26819 26495 4244 26451 6011 26439 26812 4458 4267 4801 4081)
+//#include <mlpack/>
+//#include <mlpack/methods/ann/ffn.hpp>
+//#include <mlpack/methods/reinforcement_learning/sac.hpp>
+
+//#include <mlpack/methods/reinforcement_learning/q_learning.hpp>
+//#include <mlpack/methods/reinforcement_learning/q_networks/simple_dqn.hpp>
+#include <mlpack/prereqs.hpp>
+#include <mlpack/core.hpp>
 #include <mlpack/methods/ann/ffn.hpp>
-#include <mlpack/methods/reinforcement_learning/q_learning.hpp>
-#include <mlpack/methods/reinforcement_learning/q_networks/simple_dqn.hpp>
+#include <mlpack/methods/reinforcement_learning/sac.hpp>
+#include <mlpack/methods/ann/loss_functions/empty_loss.hpp>
+#include <mlpack/methods/ann/init_rules/gaussian_init.hpp>
+//#include <mlpack/methods/reinforcement_learning/environment/env_type.hpp>
+//#include <mlpack/methods/reinforcement_learning/training_config.hpp>
 #pragma warning(pop)
 
 class SnakeControl;
 class Board;
 
-namespace mlpack {
-
-	namespace rl {
-		template<typename T> class GreedyPolicy;
-		template<typename T> class RandomReplay;
-	}
-}
-
 namespace ml {
-	class DQN;
-	
-	using Policy = mlpack::rl::GreedyPolicy<ml::SnakeAction>;
-	using Replay = mlpack::rl::RandomReplay<ml::SnakeAction>;
+	using ReplayMethod = mlpack::rl::RandomReplay<ContinuousActionEnvironment>;
 	using Config = mlpack::rl::TrainingConfig;
-	using QLearningAgent = mlpack::rl::QLearning<ml::SnakeAction, mlpack::rl::SimpleDQN<>, ens::AdamUpdate, Policy, Replay>;
+	using FeedForwardNetwork = mlpack::ann::FFN<mlpack::ann::EmptyLoss<>, mlpack::ann::GaussianInitialization>;
+	using SoftActionCritic = mlpack::rl::SAC<ml::ContinuousActionEnvironment, FeedForwardNetwork, FeedForwardNetwork, ens::AdamUpdate>;
 
 	class LearningAgent
 	{
@@ -38,19 +42,29 @@ namespace ml {
 		~LearningAgent();
 		void runLearningAgent();
 		void proceedToNextStep();
-		std::list<VisionPoints> currentVision() const;
+		std::list<VisionPoints> currentVision();
 		size_t stepsPerformed() const;
 		size_t maxSteps() const;
 		size_t totalSteps() const;
 	protected:
-		std::unique_ptr<DQN> model_;
+		void updateEnvironment();
+
+		bool isReadyForNextStep();
+
+		std::unique_ptr<ReplayMethod> replayMethod_;
 		std::unique_ptr<Config> trainingConfig_;
-		std::unique_ptr<Policy> policy_;
-		std::unique_ptr<Replay> replay_;
+		std::unique_ptr<FeedForwardNetwork> policyNetwork_;
+		std::unique_ptr<FeedForwardNetwork> qnetwork_;
+		std::unique_ptr<SoftActionCritic> agent_;
+
+		Environment environment_;
+
+		SnakeControl& snakeControl_;
+		SnakeVision snakeVision_;
+		Board& board_;
 		std::atomic<bool> episodeRunning_;
-		std::unique_ptr<QLearningAgent> learningAgent_;
-		SnakeControl* control_{ nullptr };
-		Board* board_{ nullptr };
+		bool readyForNextStep_{ false };
+		size_t step_{ 0 };
 	};
 
 }

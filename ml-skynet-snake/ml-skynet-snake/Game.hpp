@@ -4,7 +4,7 @@
 #include "Board.hpp"
 #include "Settings.hpp"
 #include "Input.hpp"
-#include "Simulation.hpp"
+#include "simulation/Simulation.hpp"
 #include "states/BaseState.hpp"
 #include "states/GameStates.hpp"
 #include "Snake.hpp"

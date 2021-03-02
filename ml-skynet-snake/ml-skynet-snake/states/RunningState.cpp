@@ -1,9 +1,8 @@
 #include "RunningState.hpp"
 #include "GameOverState.hpp"
 #include "../Game.hpp"
-#include "../FontCache.hpp"
-#include "../Simulation.hpp"
-//#include "Snake.hpp"
+#include "../utils/FontCache.hpp"
+#include "../simulation/Simulation.hpp"
 #include "../SnakeControl.hpp"
 #include <iostream>
 #include <string>
@@ -62,16 +61,22 @@ void gamestates::state::RunningState::newRandomPositionForFood()
 	food_.updatePosition(board, position);
 }
 
+void gamestates::state::RunningState::snakePositionUpdated()
+{
+}
+
 void gamestates::state::RunningState::registerCallbacks()
 {
 	registerCollisionCallback();
 	registerFoodEatenCallback();
+	registerPositionUpdatedCallback();
 }
 
 void gamestates::state::RunningState::unregisterCallbacks()
 {
 	unregisterCollisionCallback();
 	unregisterFoodEatenCallback();
+	unregisterPositionUpdatedCallback();
 }
 
 void gamestates::state::RunningState::registerCollisionCallback()
@@ -100,6 +105,20 @@ void gamestates::state::RunningState::unregisterFoodEatenCallback()
 	Snake& snake = game_.snake();
 	subjects::FoodEatenSubject& foodEatenSubject = snake.foodEatenSubject();
 	foodEatenSubject.removeObserver(this, &RunningState::newRandomPositionForFood);
+}
+
+void gamestates::state::RunningState::registerPositionUpdatedCallback()
+{
+	Snake& snake = game_.snake();
+	subjects::SnakePositionUpdatedSubject& positionUpdated = snake.positionUpdateSubject();
+	positionUpdated.addObserver(this, &RunningState::snakePositionUpdated);
+}
+
+void gamestates::state::RunningState::unregisterPositionUpdatedCallback()
+{
+	Snake& snake = game_.snake();
+	subjects::SnakePositionUpdatedSubject& positionUpdated = snake.positionUpdateSubject();
+	positionUpdated.removeObserver(this, &RunningState::snakePositionUpdated);
 }
 
 void gamestates::state::RunningState::update(Renderer& renderer)

@@ -33,7 +33,7 @@ namespace gamestates {
 
 			void registerSnakePositionUpdatedCallback();
 			void unregisterSnakePositionUpdatedCallback();
-			void snakePositionUpdated();
+			void snakePositionUpdated() override;
 
 		private:
 			thread::interruptibleThread* ai_{ nullptr };

@@ -3,15 +3,22 @@
 #include "../SnakeVision.hpp"
 #include "../utils/Point.hpp"
 #include "State.hpp"
-#include <mutex>
-#include <condition_variable>
+#include <vector>
+//#include <condition_variable>
 
 class Board;
 class SnakeControl;
 
 namespace ml {
+	class Environment : public State
+	{
+	public:
+		double reward_;
+		bool terminal_;
+	};
 
-	class SnakeAction : public State
+	
+	class ContinuousActionEnvironment : public State
 	{
 	public:
 
@@ -25,14 +32,17 @@ namespace ml {
 				right,
 				left,
 			};
+			
+			Action() : action(ContinuousActionEnvironment::Action::size) { /* Nothing to do here */ }
 			// To store the action.
-			actions action;
+			//actions action;
+			std::vector<double> action;
 
 			// Track the size of the action space.
-			static const size_t size = 4;
+			static constexpr size_t size = 4;
 		};
 
-		SnakeAction();
+		ContinuousActionEnvironment();
 
 		double Sample(const State& state, const Action& action, State& nextState);
 		double Sample(const State& state, const Action& action);
@@ -51,9 +61,9 @@ namespace ml {
 
 		//typedef std::function<void()> Predicate;
 
-		bool isReadyForNextStep();
-		bool notReadyForNextStep();
-		void proceedToNextStep();
+		//bool isReadyForNextStep();
+		//bool notReadyForNextStep();
+		//void proceedToNextStep();
 	private:
 
 		const int terminalReward{ -100 };
@@ -68,10 +78,9 @@ namespace ml {
 		//std::condition_variable cv_;
 		//std::unique_ptr<std::condition_variable> cv_;
 		//std::unique_ptr<std::mutex> mutex_;
-		
+
 		Board* board_{ nullptr };
 		SnakeControl* snakeControl_{ nullptr };
 		SnakeVision snakeVision_;
 	};
-
 }

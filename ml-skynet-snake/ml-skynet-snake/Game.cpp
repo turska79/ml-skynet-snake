@@ -1,7 +1,7 @@
 #include "Game.hpp"
 #include "Renderer.hpp"
 #include "states/MainMenuState.hpp"
-#include "FontCache.hpp"
+#include "utils/FontCache.hpp"
 #include "utils/Utils.hpp"
 
 #pragma warning(push)  

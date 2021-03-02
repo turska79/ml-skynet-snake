@@ -2,9 +2,9 @@
 #include "../Game.hpp"
 #include "../Board.hpp"
 #include "GameOverState.hpp"
-#include "../FontCache.hpp"
+#include "../utils/FontCache.hpp"
 #include "../SnakeControl.hpp"
-#include "../InterruptibleThread.hpp"
+#include "../utils/InterruptibleThread.hpp"
 #include "../ml/LearningAgent.hpp"
 #include <iostream>
 
@@ -108,15 +108,15 @@ void gamestates::state::RunningStateAI::printGameCountToScreen(Renderer& rendere
 }
 void gamestates::state::RunningStateAI::registerSnakePositionUpdatedCallback()
 {
-	Snake& snake = game_.snake();
+/*	Snake& snake = game_.snake();
 	subjects::SnakePositionUpdatedSubject& positionUpdated = snake.positionUpdateSubject();
-	positionUpdated.addObserver(this, &RunningStateAI::snakePositionUpdated);
+	positionUpdated.addObserver(this, &RunningStateAI::snakePositionUpdated);*/
 }
 void gamestates::state::RunningStateAI::unregisterSnakePositionUpdatedCallback()
 {
-	Snake& snake = game_.snake();
+	/*Snake& snake = game_.snake();
 	subjects::SnakePositionUpdatedSubject& positionUpdated = snake.positionUpdateSubject();
-	positionUpdated.removeObserver(this, &RunningStateAI::snakePositionUpdated);
+	positionUpdated.removeObserver(this, &RunningStateAI::snakePositionUpdated);*/
 }
 void gamestates::state::RunningStateAI::snakePositionUpdated()
 {

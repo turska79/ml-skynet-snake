@@ -25,6 +25,11 @@ namespace utils {
 		namespace color {
 			constexpr SDL_Color black = { 0, 0, 0,255 };
 		}
+
+		namespace ml {
+			constexpr unsigned int input_parameters{ 28 };
+			constexpr unsigned int actions{ 4 };
+		}
 	}
 	
 	namespace math {

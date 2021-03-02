@@ -7,6 +7,7 @@
 
 #include <array>
 #include "../utils/Point.hpp"
+#include "../utils/Utils.hpp"
 
 namespace ml {
 	class State
@@ -64,7 +65,7 @@ namespace ml {
 			return data_[27];
 		}
 
-		static constexpr size_t dimension{ 28 };
+		static constexpr size_t dimension{ utils::commonConstants::ml::input_parameters };
 
 	private:
 		arma::colvec data_;

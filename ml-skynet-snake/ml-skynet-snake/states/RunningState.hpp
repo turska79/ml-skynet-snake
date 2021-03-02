@@ -31,6 +31,7 @@ namespace gamestates {
 			void resetBoard() const;
 			void initSnake();
 			void newRandomPositionForFood();
+			virtual void snakePositionUpdated();
 
 			void registerCallbacks();
 			void unregisterCallbacks();
@@ -38,6 +39,8 @@ namespace gamestates {
 			void unregisterCollisionCallback();
 			void registerFoodEatenCallback();
 			void unregisterFoodEatenCallback();
+			void registerPositionUpdatedCallback();
+			void unregisterPositionUpdatedCallback();
 
 			SnakeControl& snakeControl_;
 			Simulation& simulation_;

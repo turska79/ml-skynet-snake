@@ -136,7 +136,7 @@ const bool Snake::checkForCollision(const utils::Point<std::size_t> target)
 {
 	const Cell* cell = board_.findCell(target);
 	
-	if (cell->type_ == Cell::Type::wall || cell->type_ == Cell::Type::body) {
+	if (cell->type_ == Cell::Type::wall){// || cell->type_ == Cell::Type::body) {
 		return true;
 	}
 

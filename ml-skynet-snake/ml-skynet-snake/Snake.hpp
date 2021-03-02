@@ -4,7 +4,7 @@
 #include <list>
 #include "utils/Point.hpp"
 #include "SnakeControl.hpp"
-#include "SimulationObject.hpp"
+#include "Simulation/SimulationObject.hpp"
 #include "subjects/SnakePositionUpdatedSubject.hpp"
 #include "subjects/SnakeCollisionSubject.hpp"
 #include "subjects/FoodEatenSubject.hpp"
