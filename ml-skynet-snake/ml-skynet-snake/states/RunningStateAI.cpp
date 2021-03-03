@@ -28,7 +28,6 @@ void gamestates::state::RunningStateAI::enter()
 	running_ = true;
 	++gameCount_;
 	RunningState::enter();
-	registerSnakePositionUpdatedCallback();
 
 	if (running_) {
 		ai_ = new thread::interruptibleThread(&RunningStateAI::runLearningAgent, this);
@@ -50,7 +49,6 @@ void gamestates::state::RunningStateAI::exit()
 	}
 
 	RunningState::exit();
-	unregisterSnakePositionUpdatedCallback();
 
 	std::cout << "RunningStateAI::exit()" << std::endl;
 }
@@ -70,9 +68,8 @@ void gamestates::state::RunningStateAI::update(Renderer& renderer)
 		renderer.DrawDottedLine(fromPosition.x_, fromPosition.y_, toPosition.x_, toPosition.y_);
 	}
 
-	printStepsToScreen(renderer);
 	printGameCountToScreen(renderer);
-	
+	printStepsToScreen(renderer);
 }
 
 void gamestates::state::RunningStateAI::handleInput(const Keyboard& keyboard)
@@ -85,15 +82,16 @@ void gamestates::state::RunningStateAI::printStepsToScreen(Renderer& renderer)
 	auto step{ learningAgent_->stepsPerformed() };
 	auto maxSteps{ learningAgent_->maxSteps() };
 	auto totalSteps{ learningAgent_->totalSteps() };
-	std::string score = "Total steps: ";
-	score.append(std::to_string(totalSteps));
-	score.append(" Episode step: ");
-	score.append(std::to_string(step));
-	score.append(" / ");
-	score.append(std::to_string(maxSteps));
+	std::string totalStepsText = "Total steps: ";
+	totalStepsText.append(std::to_string(totalSteps));
+	std::string episodeSteps ="Episode step: ";
+	episodeSteps.append(std::to_string(step));
+	episodeSteps.append(" / ");
+	episodeSteps.append(std::to_string(maxSteps));
 	constexpr unsigned int x{ 0 };
-	constexpr unsigned int y{ 60 };
-	renderer.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+	constexpr unsigned int y{ 80 };
+	renderer.renderText(x, y, totalStepsText, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+	renderer.renderText(x, y + 20, episodeSteps, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
 	
 }
 
@@ -103,27 +101,11 @@ void gamestates::state::RunningStateAI::printGameCountToScreen(Renderer& rendere
 	score.append(std::to_string(gameCount_));
 	
 	constexpr unsigned int x{ 0 };
-	constexpr unsigned int y{ 80 };
+	constexpr unsigned int y{ 60 };
 	renderer.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
 }
-void gamestates::state::RunningStateAI::registerSnakePositionUpdatedCallback()
-{
-/*	Snake& snake = game_.snake();
-	subjects::SnakePositionUpdatedSubject& positionUpdated = snake.positionUpdateSubject();
-	positionUpdated.addObserver(this, &RunningStateAI::snakePositionUpdated);*/
-}
-void gamestates::state::RunningStateAI::unregisterSnakePositionUpdatedCallback()
-{
-	/*Snake& snake = game_.snake();
-	subjects::SnakePositionUpdatedSubject& positionUpdated = snake.positionUpdateSubject();
-	positionUpdated.removeObserver(this, &RunningStateAI::snakePositionUpdated);*/
-}
+
 void gamestates::state::RunningStateAI::snakePositionUpdated()
 {
 	learningAgent_->proceedToNextStep();
 }
-/*
-SnakeBrain& RunningStateAI::snakeBrain() noexcept
-{
-	return learningAgent_->Environment();
-}*/

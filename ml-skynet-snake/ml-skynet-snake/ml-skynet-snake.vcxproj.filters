@@ -87,9 +87,6 @@
     <ClInclude Include="ml\LearningAgent.hpp">
       <Filter>Header Files\ml</Filter>
     </ClInclude>
-    <ClInclude Include="ml\SnakeAction.hpp">
-      <Filter>Header Files\ml</Filter>
-    </ClInclude>
     <ClInclude Include="ml\State.hpp">
       <Filter>Header Files\ml</Filter>
     </ClInclude>
@@ -147,6 +144,9 @@
     <ClInclude Include="utils\vec2.hpp">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="ml\Environments.hpp">
+      <Filter>Header Files\ml</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp">
@@ -188,9 +188,6 @@
     <ClCompile Include="ml\LearningAgent.cpp">
       <Filter>Source Files\ml</Filter>
     </ClCompile>
-    <ClCompile Include="ml\SnakeAction.cpp">
-      <Filter>Source Files\ml</Filter>
-    </ClCompile>
     <ClCompile Include="ml\State.cpp">
       <Filter>Source Files\ml</Filter>
     </ClCompile>
@@ -229,6 +226,9 @@
     </ClCompile>
     <ClCompile Include="utils\vec2.cpp">
       <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ml\Environments.cpp">
+      <Filter>Source Files\ml</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

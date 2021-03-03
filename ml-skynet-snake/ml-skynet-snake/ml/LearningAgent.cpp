@@ -37,13 +37,13 @@ ml::LearningAgent::LearningAgent(SnakeControl& snakeControl, Board& board) : sna
 	policyNetwork_->Add(new  mlpack::ann::ReLULayer<>());
 	policyNetwork_->Add(new  mlpack::ann::Linear<>(128, 128));
 	policyNetwork_->Add(new  mlpack::ann::ReLULayer<>());
-	policyNetwork_->Add(new  mlpack::ann::Linear<>(128, utils::commonConstants::ml::actions));
+	policyNetwork_->Add(new  mlpack::ann::Linear<>(128, utils::commonConstants::ml::number_of_possible_actions));
 	policyNetwork_->Add(new  mlpack::ann::TanHLayer<>());
 	policyNetwork_->ResetParameters();
 	FeedForwardNetwork& policyNetwork = *(policyNetwork_.get());
 
 	qnetwork_ = std::make_unique<ml::FeedForwardNetwork>(mlpack::ann::EmptyLoss<>(), mlpack::ann::GaussianInitialization(0, 0.01));
-	qnetwork_->Add(new mlpack::ann::Linear<>(utils::commonConstants::ml::input_parameters + utils::commonConstants::ml::actions, 128));
+	qnetwork_->Add(new mlpack::ann::Linear<>(utils::commonConstants::ml::input_parameters + utils::commonConstants::ml::number_of_possible_actions, 128));
 	qnetwork_->Add(new mlpack::ann::ReLULayer<>());
 	qnetwork_->Add(new mlpack::ann::Linear<>(128, 128));
 	qnetwork_->Add(new mlpack::ann::ReLULayer<>());
@@ -54,7 +54,7 @@ ml::LearningAgent::LearningAgent(SnakeControl& snakeControl, Board& board) : sna
 	trainingConfig_ = std::make_unique<Config>();
 	mlpack::rl::TrainingConfig& config{ *(trainingConfig_.get()) };
 
-	config.ExplorationSteps() = 3200;
+	config.ExplorationSteps() = 10;
 	config.TargetNetworkSyncInterval() = 1;
 	config.UpdateInterval() = 1;
 
@@ -63,6 +63,14 @@ ml::LearningAgent::LearningAgent(SnakeControl& snakeControl, Board& board) : sna
 
 ml::LearningAgent::~LearningAgent()
 {
+}
+
+// Function to calculate distance 
+float distance(int x1, int y1, int x2, int y2)
+{
+	// Calculating distance 
+	return sqrt(pow(x2 - x1, 2) +
+		pow(y2 - y1, 2) * 1.0);
 }
 
 void ml::LearningAgent::runLearningAgent()
@@ -74,12 +82,19 @@ void ml::LearningAgent::runLearningAgent()
 
 	step_ = 0;
 	double totalReturn{ 0.0 };
+	double reward{ 0 };
 	double episodeReturn{ 0.0 };
 
 	updateEnvironment();
 	
 	while (episodeRunning_) {
 		std::cout << "LearningAgent::runLearningAgent() thinking about next move" << std::endl;
+
+		Cell* cell = board_.findFood();
+		auto currentPosition{ snakeControl_.getPosition() };
+		
+		distanceToFood_ = distance(currentPosition.x_, currentPosition.y_, cell->x_, cell->y_);
+		std::cout << "LearningAgent::runLearningAgent() distance to food: " << std::to_string(distanceToFood_) << std::endl;
 		
 		agent_->State().Data() = environment_.Encode();
 		agent_->SelectAction();
@@ -98,35 +113,40 @@ void ml::LearningAgent::runLearningAgent()
 			//std::cout << "LearningAgent::runLearningAgent() action: " << std::to_string(action[i]) << std::endl;
 		}
 
-		switch (maxIndex) {
-		case 0:
-			snakeControl_.setDirection(SnakeControl::Direction::up);
+		SnakeControl::Direction newDirection{ decodeDirection(maxIndex) };
+		
+		switch (newDirection) {
+		case SnakeControl::Direction::up:
 			std::cout << "LearningAgent::runLearningAgent() action: up" << std::endl;
 			break;
-		case 1:
-			snakeControl_.setDirection(SnakeControl::Direction::right);
+		case SnakeControl::Direction::right:
 			std::cout << "LearningAgent::runLearningAgent() action: right" << std::endl;
 			break;
-		case 2:
-			snakeControl_.setDirection(SnakeControl::Direction::down);
+		case SnakeControl::Direction::down:
 			std::cout << "LearningAgent::runLearningAgent() action: down" << std::endl;
 			break;
-		case 3:
-			snakeControl_.setDirection(SnakeControl::Direction::left);
+		case SnakeControl::Direction::left:
 			std::cout << "LearningAgent::runLearningAgent() action: left" << std::endl;
 			break;
 		}
 
+		snakeControl_.setDirection(newDirection);
+
 		auto nextPosition = snakeControl_.getNextPosition();
 
 		if (board_.isFood(nextPosition)) {
-			environment_.reward_ = 100;
-		} else if (board_.isWall(nextPosition)) {// || board_.isSnakeBody(nextPosition)) {
-			environment_.reward_ = -100;
-			environment_.terminal_ = true;
+			reward = 500;
+		} else if (board_.isWall(nextPosition) || step_ >= maxSteps()) {// || board_.isSnakeBody(nextPosition)) {
+			reward = -500;
 			episodeRunning_ = false;
 		} else {
-			environment_.reward_ = 1;
+			double newDistanceToFood = distance(nextPosition.x_, nextPosition.y_, cell->x_, cell->y_);
+
+			if (newDistanceToFood > distanceToFood_) {
+				reward = -10;
+			} else {
+				reward = 20;
+			}
 		}
 
 		readyForNextStep_ = false;
@@ -137,54 +157,22 @@ void ml::LearningAgent::runLearningAgent()
 
 			thread::utils::interruptibleWait<decltype(function)>(cv, lock, function);
 		}
-		catch (const std::exception& e) {
+		catch (const std::exception&) {
 			episodeRunning_ = false;
-			continue;
 		}
 
 		updateEnvironment();
 
-		ContinuousActionEnvironment::State nextState;
+		Environment::State nextState;
 		nextState.Data() = environment_.Encode();
 
-		replayMethod_->Store(agent_->State(), agent_->Action(), environment_.reward_, nextState, environment_.terminal_, 0.99);
-		episodeReturn += environment_.reward_;
+		replayMethod_->Store(agent_->State(), agent_->Action(), reward, nextState, episodeRunning_, 0.99);
+		episodeReturn += reward;
+		std::cout << "LearningAgent::runLearningAgent() episode reward: " << std::to_string(episodeReturn) << std::endl;
 		agent_->TotalSteps()++;
 		step_++;
 	}
 
-
-
-	/*
-	// Running until get to the terminal state.
-	while (!environment.IsTerminal(state))
-	{
-		if (config.StepLimit() && steps >= config.StepLimit())
-			break;
-		SelectAction();
-
-		// Interact with the environment to advance to next state.
-		StateType nextState;
-		double reward = environment.Sample(state, action, nextState);
-
-		totalReturn += reward;
-		steps++;
-		totalSteps++;
-
-		// Store the transition for replay.
-		replayMethod.Store(state, action, reward, nextState,
-			environment.IsTerminal(nextState), config.Discount());
-
-		// Update current state.
-		state = nextState;
-
-		if (deterministic || totalSteps < config.ExplorationSteps())
-			continue;
-		for (size_t i = 0; i < config.UpdateInterval(); i++)
-			Update();
-	}
-	//return totalReturn;
-	*/
 	episodeRunning_ = false;
 }
 
@@ -195,31 +183,21 @@ void ml::LearningAgent::proceedToNextStep()
 	}
 	std::cout << "ml::LearningAgent::proceedToNextStep()" << std::endl;
 	readyForNextStep_ = true;
-	//ml::ContinuousActionEnvironment& continuousActionEnvironment = agent_->Environment();
-	//continuousActionEnvironment.proceedToNextStep();
 }
 
 std::list<VisionPoints> ml::LearningAgent::currentVision()
 {
-	//ml::ContinuousActionEnvironment& continuousActionEnvironment{ agent_->Environment() };
-	//SnakeVision& snakeVision{ continuousActionEnvironment.snakeVision() };
-
 	return snakeVision_.pointsForRendering(board_, snakeControl_.getPosition());
-	//return std::list<VisionPoints>();
 }
 
 size_t ml::LearningAgent::stepsPerformed() const
 {
-	//ml::SnakeAction& snakeAction = learningAgent_->Environment();
-	//return snakeAction.StepsPerformed();
 	return step_;
 }
 
 size_t ml::LearningAgent::maxSteps() const
 {
-	//ml::SnakeAction& snakeAction = learningAgent_->Environment();
-	//return snakeAction.MaxSteps();
-	return 0;
+	return utils::commonConstants::ml::max_steps;
 }
 
 size_t ml::LearningAgent::totalSteps() const
@@ -243,27 +221,71 @@ void ml::LearningAgent::updateEnvironment()
 
 	if (direction == SnakeControl::Direction::left) {
 		data[26] = -1;
-	}
-
-	if (direction == SnakeControl::Direction::right) {
+	} else if (direction == SnakeControl::Direction::right) {
 		data[26] = 1;
+	} else {
+		data[26] = 0;
 	}
 
 	if (direction == SnakeControl::Direction::up) {
 		data[27] = -1;
-	}
-
-	if (direction == SnakeControl::Direction::down) {
+	} else if (direction == SnakeControl::Direction::down) {
 		data[27] = 1;
+	} else {
+		data[27] = 0;
 	}
 
-	//Cell* cell = board_.findFood();
+	Cell* cell = board_.findFood();
 
-	//data[28] = cell->x_;
-	//data[29] = cell->y_;
+	data[28] = cell->x_;
+	data[29] = cell->y_;
 }
 
 bool ml::LearningAgent::isReadyForNextStep()
 {
 	return readyForNextStep_;
+}
+
+SnakeControl::Direction ml::LearningAgent::decodeDirection(const unsigned int rawDirection)
+{
+	const auto currentDirection{ snakeControl_.getDirection() };
+	SnakeControl::Direction newDirection{ SnakeControl::Direction::right };
+	
+	const int left{ 0 };
+	const int forward{ 1 };
+	const int right{ 2 };
+
+	if (rawDirection == forward) {
+		return currentDirection;
+	}
+	
+	if (currentDirection == SnakeControl::Direction::up) {
+		if (rawDirection == left) {
+			newDirection = SnakeControl::Direction::left;
+		} else if (rawDirection == right) {
+			newDirection = SnakeControl::Direction::right;
+		}
+	} else if (currentDirection == SnakeControl::Direction::right) {
+		if (rawDirection == left) {
+			newDirection = SnakeControl::Direction::up;
+		} else if (rawDirection == right) {
+			newDirection = SnakeControl::Direction::down;
+		}
+	} else if (currentDirection == SnakeControl::Direction::down) {
+		if (rawDirection == left) {
+			newDirection = SnakeControl::Direction::left;
+		}
+		else if (rawDirection == right) {
+			newDirection = SnakeControl::Direction::right;
+		}
+	} else if (currentDirection == SnakeControl::Direction::left) {
+		if (rawDirection == left) {
+			newDirection = SnakeControl::Direction::down;
+		}
+		else if (rawDirection == right) {
+			newDirection = SnakeControl::Direction::up;
+		}
+	}
+
+	return newDirection;
 }

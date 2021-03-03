@@ -139,12 +139,16 @@ void gamestates::state::RunningState::handleInput(const Keyboard& keyboard)
 	SnakeControl::Direction direction{ snakeControl_.getDirection() };
 
 	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_RIGHT) == keyboard::ButtonState::pressed && direction != Snake::Direction::left) {
+		std::cout << "snake pressed: right" << std::endl;
 		direction = Snake::Direction::right;
 	} else  if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_LEFT) == keyboard::ButtonState::pressed && direction != Snake::Direction::right) {
+		std::cout << "snake pressed: left" << std::endl;
 		direction = Snake::Direction::left;
 	} else  if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_UP) == keyboard::ButtonState::pressed && direction != Snake::Direction::down) {
+		std::cout << "snake pressed: up" << std::endl;
 		direction = Snake::Direction::up;
 	} else if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_DOWN) == keyboard::ButtonState::pressed && direction != Snake::Direction::up) {
+		std::cout << "snake pressed: down" << std::endl;
 		direction = Snake::Direction::down;
 	}
 

@@ -72,8 +72,9 @@ void Game::renderBoard()
 
 void Game::printCurrentScoreToScreen()
 {
+	constexpr unsigned int snakeInitialLentgh{ 2 };
 	std::string score = "Score: ";
-	score.append(std::to_string(snake_.length()));
+	score.append(std::to_string(snake_.length() - snakeInitialLentgh));
 	constexpr unsigned int x{ 0 };
 	constexpr unsigned int y{ 40 };
 	renderer_.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
@@ -90,11 +91,12 @@ void Game::printFpsRateToScreen()
 
 	std::string fpsTtext{ "FPS: " };
 	fpsTtext.append(std::to_string(static_cast<unsigned int>(std::round(fps))));
-	fpsTtext.append(" / Simulation rate: ");
+	std::string simulationFpsText("Simulation rate: ");
 
 	const uint32_t simulationRate = simulation_.updateRate();
-	fpsTtext.append(std::to_string(static_cast<unsigned int>(simulationRate)));
+	simulationFpsText.append(std::to_string(static_cast<unsigned int>(simulationRate)));
 	renderer_.renderText(0, 0, fpsTtext, *font, utils::commonConstants::color::black);
+	renderer_.renderText(0, 20, simulationFpsText, *font, utils::commonConstants::color::black);
 	
 	lastRender_ = now;
 }

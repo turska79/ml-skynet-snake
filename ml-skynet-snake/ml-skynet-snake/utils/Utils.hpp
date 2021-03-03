@@ -14,7 +14,7 @@ namespace utils {
 		constexpr unsigned int secondAsMilliseconds{ 1000 };
 		constexpr unsigned int targetFramesPerSecond{ 60 };
 		constexpr uint32_t refreshRateTargetTimeStep{ secondAsMilliseconds / targetFramesPerSecond };
-		constexpr uint32_t simulationRefreshRateTargetTimeStep{ secondAsMilliseconds / 30 };
+		constexpr uint32_t simulationRefreshRateTargetTimeStep{ secondAsMilliseconds / 60 };
 		constexpr unsigned int processOneStepPerUpdate{ 1 };
 		constexpr unsigned int lowSpeedLimit{ processOneStepPerUpdate };
 
@@ -27,8 +27,10 @@ namespace utils {
 		}
 
 		namespace ml {
-			constexpr unsigned int input_parameters{ 28 };
-			constexpr unsigned int actions{ 4 };
+			constexpr unsigned int input_parameters{ 30 };
+			constexpr unsigned int left_or_forward_or_right{ 3 };
+			constexpr unsigned int number_of_possible_actions{ left_or_forward_or_right };
+			constexpr unsigned int max_steps{ 500 };
 		}
 	}
 	

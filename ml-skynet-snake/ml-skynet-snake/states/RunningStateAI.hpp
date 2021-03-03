@@ -30,9 +30,6 @@ namespace gamestates {
 			void runLearningAgent();
 			void printStepsToScreen(Renderer& renderer);
 			void printGameCountToScreen(Renderer& renderer);
-
-			void registerSnakePositionUpdatedCallback();
-			void unregisterSnakePositionUpdatedCallback();
 			void snakePositionUpdated() override;
 
 		private:

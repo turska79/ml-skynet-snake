@@ -176,7 +176,7 @@
     <ClInclude Include="ml\DQN.hpp" />
     <ClInclude Include="ml\FFNNetwork.hpp" />
     <ClInclude Include="ml\LearningAgent.hpp" />
-    <ClInclude Include="ml\SnakeAction.hpp" />
+    <ClInclude Include="ml\Environments.hpp" />
     <ClInclude Include="ml\State.hpp" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="Settings.hpp" />
@@ -212,7 +212,7 @@
     <ClCompile Include="ml\DQN.cpp" />
     <ClCompile Include="ml\FFNNetwork.cpp" />
     <ClCompile Include="ml\LearningAgent.cpp" />
-    <ClCompile Include="ml\SnakeAction.cpp" />
+    <ClCompile Include="ml\Environments.cpp" />
     <ClCompile Include="ml\State.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Settings.cpp" />
