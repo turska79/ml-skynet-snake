@@ -78,12 +78,6 @@
     <ClInclude Include="SnakeVision.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ml\DQN.hpp">
-      <Filter>Header Files\ml</Filter>
-    </ClInclude>
-    <ClInclude Include="ml\FFNNetwork.hpp">
-      <Filter>Header Files\ml</Filter>
-    </ClInclude>
     <ClInclude Include="ml\LearningAgent.hpp">
       <Filter>Header Files\ml</Filter>
     </ClInclude>
@@ -178,12 +172,6 @@
     </ClCompile>
     <ClCompile Include="SnakeVision.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ml\DQN.cpp">
-      <Filter>Source Files\ml</Filter>
-    </ClCompile>
-    <ClCompile Include="ml\FFNNetwork.cpp">
-      <Filter>Source Files\ml</Filter>
     </ClCompile>
     <ClCompile Include="ml\LearningAgent.cpp">
       <Filter>Source Files\ml</Filter>

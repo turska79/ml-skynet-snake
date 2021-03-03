@@ -173,8 +173,6 @@
     <ClInclude Include="Input.hpp" />
     <ClInclude Include="Keyboard.hpp" />
     <ClInclude Include="KeyboardState.hpp" />
-    <ClInclude Include="ml\DQN.hpp" />
-    <ClInclude Include="ml\FFNNetwork.hpp" />
     <ClInclude Include="ml\LearningAgent.hpp" />
     <ClInclude Include="ml\Environments.hpp" />
     <ClInclude Include="ml\State.hpp" />
@@ -209,8 +207,6 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyboardState.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ml\DQN.cpp" />
-    <ClCompile Include="ml\FFNNetwork.cpp" />
     <ClCompile Include="ml\LearningAgent.cpp" />
     <ClCompile Include="ml\Environments.cpp" />
     <ClCompile Include="ml\State.cpp" />
