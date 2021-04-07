@@ -18,11 +18,11 @@ void Simulation::start()
 	std::cout << "Simulation::start()" << std::endl;
 	const std::lock_guard<std::mutex> lock(threadHandlingMutex_);
 
-	if (simulationThread_) {
-		simulationThread_->interrupt();
-	}
+	//if (simulationThread_) {
+//		simulationThread_->waitUntilInterrupted();
+	//}
 
-	simulationThread_ = std::make_unique<thread::interruptibleThread>(&Simulation::run, this);
+	simulationThread_ = std::make_unique<thread::interruptibleThread>(this, &Simulation::run, "simulation");
 }
 
 void Simulation::stop()
@@ -31,8 +31,12 @@ void Simulation::stop()
 	const std::lock_guard<std::mutex> lock(threadHandlingMutex_);
 
 	if (simulationThread_) {
-		simulationThread_->interrupt();
+		//simulationThread_->interrupt();
+		simulationThread_->waitUntilInterrupted();
 	}
+
+	//delete simulationThread_.release();
+	//simulationThread_ = nullptr;
 
 	updateRate_ = 0;
 }
@@ -78,6 +82,7 @@ void Simulation::runSimulationLoop()
 				//std::cout << "Simulation::runSimulationLoop() count: " << std::to_string(count) << std::endl;
 				thread::utils::interruptionPoint();
 
+				//std::cout << "Simulation::runSimulationLoop() update objects" << std::endl;
 				updateObjects(deltaTime);
 				nextSimulationStep_ += utils::commonConstants::simulationRefreshRateTargetTimeStep;
 			}
@@ -90,6 +95,7 @@ void Simulation::runSimulationLoop()
 		}
 		else {
 			//std::cout << "Simulation::runSimulationLoop() sleep: " << std::to_string(nextSimulationStep_ - now)  << std::endl;
+			thread::utils::interruptionPoint();
 			SDL_Delay(nextSimulationStep_ - now);
 		}
 	}

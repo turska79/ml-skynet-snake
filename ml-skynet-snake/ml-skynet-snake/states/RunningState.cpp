@@ -10,7 +10,6 @@
 #include <sstream>
 
 extern FontUtils::FontCache fontCache;
-bool collision = false;
 
 gamestates::state::RunningState::RunningState(Game& game) noexcept : gamestates::state::BaseState(game), snakeControl_(game.snake()), simulation_(game.simulation())
 {
@@ -23,16 +22,17 @@ void gamestates::state::RunningState::snakeCollisionCallback()
 		return;
 	}
 
-	Simulation& simulation = game_.simulation();
-	simulation.stop();
+	std::cout << " RunningState::snakeCollisionCallback()" << std::endl;
 
-	collision = true;
+	//Simulation& simulation = game_.simulation();
+	//simulation.stop();
+
+	game_.nextState<GameOverState>(game_);
 }
 
 void gamestates::state::RunningState::enter()
 {
 	std::cout << " RunningState::enter()" << std::endl;
-	collision = false;
 	resetBoard();
 	initSnake();
 	newRandomPositionForFood();
@@ -123,14 +123,17 @@ void gamestates::state::RunningState::unregisterPositionUpdatedCallback()
 
 void gamestates::state::RunningState::update(Renderer& renderer)
 {
-	if (collision) {
+	/*if (collision) {
 		game_.nextState<GameOverState>(game_);
-	}
+	}*/
 }
 
 void gamestates::state::RunningState::exit()
 {
 	std::cout << " RunningState::exit()" << std::endl;
+	Simulation& simulation = game_.simulation();
+	simulation.stop();
+	
 	unregisterCallbacks();
 }
 

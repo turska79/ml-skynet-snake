@@ -66,6 +66,9 @@ std::array<float, 3> SnakeVision::lookInDirection(Board& board, const utils::Poi
 	float distanceToWall{ 1 };
 
 	position += direction;
+	
+	if (position.x < 0) position.x = 0;
+	if (position.y < 0) position.y = 0;
 
 	while (!board.isWall(utils::Point<std::size_t>(position.x, position.y))) {
 		if (look[food] == notFound && board.isFood(utils::Point<std::size_t>(position.x, position.y))) {

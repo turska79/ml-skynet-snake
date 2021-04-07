@@ -18,8 +18,8 @@ void gamestates::state::GameOverState::enter()
 
 void gamestates::state::GameOverState::update(Renderer& renderer)
 {
-	game_.popState();
-	return;
+	//game_.popState();
+	//return;
 
 	//SDL_Color black = { 0, 0, 0, 255 };
 	constexpr unsigned int x{ 340 };

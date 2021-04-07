@@ -27,7 +27,18 @@ namespace utils {
 		}
 
 		namespace ml {
-			constexpr unsigned int input_parameters{ 30 };
+			namespace inputParameters {
+				constexpr unsigned int count{ 30 };
+
+				constexpr unsigned int snake_head_x_in_data{ 24 };
+				constexpr unsigned int snake_head_y_in_data{ 25 };
+
+				constexpr unsigned int direction_vector_x{ 26 };
+				constexpr unsigned int direction_vector_y{ 27 };
+
+				constexpr unsigned int food_x{ 27 };
+				constexpr unsigned int food_y{ 28 };
+			}
 			constexpr unsigned int left_or_forward_or_right{ 3 };
 			constexpr unsigned int number_of_possible_actions{ left_or_forward_or_right };
 			constexpr unsigned int max_steps{ 500 };

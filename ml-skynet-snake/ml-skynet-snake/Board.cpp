@@ -18,10 +18,10 @@ Board::Board(const Settings& settings)
 	createBoard(settings.gridWidth_, settings.gridHeight_);
 }
 
-Cell* Board::findCell(const utils::Point<std::size_t>& toFind)
+Cell* Board::findCell(const utils::Point<std::size_t> toFind)
 {
 	auto const& it = std::find_if(grid_.begin(), grid_.end(), [&toFind](std::unique_ptr<Cell>& cell) noexcept {
-		if (toFind.x_ == cell->x_ && toFind.y_ == cell->y_)
+		if (cell != nullptr && toFind.x_ == cell->x_ && toFind.y_ == cell->y_)
 			return true;
 		else
 			return false;
@@ -85,7 +85,7 @@ std::list<std::unique_ptr<Cell>>& Board::grid() noexcept
 	return grid_;
 }
 
-const bool Board::isFood(const utils::Point<std::size_t>& target)
+const bool Board::isFood(const utils::Point<std::size_t> target)
 {
 	const Cell* cell = findCell(target);
 
@@ -96,7 +96,7 @@ const bool Board::isFood(const utils::Point<std::size_t>& target)
 	return false;
 }
 
-const bool Board::isWall(const utils::Point<std::size_t>& target)
+const bool Board::isWall(const utils::Point<std::size_t> target)
 {
 	if (target.x_ == walls::leftWall || target.x_ == walls::rightWall) {
 		return true;
@@ -109,7 +109,7 @@ const bool Board::isWall(const utils::Point<std::size_t>& target)
 	return false;
 }
 
-const bool Board::isSnakeBody(const utils::Point<std::size_t>& target)
+const bool Board::isSnakeBody(const utils::Point<std::size_t> target)
 {
 	const Cell* cell = findCell(target);
 

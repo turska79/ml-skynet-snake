@@ -20,6 +20,7 @@ namespace utils {
 			return normalised;
 		}
 
+		bool operator==(const Point<T>& rhs) const { return this->x_ == rhs.x_ && this->y_ == rhs.y_; };
 		T x_{ 0 };
 		T y_{ 0 };
 	};

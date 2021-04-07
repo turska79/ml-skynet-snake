@@ -14,7 +14,7 @@ gamestates::state::RunningStateAI::RunningStateAI(Game& game) noexcept : Running
 {
 	SnakeControl& snakeControl{ game.snake() };
 	Board& board{ game.board() };
-	learningAgent_ = std::make_unique<ml::LearningAgent>(snakeControl, board);
+	learningAgent_ = std::make_unique<ml::LearningAgent>(snakeControl, board, game_);
 }
 
 gamestates::state::RunningStateAI::~RunningStateAI()
@@ -29,24 +29,34 @@ void gamestates::state::RunningStateAI::enter()
 	++gameCount_;
 	RunningState::enter();
 
-	if (running_) {
-		ai_ = new thread::interruptibleThread(&RunningStateAI::runLearningAgent, this);
-		running_ = false;
-	}
+	//if (running_) {
+		runLearningAgent();
+		//ai_ = new thread::interruptibleThread(&RunningStateAI::runLearningAgent, this);
+	//	running_ = false;
+	//}
 }
 
 void gamestates::state::RunningStateAI::runLearningAgent()
 {
-	learningAgent_->runLearningAgent();
+	std::cout << "RunningStateAI::runLearningAgent()" << std::endl;
+	//learningAgent_->runLearningAgent();
+	learningAgent_->run();
 }
 
 void gamestates::state::RunningStateAI::exit()
 {
-	running_ = false;
+	std::cout << "RunningStateAI::exit()" << std::endl;
+	//running_ = false;
 
-	if (ai_) {
-		ai_->interrupt();
-	}
+	//if (ai_) {
+	//	ai_->waitUntilInterrupted();
+	//}
+
+
+	Simulation& simulation = game_.simulation();
+	simulation.stop();
+
+	learningAgent_->waitUntilStopped();
 
 	RunningState::exit();
 
@@ -72,9 +82,27 @@ void gamestates::state::RunningStateAI::update(Renderer& renderer)
 	printStepsToScreen(renderer);
 }
 
-void gamestates::state::RunningStateAI::handleInput(const Keyboard& keyboard)
+void gamestates::state::RunningStateAI::handleInput(const Keyboard&)
 {
 
+}
+
+void gamestates::state::RunningStateAI::snakeCollisionCallback()
+{
+	if (game_.currentState() != this) {
+		return;
+	}
+
+	std::cout << "RunningStateAI::snakeCollisionCallback()" << std::endl;
+
+	//ai_->waitUntilInterrupted();
+
+	//Simulation& simulation = game_.simulation();
+	//simulation.stop();
+
+	//learningAgent_->waitUntilStopped();
+	
+	game_.nextState<GameOverState>(game_);
 }
 
 void gamestates::state::RunningStateAI::printStepsToScreen(Renderer& renderer)
@@ -107,5 +135,24 @@ void gamestates::state::RunningStateAI::printGameCountToScreen(Renderer& rendere
 
 void gamestates::state::RunningStateAI::snakePositionUpdated()
 {
-	learningAgent_->proceedToNextStep();
+	std::cout << "RunningStateAI::snakePositionUpdated()" << std::endl;
+	learningAgent_->advanceEnvironment();
+	/*
+	//learningAgent_->processNextStep();
+	try {
+		std::mutex mutex;
+		std::condition_variable cv;
+		std::unique_lock<std::mutex> lock(mutex);
+		//auto function = std::bind(&LearningAgent::isIdle, this);
+		auto function = [&]() -> bool { return learningAgent_->learningAgentState() == ml::LearningAgent::LearningAgentState::Idle; };
+
+		thread::utils::interruptibleWait<decltype(function)>(cv, lock, function);
+
+		auto& agentSate{ learningAgent_->learningAgentState() };
+		agentSate = ml::LearningAgent::LearningAgentState::Process;
+	}
+	catch (const std::exception&) {
+		std::cout << "LearningAgent::runLearningAgent() exception from processNextStep" << std::endl;
+	}
+	*/
 }

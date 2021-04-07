@@ -123,9 +123,6 @@
     <ClInclude Include="utils\FontCache.hpp">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="utils\InterruptibleThread.hpp">
-      <Filter>Header Files\utils</Filter>
-    </ClInclude>
     <ClInclude Include="utils\Point.hpp">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
@@ -140,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="ml\Environments.hpp">
       <Filter>Header Files\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\InterruptibleThread.hpp">
+      <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -57,6 +57,7 @@ void Game::gameLoop()
 
 	renderBoard();
 
+	changeState();
 	currentState()->update(renderer_);
 	
 	printCurrentScoreToScreen();
@@ -74,7 +75,10 @@ void Game::printCurrentScoreToScreen()
 {
 	constexpr unsigned int snakeInitialLentgh{ 2 };
 	std::string score = "Score: ";
-	score.append(std::to_string(snake_.length() - snakeInitialLentgh));
+
+	const unsigned int len = snake_.length() > 0 ? snake_.length() - snakeInitialLentgh : 0;
+
+	score.append(std::to_string(len));
 	constexpr unsigned int x{ 0 };
 	constexpr unsigned int y{ 40 };
 	renderer_.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
@@ -153,7 +157,7 @@ void Game::handleInput()
 
 gamestates::state::BaseState* Game::currentState()
 {
-	changeState();
+	//changeState();
 
 	if (states_.empty() == false) {
 		return states_.back().get();

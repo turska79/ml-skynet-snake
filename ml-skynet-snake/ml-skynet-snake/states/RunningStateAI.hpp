@@ -25,6 +25,7 @@ namespace gamestates {
 			void exit() override;
 			void update(Renderer& renderer) override;
 			void handleInput(const Keyboard& keyboard) override;
+			void snakeCollisionCallback() override;
 
 		protected:
 			void runLearningAgent();
@@ -33,7 +34,7 @@ namespace gamestates {
 			void snakePositionUpdated() override;
 
 		private:
-			thread::interruptibleThread* ai_{ nullptr };
+			//thread::interruptibleThread* ai_{ nullptr };
 			std::size_t gameCount_{ 0 };
 
 			std::unique_ptr<ml::LearningAgent> learningAgent_;
