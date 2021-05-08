@@ -96,7 +96,7 @@ ml::ContinuousActionEnvironment::State ml::ContinuousActionEnvironment::InitialS
 	std::cout << "ContinuousActionEnvironment::InitialSample()" << std::endl;
 	auto position = snakeControl_->getPosition();
 	State state{ snapshot(position) };
-
+	
 	return state;
 }
 
@@ -111,6 +111,10 @@ ml::ContinuousActionEnvironment::State ml::ContinuousActionEnvironment::snapshot
 
 	std::copy(std::begin(vision), std::end(vision), std::begin(data));
 
+	state.x() = fromPoint.x_;
+	state.y() = fromPoint.y_;
+
+	/*
 	state.x() = fromPoint.x_;
 	state.y() = fromPoint.y_;
 
@@ -131,11 +135,11 @@ ml::ContinuousActionEnvironment::State ml::ContinuousActionEnvironment::snapshot
 	} else {
 		state.directionVectorY() = 0;
 	}
+	*/
+	//Cell* cell = board_->findFood();
 
-	Cell* cell = board_->findFood();
-
-	state.foodPositionX() = cell->x_;
-	state.foodPositionY() = cell->y_;
+	//state.foodPositionX() = cell->x_;
+	//state.foodPositionY() = cell->y_;
 
 	return state;
 }
@@ -145,12 +149,13 @@ double ml::ContinuousActionEnvironment::Sample(const ml::ContinuousActionEnviron
 	//std::cout << "ContinuousActionEnvironment::Sample()" << std::endl;
 	double reward{ 0.0 };
 
-	Cell* cell = board_->findFood();
+	Cell* foodCell = board_->findFood();
+	utils::Point<size_t> foodPosition(foodCell->x_, foodCell->y_);
 	auto currentPosition{ currentState.position() };
 
 	//std::cout << "ContinuousActionEnvironment::Sample() current position x: " << std::to_string(currentPosition.x_) << " y: " << std::to_string(currentPosition.y_) << std::endl;
 
-	auto distanceToFood_ = distance(currentPosition.x_, currentPosition.y_, cell->x_, cell->y_);
+	auto distanceToFood_ = distance(currentPosition.x_, currentPosition.y_, foodCell->x_, foodCell->y_);
 
 	auto snakeDirection{ actionsToDirection(action.action, snakeControl_->getDirection()) };
 
@@ -181,22 +186,29 @@ double ml::ContinuousActionEnvironment::Sample(const ml::ContinuousActionEnviron
 	//auto nextPosition{ snakeControl_.getNextPosition() };
 
 	//nextState.Data() = snapshot(snakeControl_->getPosition()).Encode();
-	auto statesnap(snapshot(snakeControl_->getPosition()));
+	//auto statesnap(snapshot(snakeControl_->getPosition()));
+	nextState = snapshot(snakeControl_->getPosition());
 
-	nextState.setData(statesnap.Encode());
+	//nextState.setData(statesnap.Encode());
+	//nextState.x() = statesnap.x();
+	//nextState.y() = statesnap.y();
+
+	nextState.step() = currentState.step() + 1;
 
 	auto nextPosition{ nextState.position() };
 
 	//std::cout << "ContinuousActionEnvironment::Sample() nextPosition x: " << std::to_string(nextPosition.x_) << " y: " << std::to_string(nextPosition.y_) << std::endl;
 
-	if (currentState.foodPosition() == nextPosition) {
+	
+	//foodCell->
+	if (foodPosition == nextPosition) {
 		reward = 500;
 	}
 	else if (board_->isWall(nextPosition)) { // || step_ >= maxSteps()) {// || board_.isSnakeBody(nextPosition)) {
 		reward = -500;
 		//episodeRunning_ = false;
 	} else {
-		double newDistanceToFood = distance(nextPosition.x_, nextPosition.y_, cell->x_, cell->y_);
+		double newDistanceToFood = distance(nextPosition.x_, nextPosition.y_, foodPosition.x_, foodPosition.y_);
 
 		if (newDistanceToFood > distanceToFood_) {
 			reward = -50;
@@ -216,9 +228,9 @@ bool ml::ContinuousActionEnvironment::IsTerminal(const ml::ContinuousActionEnvir
 	bool terminal{ false };
 	const auto position{ state.position() };
 
-	terminal = board_->isWall(position);
+	terminal = board_->isWall(position);// || board_->isSnakeBody(position);
 
-	//std::cout << "ContinuousActionEnvironment::IsTerminal() : " << terminal << std::endl;
+	std::cout << "ContinuousActionEnvironment::IsTerminal() x: " << std::to_string(position.x_) << " y: " << std::to_string(position.y_) << " terminal: " << terminal << std::endl;
 
 	return terminal;
 }

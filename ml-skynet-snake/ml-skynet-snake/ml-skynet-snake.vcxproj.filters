@@ -34,9 +34,6 @@
     <Filter Include="Header Files\subjects">
       <UniqueIdentifier>{b2226c54-7b5f-49bb-89d1-f136670927aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\subjects">
-      <UniqueIdentifier>{8ead390d-83de-423b-8c3f-d392feb94ba1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\utils">
       <UniqueIdentifier>{5a7086d5-70aa-48c9-b471-a61db9da680f}</UniqueIdentifier>
     </Filter>
@@ -141,6 +138,9 @@
     <ClInclude Include="utils\InterruptibleThread.hpp">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="subjects\EpisodeCompleteSubject.hpp">
+      <Filter>Header Files\subjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp">
@@ -193,15 +193,6 @@
     </ClCompile>
     <ClCompile Include="states\RunningStateAI.cpp">
       <Filter>Source Files\states</Filter>
-    </ClCompile>
-    <ClCompile Include="subjects\FoodEatenSubject.cpp">
-      <Filter>Source Files\subjects</Filter>
-    </ClCompile>
-    <ClCompile Include="subjects\SnakeCollisionSubject.cpp">
-      <Filter>Source Files\subjects</Filter>
-    </ClCompile>
-    <ClCompile Include="subjects\SnakePositionUpdatedSubject.cpp">
-      <Filter>Source Files\subjects</Filter>
     </ClCompile>
     <ClCompile Include="utils\FontCache.cpp">
       <Filter>Source Files\utils</Filter>

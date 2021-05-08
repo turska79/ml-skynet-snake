@@ -47,19 +47,32 @@ namespace ml {
 
 		utils::Point<std::size_t> position() const
 		{
-			return utils::Point<std::size_t> { static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::snake_head_x_in_data]), static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::snake_head_y_in_data]) };
+			//return utils::Point<std::size_t> { static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::snake_head_x_in_data]), static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::snake_head_y_in_data]) };
+			return utils::Point<std::size_t> { x_, y_};
 		}
-
-		double& x()
+		
+		unsigned int& x()
 		{
-			return data_[utils::commonConstants::ml::inputParameters::snake_head_x_in_data];
+			//return data_[utils::commonConstants::ml::inputParameters::snake_head_x_in_data];
+			return x_;
 		}
 
-		double& y()
+		unsigned int& y()
 		{
-			return data_[utils::commonConstants::ml::inputParameters::snake_head_y_in_data];
+			//return data_[utils::commonConstants::ml::inputParameters::snake_head_y_in_data];
+			return y_;
 		}
 
+		unsigned int step() const
+		{
+			return step_;
+		}
+
+		unsigned int& step()
+		{
+			return step_;
+		}
+		/*
 		double& directionVectorX()
 		{
 			return data_[utils::commonConstants::ml::inputParameters::direction_vector_x];
@@ -68,8 +81,8 @@ namespace ml {
 		double& directionVectorY()
 		{
 			return data_[utils::commonConstants::ml::inputParameters::direction_vector_y];
-		}
-
+		}*/
+		/*
 		utils::Point<std::size_t> foodPosition() const
 		{
 			return utils::Point<std::size_t> { static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::food_x]), static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::food_y]) };
@@ -84,10 +97,13 @@ namespace ml {
 		{
 			return data_[utils::commonConstants::ml::inputParameters::food_y];
 		}
-
+		*/
 		static constexpr size_t dimension{ utils::commonConstants::ml::inputParameters::count };
 
 	private:
 		arma::colvec data_;
+		unsigned int x_{ 0 };
+		unsigned int y_{ 0 };
+		unsigned int step_{ 0 };
 	};
 }

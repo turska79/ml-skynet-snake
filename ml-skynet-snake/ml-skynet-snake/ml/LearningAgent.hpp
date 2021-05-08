@@ -7,6 +7,7 @@
 #include "../Snakevision.hpp"
 #include "../SnakeControl.hpp"
 #include "../utils/InterruptibleThread.hpp"
+#include "../subjects/EpisodeCompleteSubject.hpp"
 
 #pragma warning(push)  
 #pragma warning(disable : 26819 26495 4244 26451 6011 26439 26812 4458 4267 4801 4081)
@@ -49,12 +50,16 @@ namespace ml {
 		auto learningAgentState() & -> std::atomic<LearningAgentState>& { return state_; }
 		auto learningAgentState() && -> LearningAgentState&& { return std::move(state_); }
 		*/
+
+		subjects::EpisodeCompleteSubject& episodeCompleteSubject();
+
 		std::list<VisionPoints> currentVision();
 		size_t stepsPerformed() const;
 		size_t maxSteps() const;
 		size_t totalSteps() const;
 
 		void run();
+		bool running();
 		void runEpisode();
 		//ml::State& envState() { return *this;  }
 		//ml::State InitialSample();
@@ -83,6 +88,8 @@ namespace ml {
 		//std::unique_ptr<Policy> policy_;
 		//Environment environment_;
 
+		subjects::EpisodeCompleteSubject episodeCompleteSubject_;
+
 		std::unique_ptr<thread::interruptibleThread> agentThread_;
 
 		SnakeControl& snakeControl_;
@@ -94,6 +101,7 @@ namespace ml {
 		//std::atomic<bool> processNextStep_{ false };
 		//std::atomic<LearningAgentState> state_{ LearningAgentState::Idle };
 		size_t step_{ 0 };
+		std::atomic<bool> running_{ false };
 		//double distanceToFood_{ 0 };
 	};
 

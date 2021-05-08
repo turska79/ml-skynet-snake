@@ -33,6 +33,10 @@ namespace gamestates {
 			void printGameCountToScreen(Renderer& renderer);
 			void snakePositionUpdated() override;
 
+			void registerEpisodeCompleteCallback();
+			void unregisterEpisodeCompleteCallback();
+
+			void episodeComplete();
 		private:
 			//thread::interruptibleThread* ai_{ nullptr };
 			std::size_t gameCount_{ 0 };

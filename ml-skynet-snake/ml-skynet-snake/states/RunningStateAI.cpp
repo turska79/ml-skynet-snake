@@ -28,6 +28,7 @@ void gamestates::state::RunningStateAI::enter()
 	running_ = true;
 	++gameCount_;
 	RunningState::enter();
+	registerEpisodeCompleteCallback();
 
 	//if (running_) {
 		runLearningAgent();
@@ -53,14 +54,23 @@ void gamestates::state::RunningStateAI::exit()
 	//}
 
 
-	Simulation& simulation = game_.simulation();
-	simulation.stop();
+//	Simulation& simulation = game_.simulation();
+	//simulation.stop();
 
-	learningAgent_->waitUntilStopped();
+	//learningAgent_->waitUntilStopped();
+	std::mutex mutex;
+	std::condition_variable cv;
+	std::unique_lock<std::mutex> lock(mutex);
+	//auto function = std::bind(&LearningAgent::isIdle, this);
+	auto function = [&]() -> bool {
+		return learningAgent_->running() == false;
+	};
+
+	thread::utils::interruptibleWait<decltype(function)>(cv, lock, function);
+
+	unregisterEpisodeCompleteCallback();
 
 	RunningState::exit();
-
-	std::cout << "RunningStateAI::exit()" << std::endl;
 }
 
 void gamestates::state::RunningStateAI::update(Renderer& renderer)
@@ -97,12 +107,12 @@ void gamestates::state::RunningStateAI::snakeCollisionCallback()
 
 	//ai_->waitUntilInterrupted();
 
-	//Simulation& simulation = game_.simulation();
-	//simulation.stop();
+	Simulation& simulation = game_.simulation();
+	simulation.stop();
 
 	//learningAgent_->waitUntilStopped();
 	
-	game_.nextState<GameOverState>(game_);
+	//game_.nextState<GameOverState>(game_);
 }
 
 void gamestates::state::RunningStateAI::printStepsToScreen(Renderer& renderer)
@@ -155,4 +165,23 @@ void gamestates::state::RunningStateAI::snakePositionUpdated()
 		std::cout << "LearningAgent::runLearningAgent() exception from processNextStep" << std::endl;
 	}
 	*/
+}
+
+void gamestates::state::RunningStateAI::registerEpisodeCompleteCallback()
+{
+	auto& subject{ learningAgent_->episodeCompleteSubject() };
+	subject.addObserver(this, &RunningStateAI::episodeComplete);
+}
+
+void gamestates::state::RunningStateAI::unregisterEpisodeCompleteCallback()
+{
+	auto& subject{ learningAgent_->episodeCompleteSubject() };
+	subject.removeObserver(this, &RunningStateAI::episodeComplete);
+}
+
+void gamestates::state::RunningStateAI::episodeComplete()
+{
+	std::cout << "RunningStateAI::episodeComplete()" << std::endl;
+
+	game_.nextState<GameOverState>(game_);
 }

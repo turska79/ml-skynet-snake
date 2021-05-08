@@ -93,9 +93,9 @@ void Snake::update(const uint32_t delta) noexcept
 			grow(growByOne);
 		}
 
-		if (!collision) {
-			updatePosition(target);
-		}
+		//if (!collision) {
+		updatePosition(target);
+		//}
 		
 		notifyPositionObservers();
 		

@@ -9,60 +9,58 @@ namespace gamestates {
 		template<class TT> class StateStorage {
 		public:
 			template<class T, class... Args>
-			void nextState(Args&&... args) {
-				const std::lock_guard<std::mutex> guard(lock_);
+			void nextState(Args&&... args)
+			{
 				pushStateImpl(std::make_unique<T>(std::forward<Args>(args)...));
 			}
 
-			void changeState() {
+			void changeState()
+			{
 				const std::lock_guard<std::mutex> guard(lock_);
 
-				if (previousState_) {
-					previousState_->exit();
-					previousState_ = nullptr;
-				}
+				if (popState_) {
+					popStateImpl();
+					updateCurrentStateFromStack();
+				} else  if (currentState_ != states_.back().get()) {
+					if (currentState_) {
+						currentState_->exit();
+					}
 
-				if (nextState_) {
-					nextState_->enter();
-					nextState_ = nullptr;
+					updateCurrentStateFromStack();
 				}
 			}
 
-			void popState() {
-				const std::lock_guard<std::mutex> guard(lock_);
-				popStateImpl();
+			void popState()
+			{
+				popState_ = true;
 			}
 
-		protected:
+			TT* currentState() { return currentState_; };
+		private:
 			template<class T> void pushStateImpl(std::unique_ptr<T> state)
 			{
-				previousState_ =  nullptr ;
-				nextState_ = nullptr;
-
-				if (states_.empty() == false) {
-					previousState_ = states_.back().get();
-				}
-
+				const std::lock_guard<std::mutex> guard(lock_);
 				states_.emplace_back(std::move(state));
-				nextState_ = states_.back().get();
 			}
 
 			void popStateImpl()
 			{
-				nextState_ = nullptr;
-
 				if (states_.empty() == false) {
 					states_.back()->exit();
 					states_.pop_back();
 				}
-
-				if (states_.empty() == false) {
-					nextState_ = states_.back().get();
-				}
+	
+				popState_ = false;
 			}
 
-			TT* previousState_{ nullptr };
-			TT* nextState_{ nullptr };
+			void updateCurrentStateFromStack()
+			{
+				currentState_ = states_.back().get();
+				currentState_->enter();
+			}
+
+			bool popState_{ false };
+			TT* currentState_{ nullptr };
 			std::vector<std::unique_ptr<TT>> states_;
 			std::mutex lock_;
 		};

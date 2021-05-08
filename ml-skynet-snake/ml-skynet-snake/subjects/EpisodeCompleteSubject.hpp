@@ -4,9 +4,9 @@
 
 namespace subjects {
 
-	class SnakeCollisionSubject : public SubjectBase
+	class EpisodeCompleteSubject : public SubjectBase
 	{
 	public:
 	};
-}
 
+}

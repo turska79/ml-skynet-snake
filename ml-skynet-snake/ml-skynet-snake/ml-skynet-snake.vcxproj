@@ -197,6 +197,7 @@
     <ClInclude Include="states\MainMenuState.hpp" />
     <ClInclude Include="states\RunningState.hpp" />
     <ClInclude Include="states\RunningStateAI.hpp" />
+    <ClInclude Include="subjects\EpisodeCompleteSubject.hpp" />
     <ClInclude Include="subjects\FoodEatenSubject.hpp" />
     <ClInclude Include="subjects\SnakeCollisionSubject.hpp" />
     <ClInclude Include="subjects\SnakePositionUpdatedSubject.hpp" />
@@ -227,9 +228,6 @@
     <ClCompile Include="states\MainMenuState.cpp" />
     <ClCompile Include="states\RunningState.cpp" />
     <ClCompile Include="states\RunningStateAI.cpp" />
-    <ClCompile Include="subjects\FoodEatenSubject.cpp" />
-    <ClCompile Include="subjects\SnakeCollisionSubject.cpp" />
-    <ClCompile Include="subjects\SnakePositionUpdatedSubject.cpp" />
     <ClCompile Include="utils\FontCache.cpp" />
     <ClCompile Include="utils\InterruptibleThread.cpp" />
     <ClCompile Include="utils\Utils.cpp" />

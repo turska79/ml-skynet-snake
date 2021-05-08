@@ -104,7 +104,7 @@ void Simulation::runSimulationLoop()
 void Simulation::updateObjects(const uint32_t deltaTime)
 {
 	for (auto& object : objects_) {
-		thread::utils::interruptionPoint();
+		//thread::utils::interruptionPoint();
 
 		object.get().update(deltaTime);
 	}

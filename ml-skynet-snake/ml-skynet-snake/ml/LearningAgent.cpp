@@ -29,8 +29,8 @@ namespace ml {
 	//constexpr size_t annealInterval{ 1000 };
 	//constexpr double minEpsilon{ 0.1 };
 
-	constexpr size_t batchSize{ 32 };
-	constexpr size_t capacity{ 10000 };
+	constexpr size_t batchSize{ 100 };
+	constexpr size_t capacity{ 50000 };
 	constexpr double alpha{ 0.6 };
 }
 
@@ -42,31 +42,31 @@ ml::LearningAgent::LearningAgent(SnakeControl& snakeControl, Board& board, Game&
 
 	policyNetwork_ = std::make_unique<ml::FeedForwardNetwork>(mlpack::ann::EmptyLoss<>(), mlpack::ann::GaussianInitialization(0, 1.0));
 
-	policyNetwork_->Add(new  mlpack::ann::Linear<>(utils::commonConstants::ml::inputParameters::count, 128));
+	policyNetwork_->Add(new  mlpack::ann::Linear<>(utils::commonConstants::ml::inputParameters::count, utils::commonConstants::ml::number_of_hidden_neurons));
 	policyNetwork_->Add(new  mlpack::ann::ReLULayer<>());
-	policyNetwork_->Add(new  mlpack::ann::Linear<>(128, 128));
+	policyNetwork_->Add(new  mlpack::ann::Linear<>(utils::commonConstants::ml::number_of_hidden_neurons, utils::commonConstants::ml::number_of_hidden_neurons));
 	policyNetwork_->Add(new  mlpack::ann::ReLULayer<>());
-	policyNetwork_->Add(new  mlpack::ann::Linear<>(128, utils::commonConstants::ml::number_of_possible_actions));
-	policyNetwork_->Add(new  mlpack::ann::TanHLayer<>());
+	policyNetwork_->Add(new  mlpack::ann::Linear<>(utils::commonConstants::ml::number_of_hidden_neurons, utils::commonConstants::ml::number_of_possible_actions));
+	policyNetwork_->Add(new  mlpack::ann::SigmoidLayer<>());
 	policyNetwork_->ResetParameters();
 	FeedForwardNetwork& policyNetwork = *(policyNetwork_.get());
 
 	qnetwork_ = std::make_unique<ml::FeedForwardNetwork>(mlpack::ann::EmptyLoss<>(), mlpack::ann::GaussianInitialization(0, 1.0));
-	qnetwork_->Add(new mlpack::ann::Linear<>(utils::commonConstants::ml::inputParameters::count + utils::commonConstants::ml::number_of_possible_actions, 128));
+	qnetwork_->Add(new mlpack::ann::Linear<>(utils::commonConstants::ml::inputParameters::count + utils::commonConstants::ml::number_of_possible_actions, utils::commonConstants::ml::number_of_hidden_neurons));
 	qnetwork_->Add(new mlpack::ann::ReLULayer<>());
-	qnetwork_->Add(new mlpack::ann::Linear<>(128, 128));
+	qnetwork_->Add(new mlpack::ann::Linear<>(utils::commonConstants::ml::number_of_hidden_neurons, utils::commonConstants::ml::number_of_hidden_neurons));
 	qnetwork_->Add(new mlpack::ann::ReLULayer<>());
-	qnetwork_->Add(new mlpack::ann::Linear<>(128, 1));
+	qnetwork_->Add(new mlpack::ann::Linear<>(utils::commonConstants::ml::number_of_hidden_neurons, 1));
 	qnetwork_->ResetParameters();
 	FeedForwardNetwork& qNetwork = *(qnetwork_.get());
 		
 	trainingConfig_ = std::make_unique<Config>();
 	mlpack::rl::TrainingConfig& config{ *(trainingConfig_.get()) };
 
-	config.ExplorationSteps() = 5;
+	config.ExplorationSteps() = 20;
 	config.TargetNetworkSyncInterval() = 1;
 	config.UpdateInterval() = 1;
-	//config.StepLimit() = 500;
+	config.StepLimit() = 500;
 	//config.DoubleQLearning() = true;
 
 	//ContinuousActionEnvironment& environment{ (ContinuousActionEnvironment&)*this };
@@ -292,6 +292,11 @@ void ml::LearningAgent::proceedToNextStep()
 }
 */
 
+subjects::EpisodeCompleteSubject& ml::LearningAgent::episodeCompleteSubject()
+{
+	return episodeCompleteSubject_;
+}
+
 std::list<VisionPoints> ml::LearningAgent::currentVision()
 {
 	return snakeVision_.pointsForRendering(board_, snakeControl_.getPosition());
@@ -299,7 +304,7 @@ std::list<VisionPoints> ml::LearningAgent::currentVision()
 
 size_t ml::LearningAgent::stepsPerformed() const
 {
-	return step_;
+	return agent_->State().step();
 }
 
 size_t ml::LearningAgent::maxSteps() const
@@ -317,9 +322,15 @@ void ml::LearningAgent::run()
 	agentThread_ = std::make_unique<thread::interruptibleThread>(this, &LearningAgent::runEpisode, "ml agent");
 }
 
+bool ml::LearningAgent::running()
+{
+	return running_;
+}
+
 void ml::LearningAgent::runEpisode()
 {
 	std::cout << "LearningAgent::runEpisode() enter" << std::endl;
+	running_ = true;
 	double reward = agent_->Episode();
 	
 	auto& agentSate{ envState_.environmentState() };
@@ -328,7 +339,7 @@ void ml::LearningAgent::runEpisode()
 	//Simulation& simulation = game_.simulation();
 	//simulation.stop();
 	//game_.nextState<gamestates::state::GameOverState>(game_);
-	std::cout << "LearningAgent::runEpisode() exit" << std::endl;
+	std::cout << "LearningAgent::runEpisode() reward: " << std::to_string(reward) <<  std::endl;
 
 	//return reward;
 	/*
@@ -413,6 +424,8 @@ void ml::LearningAgent::runEpisode()
 	*/
 	//std::cout << "LearningAgent::runEpisode() exit" << std::endl;
 	//return totalReturn;
+	running_ = false;
+	episodeCompleteSubject_.invoke();
 }
 /*
 ml::State ml::LearningAgent::InitialSample()
@@ -538,7 +551,7 @@ void ml::LearningAgent::advanceEnvironment()
 }
 void ml::LearningAgent::waitUntilStopped()
 {
-	std::cout << "LearningAgent::waitUntilStopped() enter" << std::endl;
+	std::cout << "LearningAgent::waitUntilStopped()" << std::endl;
 
 	envState_.environmentState() = ml::EnvironmentState::State::Stop;
 

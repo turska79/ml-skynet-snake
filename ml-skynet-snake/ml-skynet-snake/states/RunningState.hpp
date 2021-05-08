@@ -19,7 +19,6 @@ namespace gamestates {
 			explicit RunningState(Game& game) noexcept;
 			virtual ~RunningState() {};
 
-
 			virtual void snakeCollisionCallback();
 
 			virtual void enter() override;

@@ -98,11 +98,11 @@ const bool Board::isFood(const utils::Point<std::size_t> target)
 
 const bool Board::isWall(const utils::Point<std::size_t> target)
 {
-	if (target.x_ == walls::leftWall || target.x_ == walls::rightWall) {
+	if (target.x_ <= walls::leftWall || target.x_ >= walls::rightWall) {
 		return true;
 	}
 
-	if (target.y_ == walls::topWall || target.y_ == walls::bottomWall) {
+	if (target.y_ <= walls::topWall || target.y_ >= walls::bottomWall) {
 		return true;
 	}
 
@@ -133,8 +133,6 @@ void Board::createBoard(std::size_t gridWidth, std::size_t gridHeight)
 	gridWidth_ = gridWidth;
 	gridHeight_ = gridHeight;
 
-	//std::size_t rightWall = gridWidth_ - 1;
-	//std::size_t bottomWall = gridHeight_ - 1;
 	walls::rightWall = gridWidth_ - 1;
 	walls::bottomWall = gridHeight_ - 1;
 

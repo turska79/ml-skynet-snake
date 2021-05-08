@@ -52,17 +52,19 @@ void Game::runGameLoop()
 
 void Game::gameLoop()
 {
+	changeState();
+
 	handleEvents();
 	handleInput();
 
 	renderBoard();
 
-	changeState();
 	currentState()->update(renderer_);
 	
 	printCurrentScoreToScreen();
 	printFpsRateToScreen();
 	renderer_.present();
+
 }
 
 void Game::renderBoard()
@@ -108,7 +110,6 @@ void Game::printFpsRateToScreen()
 void Game::exit() noexcept
 {
 	fontCache.clear();
-	states_.clear();
 }
 
 Board& Game::board() noexcept
@@ -153,17 +154,6 @@ void Game::handleInput()
 {
 	const auto& keyboard = input_.getKeyboard();
 	currentState()->handleInput(keyboard);
-}
-
-gamestates::state::BaseState* Game::currentState()
-{
-	//changeState();
-
-	if (states_.empty() == false) {
-		return states_.back().get();
-	}
-
-	return nullptr;
 }
 
 bool Game::checkForQuit() const
