@@ -12,7 +12,7 @@ SDL2
 Snake controlled by Ai starts by pressing 'a' key.
 
 Machine learning with Mlpack sort of works, but its still complete retard when "Ai" is
-playing the game. Currently machine learning parts are on its on own branch.
+playing the game.
 
 Machine learning Dependency:
 MlPack
