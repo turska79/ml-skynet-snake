@@ -12,7 +12,7 @@
 #include <iostream>
 #include <string>
 
-FontUtils::FontCache fontCache;
+//FontUtils::FontCache fontCache;
 
 Game::Game(Settings& settings) :
 	settings_(settings),
@@ -81,15 +81,16 @@ void Game::printCurrentScoreToScreen()
 	const unsigned int len = snake_.length() > 0 ? snake_.length() - snakeInitialLentgh : 0;
 
 	score.append(std::to_string(len));
-	constexpr unsigned int x{ 0 };
-	constexpr unsigned int y{ 40 };
-	renderer_.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+	//constexpr unsigned int x{ 0 };
+	//constexpr unsigned int y{ 40 };
+	//renderer_.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+	renderer_.renderText(score);
 }
 
 void Game::printFpsRateToScreen()
 {
 	uint32_t now{ SDL_GetTicks() };
-	TTF_Font* font = fontCache.getFont(20);
+	//TTF_Font* font = fontCache.getFont(20);
 
 	uint32_t delta = now - lastRender_;
 
@@ -101,15 +102,17 @@ void Game::printFpsRateToScreen()
 
 	const uint32_t simulationRate = simulation_.updateRate();
 	simulationFpsText.append(std::to_string(static_cast<unsigned int>(simulationRate)));
-	renderer_.renderText(0, 0, fpsTtext, *font, utils::commonConstants::color::black);
-	renderer_.renderText(0, 20, simulationFpsText, *font, utils::commonConstants::color::black);
+	//renderer_.renderText(0, 0, fpsTtext, *font, utils::commonConstants::color::black);
+	//renderer_.renderText(0, 20, simulationFpsText, *font, utils::commonConstants::color::black);
+	renderer_.renderText(fpsTtext);
+	renderer_.renderText(simulationFpsText);
 	
 	lastRender_ = now;
 }
 
 void Game::exit() noexcept
 {
-	fontCache.clear();
+	//fontCache.clear();
 }
 
 Board& Game::board() noexcept

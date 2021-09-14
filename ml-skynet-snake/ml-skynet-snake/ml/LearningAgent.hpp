@@ -29,27 +29,14 @@ namespace ml {
 	using ReplayMethod = mlpack::rl::PrioritizedReplay<ContinuousActionEnvironment>;
 	using Config = mlpack::rl::TrainingConfig;
 	using FeedForwardNetwork = mlpack::ann::FFN<mlpack::ann::EmptyLoss<>, mlpack::ann::GaussianInitialization>;
-	//using Policy = mlpack::rl::GreedyPolicy<ml::ContinuousActionEnvironment>; //GreedyPolicy<CartPole> policy(1.0, 1000, 0.1, 0.99);
 	using SoftActionCritic = mlpack::rl::SAC<ml::ContinuousActionEnvironment, FeedForwardNetwork, FeedForwardNetwork, ens::AdamUpdate, ReplayMethod>;
 	
 	class LearningAgent// : public ContinuousActionEnvironment
 	{
 	public:
-		//enum class LearningAgentState { Idle, Process, Processing };
 		LearningAgent() = delete;
 		LearningAgent(SnakeControl& snakeControl, Board& board, Game& game);
 		~LearningAgent();
-		//void runLearningAgent();
-		//bool isProcessing();
-		//bool isIdle();
-		//void processNextStep();
-		//bool isProcessNextStepSet();
-
-		/*
-		auto learningAgentState() const& -> const LearningAgentState& { return state_; }
-		auto learningAgentState() & -> std::atomic<LearningAgentState>& { return state_; }
-		auto learningAgentState() && -> LearningAgentState&& { return std::move(state_); }
-		*/
 
 		subjects::EpisodeCompleteSubject& episodeCompleteSubject();
 
@@ -61,32 +48,18 @@ namespace ml {
 		void run();
 		bool running();
 		void runEpisode();
-		//ml::State& envState() { return *this;  }
-		//ml::State InitialSample();
-		//bool IsTerminal(const ml::ContinuousActionEnvironment::State& state);
-		//double Sample(const ml::ContinuousActionEnvironment::State& currentState, const ml::ContinuousActionEnvironment::Action action, ml::ContinuousActionEnvironment::State& nextState);
-		//SnakeControl::Direction actionToDirection(const std::vector<double> action) const;
 
 		void advanceEnvironment();
 		void waitUntilStopped();
-		//void updateEnvironment();
+
 	protected:
 		
-		//void updateEnvironment();
-		//ml::ContinuousActionEnvironment::State sample(utils::Point<std::size_t> fromPoint);
-
-		//bool isReadyForNextStep();
-		//SnakeControl::Direction decodeDirection(const unsigned int rawDirection) const;
 
 		std::unique_ptr<ReplayMethod> replayMethod_;
 		std::unique_ptr<Config> trainingConfig_;
 		std::unique_ptr<FeedForwardNetwork> policyNetwork_;
 		std::unique_ptr<FeedForwardNetwork> qnetwork_;
 		std::unique_ptr<SoftActionCritic> agent_;
-
-		//ContinuousActionEnvironment environment_;
-		//std::unique_ptr<Policy> policy_;
-		//Environment environment_;
 
 		subjects::EpisodeCompleteSubject episodeCompleteSubject_;
 
@@ -97,12 +70,8 @@ namespace ml {
 		Board& board_;
 		Game& game_;
 		EnvironmentState envState_;
-		//std::atomic<bool> episodeRunning_{ false };
-		//std::atomic<bool> processNextStep_{ false };
-		//std::atomic<LearningAgentState> state_{ LearningAgentState::Idle };
 		size_t step_{ 0 };
 		std::atomic<bool> running_{ false };
-		//double distanceToFood_{ 0 };
 	};
 
 }

@@ -8,8 +8,10 @@
 #include <array>
 #include "../utils/Point.hpp"
 #include "../utils/Utils.hpp"
+#include "../utils/vec2.hpp"
 
 namespace ml {
+
 	class State
 	{
 	public:
@@ -30,15 +32,6 @@ namespace ml {
 		{
 			data_ = newData;
 		}
-		/*
-		std::array<double, 24> vision() const
-		{
-			std::array<double, 24> vision{ 0 };
-			auto iter = std::begin(data_);
-			std::advance(iter, 24);
-			std::copy(std::begin(data_), iter, std::begin(vision));
-			return vision;
-		}*/
 
 		const arma::colvec& Encode() const
 		{
@@ -47,20 +40,24 @@ namespace ml {
 
 		utils::Point<std::size_t> position() const
 		{
-			//return utils::Point<std::size_t> { static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::snake_head_x_in_data]), static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::snake_head_y_in_data]) };
-			return utils::Point<std::size_t> { x_, y_};
-		}
-		
-		unsigned int& x()
-		{
-			//return data_[utils::commonConstants::ml::inputParameters::snake_head_x_in_data];
-			return x_;
+			return utils::Point<std::size_t> { static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::snake_head_x] * 32), static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::snake_head_y] * 32) };
 		}
 
-		unsigned int& y()
+		void position(const utils::Point<std::size_t> newPosition)
 		{
-			//return data_[utils::commonConstants::ml::inputParameters::snake_head_y_in_data];
-			return y_;
+			data_[utils::commonConstants::ml::inputParameters::snake_head_x] = newPosition.x_ / 32.0;
+			data_[utils::commonConstants::ml::inputParameters::snake_head_y] = newPosition.y_ / 32.0;
+		}
+
+		utils::Point<std::size_t> foodPosition() const
+		{
+			return utils::Point<std::size_t> { static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::food_x] * 32), static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::food_y] * 32) };
+		}
+
+		void foodPosition(const utils::Point<std::size_t> newPosition)
+		{
+			data_[utils::commonConstants::ml::inputParameters::food_x] = newPosition.x_ / 32.0;
+			data_[utils::commonConstants::ml::inputParameters::food_y] = newPosition.y_ / 32.0;
 		}
 
 		unsigned int step() const
@@ -72,38 +69,23 @@ namespace ml {
 		{
 			return step_;
 		}
-		/*
-		double& directionVectorX()
+
+		utils::Vec2<double> directionVector() const
 		{
-			return data_[utils::commonConstants::ml::inputParameters::direction_vector_x];
+			//return utils::Vec2<double>(data_[utils::commonConstants::ml::inputParameters::direction_vector_x], data_[utils::commonConstants::ml::inputParameters::direction_vector_y]);
+			return utils::Vec2<double>();
 		}
 
-		double& directionVectorY()
+		void directionVector(const utils::Vec2<double> direction)
 		{
-			return data_[utils::commonConstants::ml::inputParameters::direction_vector_y];
-		}*/
-		/*
-		utils::Point<std::size_t> foodPosition() const
-		{
-			return utils::Point<std::size_t> { static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::food_x]), static_cast<std::size_t>(data_[utils::commonConstants::ml::inputParameters::food_y]) };
+			data_[utils::commonConstants::ml::inputParameters::direction_vector_x] = 0;//direction.x;
+			data_[utils::commonConstants::ml::inputParameters::direction_vector_y] = 0;//direction.y;
 		}
 
-		double& foodPositionX()
-		{
-			return data_[utils::commonConstants::ml::inputParameters::food_x];
-		}
-
-		double& foodPositionY()
-		{
-			return data_[utils::commonConstants::ml::inputParameters::food_y];
-		}
-		*/
 		static constexpr size_t dimension{ utils::commonConstants::ml::inputParameters::count };
 
 	private:
 		arma::colvec data_;
-		unsigned int x_{ 0 };
-		unsigned int y_{ 0 };
 		unsigned int step_{ 0 };
 	};
 }

@@ -25,7 +25,6 @@ public:
 	Renderer& renderer() noexcept;
 	Simulation& simulation() noexcept;
 	Snake& snake() noexcept;
-	//gamestates::state::BaseState* currentState();
 private:
 	void runGameLoop();
 public:

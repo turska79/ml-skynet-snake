@@ -1,7 +1,5 @@
 #include "SnakeVision.hpp"
 #include "Board.hpp"
-//#include "Renderer.hpp"
-//#include "utils/Utils.hpp"
 
 const utils::Vec2<int> left{ -1, 0 };
 const utils::Vec2<int> leftUp{ -1, -1 };
@@ -62,7 +60,7 @@ std::array<float, 3> SnakeVision::lookInDirection(Board& board, const utils::Poi
 
 	std::array<float, 3> look{ 0 };
 	utils::Vec2<int> position(static_cast<int>(fromPosition.x_), static_cast<int>(fromPosition.y_));
-
+	
 	float distanceToWall{ 1 };
 
 	position += direction;

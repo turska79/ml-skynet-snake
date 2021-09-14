@@ -74,15 +74,12 @@ void Simulation::runSimulationLoop()
 		if (nextSimulationStep_ <= now) {
 			int computer_is_too_slow_limit{ utils::commonConstants::lowSpeedLimit };
 			uint32_t deltaTime{ now - lastSimulationUpdate_ };
-			//std::cout << "Simulation::runSimulationLoop() delta: " << std::to_string(deltaTime) << std::endl;
 			unsigned int count{ 0 };
 
 			while ((nextSimulationStep_ <= now) && (computer_is_too_slow_limit--)) {
 				++count;
-				//std::cout << "Simulation::runSimulationLoop() count: " << std::to_string(count) << std::endl;
 				thread::utils::interruptionPoint();
 
-				//std::cout << "Simulation::runSimulationLoop() update objects" << std::endl;
 				updateObjects(deltaTime);
 				nextSimulationStep_ += utils::commonConstants::simulationRefreshRateTargetTimeStep;
 			}
@@ -94,7 +91,6 @@ void Simulation::runSimulationLoop()
 			}
 		}
 		else {
-			//std::cout << "Simulation::runSimulationLoop() sleep: " << std::to_string(nextSimulationStep_ - now)  << std::endl;
 			thread::utils::interruptionPoint();
 			SDL_Delay(nextSimulationStep_ - now);
 		}

@@ -164,9 +164,6 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -174,9 +171,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ml\LearningAgent.cpp">
-      <Filter>Source Files\ml</Filter>
-    </ClCompile>
-    <ClCompile Include="ml\State.cpp">
       <Filter>Source Files\ml</Filter>
     </ClCompile>
     <ClCompile Include="simulation\Simulation.cpp">
@@ -198,12 +192,6 @@
       <Filter>Source Files\utils</Filter>
     </ClCompile>
     <ClCompile Include="utils\InterruptibleThread.cpp">
-      <Filter>Source Files\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="utils\Utils.cpp">
-      <Filter>Source Files\utils</Filter>
-    </ClCompile>
-    <ClCompile Include="utils\vec2.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
     <ClCompile Include="ml\Environments.cpp">

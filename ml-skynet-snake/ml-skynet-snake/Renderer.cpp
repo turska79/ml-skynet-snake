@@ -3,9 +3,13 @@
 #pragma warning(push)  
 #pragma warning(disable : 26819 26812)
 #include <SDL.h>
-#pragma warning( pop )
+#pragma warning(pop)
 
 #include <vector>
+#include "utils/FontCache.hpp"
+#include "utils/Utils.hpp"
+
+FontUtils::FontCache fontCache;
 
 Renderer::Renderer(std::size_t windowWidth, std::size_t windowHeight, std::size_t gridStartOffset, SDL_Color& background) noexcept : windowWidth_(windowWidth), windowHeight_(windowHeight), gridStartOffset_(gridStartOffset), backGround_(background)
 {
@@ -16,7 +20,7 @@ Renderer::Renderer(std::size_t windowWidth, std::size_t windowHeight, std::size_
 	renderer_ = std::move(renderer);
 }
 
-void Renderer::renderText(const unsigned int x, const unsigned int y, const std::string& text, TTF_Font &font, const SDL_Color& color) noexcept
+void Renderer::renderText(const unsigned int x, const unsigned int y, const std::string text, TTF_Font &font, const SDL_Color& color) noexcept
 {
 	SurfacePtr surface(TTF_RenderText_Solid(&font, text.c_str(), color));
 	TexturePtr texture(SDL_CreateTextureFromSurface(renderer_.get(), surface.get()));
@@ -31,6 +35,20 @@ void Renderer::renderText(const unsigned int x, const unsigned int y, const std:
 	textArea.h = text_height;
 
 	SDL_RenderCopy(renderer_.get(), texture.get(), nullptr, &textArea);
+}
+
+void Renderer::renderText(const std::string text)
+{
+	TTF_Font& font{ *fontCache.getFont(utils::commonConstants::fontSize::twenty) };
+	const SDL_Color color{ utils::commonConstants::color::black };
+	
+	SurfacePtr surface(TTF_RenderText_Solid(&font, text.c_str(), color));
+	TexturePtr texture(SDL_CreateTextureFromSurface(renderer_.get(), surface.get()));
+
+	renderText(0, textsRendered_ * 20, text, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+
+	textsRendered_++;
+
 }
 
 void Renderer::renderBackground() noexcept
@@ -74,10 +92,12 @@ void Renderer::renderCells(const std::list<std::unique_ptr<Cell>>& cells)
 void Renderer::present() noexcept
 {
 	SDL_RenderPresent(renderer_.get());
+	textsRendered_ = 0;
 }
 
 void Renderer::clear() noexcept
 {
+	
 	SDL_RenderClear(renderer_.get());
 }
 

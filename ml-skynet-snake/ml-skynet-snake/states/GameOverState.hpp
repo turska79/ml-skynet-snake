@@ -17,6 +17,8 @@ namespace gamestates {
 			void update(Renderer& renderer) override;
 			void exit() override;
 			void handleInput(const Keyboard& keyboard) override;
+		private:
+			void renderGameOverText(Renderer& renderer);
 		};
 	}
 }

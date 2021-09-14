@@ -120,17 +120,17 @@ void gamestates::state::RunningStateAI::printStepsToScreen(Renderer& renderer)
 	auto step{ learningAgent_->stepsPerformed() };
 	auto maxSteps{ learningAgent_->maxSteps() };
 	auto totalSteps{ learningAgent_->totalSteps() };
+
 	std::string totalStepsText = "Total steps: ";
 	totalStepsText.append(std::to_string(totalSteps));
+
 	std::string episodeSteps ="Episode step: ";
 	episodeSteps.append(std::to_string(step));
 	episodeSteps.append(" / ");
 	episodeSteps.append(std::to_string(maxSteps));
-	constexpr unsigned int x{ 0 };
-	constexpr unsigned int y{ 80 };
-	renderer.renderText(x, y, totalStepsText, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
-	renderer.renderText(x, y + 20, episodeSteps, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
-	
+
+	renderer.renderText(totalStepsText);
+	renderer.renderText(episodeSteps);
 }
 
 void gamestates::state::RunningStateAI::printGameCountToScreen(Renderer& renderer)
@@ -138,33 +138,16 @@ void gamestates::state::RunningStateAI::printGameCountToScreen(Renderer& rendere
 	std::string score = "Game: ";
 	score.append(std::to_string(gameCount_));
 	
-	constexpr unsigned int x{ 0 };
-	constexpr unsigned int y{ 60 };
-	renderer.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+//	constexpr unsigned int x{ 0 };
+//	constexpr unsigned int y{ 60 };
+//	renderer.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+	renderer.renderText(score);
 }
 
 void gamestates::state::RunningStateAI::snakePositionUpdated()
 {
 	std::cout << "RunningStateAI::snakePositionUpdated()" << std::endl;
 	learningAgent_->advanceEnvironment();
-	/*
-	//learningAgent_->processNextStep();
-	try {
-		std::mutex mutex;
-		std::condition_variable cv;
-		std::unique_lock<std::mutex> lock(mutex);
-		//auto function = std::bind(&LearningAgent::isIdle, this);
-		auto function = [&]() -> bool { return learningAgent_->learningAgentState() == ml::LearningAgent::LearningAgentState::Idle; };
-
-		thread::utils::interruptibleWait<decltype(function)>(cv, lock, function);
-
-		auto& agentSate{ learningAgent_->learningAgentState() };
-		agentSate = ml::LearningAgent::LearningAgentState::Process;
-	}
-	catch (const std::exception&) {
-		std::cout << "LearningAgent::runLearningAgent() exception from processNextStep" << std::endl;
-	}
-	*/
 }
 
 void gamestates::state::RunningStateAI::registerEpisodeCompleteCallback()
@@ -182,6 +165,5 @@ void gamestates::state::RunningStateAI::unregisterEpisodeCompleteCallback()
 void gamestates::state::RunningStateAI::episodeComplete()
 {
 	std::cout << "RunningStateAI::episodeComplete()" << std::endl;
-
 	game_.nextState<GameOverState>(game_);
 }

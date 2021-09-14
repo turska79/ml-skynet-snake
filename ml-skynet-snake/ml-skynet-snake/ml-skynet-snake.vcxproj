@@ -218,9 +218,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ml\LearningAgent.cpp" />
     <ClCompile Include="ml\Environments.cpp" />
-    <ClCompile Include="ml\State.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="simulation\Simulation.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="SnakeVision.cpp" />
@@ -230,8 +228,6 @@
     <ClCompile Include="states\RunningStateAI.cpp" />
     <ClCompile Include="utils\FontCache.cpp" />
     <ClCompile Include="utils\InterruptibleThread.cpp" />
-    <ClCompile Include="utils\Utils.cpp" />
-    <ClCompile Include="utils\vec2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

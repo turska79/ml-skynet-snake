@@ -18,16 +18,8 @@ void gamestates::state::GameOverState::enter()
 
 void gamestates::state::GameOverState::update(Renderer& renderer)
 {
-	//game_.popState();
-	//return;
-
-	//SDL_Color black = { 0, 0, 0, 255 };
-	constexpr unsigned int x{ 340 };
-	constexpr unsigned int y{ 300 };
-
-	std::string text{ "Game over - Press Space bar to start" };
-
-	renderer.renderText(x, y, text, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+	renderGameOverText(renderer);
+	game_.popState();
 }
 
 void gamestates::state::GameOverState::exit()
@@ -40,4 +32,14 @@ void gamestates::state::GameOverState::handleInput(const Keyboard& keyboard)
 	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_SPACE) == keyboard::ButtonState::pressed) {
 		game_.popState();
 	}
+}
+
+void gamestates::state::GameOverState::renderGameOverText(Renderer& renderer)
+{
+	constexpr unsigned int x{ 340 };
+	constexpr unsigned int y{ 300 };
+
+	std::string text{ "Game over - Press Space bar to start" };
+
+	renderer.renderText(x, y, text, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
 }

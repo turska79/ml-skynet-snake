@@ -123,9 +123,7 @@ void gamestates::state::RunningState::unregisterPositionUpdatedCallback()
 
 void gamestates::state::RunningState::update(Renderer& renderer)
 {
-	/*if (collision) {
-		game_.nextState<GameOverState>(game_);
-	}*/
+
 }
 
 void gamestates::state::RunningState::exit()

@@ -20,11 +20,7 @@ void gamestates::state::MainMenuState::enter()
 
 void gamestates::state::MainMenuState::update(Renderer& renderer)
 {
-	constexpr unsigned int x{ 340 };
-	constexpr unsigned int y{ 300 };
-	std::string text{ "Press Space bar to start" };
-
-	renderer.renderText(x, y, text, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+	renderWelcomeText(renderer);
 }
 
 void gamestates::state::MainMenuState::exit()
@@ -39,4 +35,13 @@ void gamestates::state::MainMenuState::handleInput(const Keyboard& keyboard)
 	} else if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_A) == keyboard::ButtonState::pressed) {
 		game_.nextState<RunningStateAI>(game_);
 	}
+}
+
+void gamestates::state::MainMenuState::renderWelcomeText(Renderer& renderer)
+{
+	constexpr unsigned int x{ 340 };
+	constexpr unsigned int y{ 300 };
+	std::string text{ "Press Space bar to start" };
+
+	renderer.renderText(x, y, text, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
 }

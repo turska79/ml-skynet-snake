@@ -11,12 +11,6 @@ class Board;
 
 
 namespace ml {
-	//class Environment : public State
-	//{
-	//public:
-		//double reward_{ 0 };
-		//bool terminal_{ false };
-	//};
 
 	class EnvironmentState {
 	public:
@@ -47,11 +41,10 @@ namespace ml {
 			};
 
 			Action() : action(size) { };
-			// To store the action.
+			
 			std::vector<double> action;
 			static const size_t size = utils::commonConstants::ml::number_of_possible_actions;
 		};
-
 
 
 		virtual ml::ContinuousActionEnvironment::State InitialSample();
@@ -67,21 +60,3 @@ namespace ml {
 		
 	};
 }
-/*
-		public:
-			enum class actions
-			{
-				left,
-				forward,
-				right
-			};
-
-			//Action() : action(utils::commonConstants::ml::number_of_possible_actions) { }
-			// To store the action.
-			//std::vector<double> action;
-
-			// To store the action.
-			Action::actions action;
-
-			// Track the size of the action space.
-			static const size_t size = 3;*/
