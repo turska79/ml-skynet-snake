@@ -31,10 +31,10 @@ void gamestates::state::RunningStateAI::enter()
 	registerEpisodeCompleteCallback();
 
 	//if (running_) {
-		runLearningAgent();
-		//ai_ = new thread::interruptibleThread(&RunningStateAI::runLearningAgent, this);
-	//	running_ = false;
-	//}
+	runLearningAgent();
+	//ai_ = new thread::interruptibleThread(&RunningStateAI::runLearningAgent, this);
+//	running_ = false;
+//}
 }
 
 void gamestates::state::RunningStateAI::runLearningAgent()
@@ -79,7 +79,8 @@ void gamestates::state::RunningStateAI::update(Renderer& renderer)
 
 	auto position = snakeControl_.getPosition();
 	const std::list< VisionPoints> points = learningAgent_->currentVision();
-	
+
+
 	for (const auto& it : points) {
 		const auto fromPosition = it.first;
 		const auto toPosition = it.second;
@@ -110,7 +111,7 @@ void gamestates::state::RunningStateAI::snakeCollisionCallback()
 	simulation.stop();
 
 	//learningAgent_->waitUntilStopped();
-	
+
 	//game_.nextState<GameOverState>(game_);
 }
 
@@ -123,7 +124,7 @@ void gamestates::state::RunningStateAI::printStepsToScreen(Renderer& renderer)
 	std::string totalStepsText = "Total steps: ";
 	totalStepsText.append(std::to_string(totalSteps));
 
-	std::string episodeSteps ="Episode step: ";
+	std::string episodeSteps = "Episode step: ";
 	episodeSteps.append(std::to_string(step));
 	episodeSteps.append(" / ");
 	episodeSteps.append(std::to_string(maxSteps));
@@ -136,10 +137,10 @@ void gamestates::state::RunningStateAI::printGameCountToScreen(Renderer& rendere
 {
 	std::string score = "Game: ";
 	score.append(std::to_string(gameCount_));
-	
-//	constexpr unsigned int x{ 0 };
-//	constexpr unsigned int y{ 60 };
-//	renderer.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+
+	//	constexpr unsigned int x{ 0 };
+	//	constexpr unsigned int y{ 60 };
+	//	renderer.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
 	renderer.renderText(score);
 }
 

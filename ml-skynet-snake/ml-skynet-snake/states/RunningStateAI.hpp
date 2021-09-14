@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 #include "RunningState.hpp"
 
@@ -13,7 +14,7 @@ namespace thread {
 namespace gamestates {
 
 	namespace state {
-		
+
 		class RunningStateAI : public RunningState
 		{
 		public:
@@ -46,4 +47,3 @@ namespace gamestates {
 
 	}
 }
-

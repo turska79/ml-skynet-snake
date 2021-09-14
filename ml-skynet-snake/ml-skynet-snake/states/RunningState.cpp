@@ -131,7 +131,7 @@ void gamestates::state::RunningState::exit()
 	std::cout << " RunningState::exit()" << std::endl;
 	Simulation& simulation = game_.simulation();
 	simulation.stop();
-	
+
 	unregisterCallbacks();
 }
 
@@ -141,15 +141,16 @@ void gamestates::state::RunningState::handleInput(const Keyboard& keyboard)
 
 	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_RIGHT) == keyboard::ButtonState::pressed && direction != Snake::Direction::left) {
 		direction = Snake::Direction::right;
-	} else  if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_LEFT) == keyboard::ButtonState::pressed && direction != Snake::Direction::right) {
+	}
+	else  if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_LEFT) == keyboard::ButtonState::pressed && direction != Snake::Direction::right) {
 		direction = Snake::Direction::left;
-	} else  if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_UP) == keyboard::ButtonState::pressed && direction != Snake::Direction::down) {
+	}
+	else  if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_UP) == keyboard::ButtonState::pressed && direction != Snake::Direction::down) {
 		direction = Snake::Direction::up;
-	} else if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_DOWN) == keyboard::ButtonState::pressed && direction != Snake::Direction::up) {
+	}
+	else if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_DOWN) == keyboard::ButtonState::pressed && direction != Snake::Direction::up) {
 		direction = Snake::Direction::down;
 	}
 
 	snakeControl_.setDirection(direction);
 }
-
-

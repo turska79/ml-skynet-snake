@@ -2,43 +2,47 @@
 #include "../Game.hpp"
 #include "RunningState.hpp"
 #include "RunningStateAI.hpp"
-#include "../FontCache.hpp"
+#include "../utils/FontCache.hpp"
+#include "../utils/Utils.hpp"
 #include <iostream>
 
-extern FontCache fontCache;
-constexpr unsigned int fontSize{ 20 };
+extern FontUtils::FontCache fontCache;
 
-MainMenuState::MainMenuState(Game& game) noexcept : State(game)
+gamestates::state::MainMenuState::MainMenuState(Game& game) noexcept : gamestates::state::BaseState(game)
 {
 
 }
 
-void MainMenuState::enter()
+void gamestates::state::MainMenuState::enter()
 {
 	std::cout << " MainMenuState::enter()" << std::endl;
 }
 
-void MainMenuState::update(Renderer& renderer)
+void gamestates::state::MainMenuState::update(Renderer& renderer)
 {
-	SDL_Color black = { 0, 0, 0, 255 };
-	constexpr unsigned int x{ 340 };
-	constexpr unsigned int y{ 300 };
-	std::string text{ "Press Space bar to start" };
-
-	renderer.renderText(x, y, text, *fontCache.getFont(fontSize), black);
+	renderWelcomeText(renderer);
 }
 
-void MainMenuState::exit()
+void gamestates::state::MainMenuState::exit()
 {
 	std::cout << " MainMenuState::exit()" << std::endl;
 }
 
-void MainMenuState::handleInput(const Keyboard& keyboard)
+void gamestates::state::MainMenuState::handleInput(const Keyboard& keyboard)
 {
 	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_SPACE) == keyboard::ButtonState::pressed) {
-		game_.pushState<RunningState>(game_);
-	} else if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_A) == keyboard::ButtonState::pressed) {
-		game_.pushState<RunningStateAI>(game_);
+		game_.nextState<RunningState>(game_);
 	}
-		
+	else if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_A) == keyboard::ButtonState::pressed) {
+		game_.nextState<RunningStateAI>(game_);
+	}
+}
+
+void gamestates::state::MainMenuState::renderWelcomeText(Renderer& renderer)
+{
+	constexpr unsigned int x{ 340 };
+	constexpr unsigned int y{ 300 };
+	std::string text{ "Press Space bar to start" };
+
+	renderer.renderText(x, y, text, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
 }
