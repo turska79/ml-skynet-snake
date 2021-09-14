@@ -24,3 +24,5 @@ C++ features including some from C++ 17.
 Visuals have been secondary objective within this practice project.
 
 ![snake](https://user-images.githubusercontent.com/64461167/133246765-a5c4a87e-d009-4702-8ac1-c80ab68060ce.jpg)
+
+Snake has vision for every 45 degree angle; 8 directions in total visualized as dotted lines on the screen.
