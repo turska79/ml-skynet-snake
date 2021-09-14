@@ -1,7 +1,10 @@
 #include "Input.hpp"
 #include <memory.h>
-#include <iostream>
-#include <string>
+
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
+#include <SDL_keyboard.h>
+#pragma warning( pop )
 
 void Input::prepareForUpdate() noexcept
 {

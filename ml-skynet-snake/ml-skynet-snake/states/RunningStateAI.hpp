@@ -1,47 +1,49 @@
 #pragma once
-
+#include <memory>
 #include "RunningState.hpp"
-#include "../SnakeBrain.hpp"
-#include <atomic>
 
-#pragma warning (push, 0)
-#include <mlpack/core.hpp>
-#include <mlpack/methods/ann/ffn.hpp>
-#include <mlpack/methods/ann/init_rules/gaussian_init.hpp>
-#include <mlpack/methods/ann/layer/layer.hpp>
-#include <mlpack/methods/ann/loss_functions/mean_squared_error.hpp>
-#include <mlpack/methods/reinforcement_learning/q_learning.hpp>
-#include <mlpack/methods/reinforcement_learning/environment/mountain_car.hpp>
-//#include <mlpack/methods/reinforcement_learning/environment/acrobot.hpp>
-//#include <mlpack/methods/reinforcement_learning/environment/cart_pole.hpp>
-//#include <mlpack/methods/reinforcement_learning/environment/double_pole_cart.hpp>
-#include <mlpack/methods/reinforcement_learning/policy/greedy_policy.hpp>
-#include <mlpack/methods/reinforcement_learning/training_config.hpp>
+namespace ml {
+	class LearningAgent;
+}
 
-#include <ensmallen.hpp>
-#pragma warning (pop)
+namespace thread {
+	class interruptibleThread;
+}
 
-class RunningStateAI : public RunningState
-{
-public:
-	explicit RunningStateAI(Game& game);
-	virtual ~RunningStateAI() = default;
-	RunningStateAI(const RunningStateAI&) = default;
-	RunningStateAI& operator=(const RunningStateAI&) = default;
-	RunningStateAI(RunningStateAI&&) = default;
-	RunningStateAI& operator=(RunningStateAI&&) = default;
+namespace gamestates {
 
-	void enter() override;
-	void update(Renderer& renderer) override;
-	void handleInput(const Keyboard& keyboard) override;
-private:
-	void printStepsToScreen(Renderer& renderer);
-	void printGameCountToScreen(Renderer& renderer);
-	SnakeBrain& snakeBrain() noexcept;
+	namespace state {
+		
+		class RunningStateAI : public RunningState
+		{
+		public:
+			explicit RunningStateAI(Game& game) noexcept;
+			virtual ~RunningStateAI();
 
-	std::atomic<bool> running_{ false };
-	std::size_t gameCount_{ 0 };
+			void enter() override;
+			void exit() override;
+			void update(Renderer& renderer) override;
+			void handleInput(const Keyboard& keyboard) override;
+			void snakeCollisionCallback() override;
 
-	mlpack::rl::QLearning<SnakeBrain, mlpack::ann::FFN<mlpack::ann::MeanSquaredError<>, mlpack::ann::GaussianInitialization>, ens::AdamUpdate, mlpack::rl::GreedyPolicy<SnakeBrain> >* learningAgent_{ nullptr };
-};
+		protected:
+			void runLearningAgent();
+			void printStepsToScreen(Renderer& renderer);
+			void printGameCountToScreen(Renderer& renderer);
+			void snakePositionUpdated() override;
+
+			void registerEpisodeCompleteCallback();
+			void unregisterEpisodeCompleteCallback();
+
+			void episodeComplete();
+		private:
+			//thread::interruptibleThread* ai_{ nullptr };
+			std::size_t gameCount_{ 0 };
+
+			std::unique_ptr<ml::LearningAgent> learningAgent_;
+			bool running_{ false };
+		};
+
+	}
+}
 

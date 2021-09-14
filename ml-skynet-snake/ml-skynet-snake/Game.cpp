@@ -1,18 +1,23 @@
 #include "Game.hpp"
 #include "Renderer.hpp"
 #include "states/MainMenuState.hpp"
-#include "FontCache.hpp"
+#include "utils/FontCache.hpp"
 #include "utils/Utils.hpp"
+
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
 #include <SDL.h>
+#pragma warning( pop )
+
 #include <iostream>
 #include <string>
 
-FontCache fontCache;
+//FontUtils::FontCache fontCache;
 
 Game::Game(Settings& settings) :
 	settings_(settings),
-	board_(settings),
 	renderer_(settings.windowWidth_, settings.windowHeight_, settings.gridStartOffset_, settings.backGround_),
+	board_(settings),
 	simulation_(board_, snake_),
 	snake_(board_)
 {
@@ -20,7 +25,7 @@ Game::Game(Settings& settings) :
 }
 void Game::run()
 {
-	pushState<MainMenuState>(*this);
+	nextState<gamestates::state::MainMenuState>(*this);
 	runGameLoop();
 	exit();
 }
@@ -47,6 +52,8 @@ void Game::runGameLoop()
 
 void Game::gameLoop()
 {
+	changeState();
+
 	handleEvents();
 	handleInput();
 
@@ -57,6 +64,7 @@ void Game::gameLoop()
 	printCurrentScoreToScreen();
 	printFpsRateToScreen();
 	renderer_.present();
+
 }
 
 void Game::renderBoard()
@@ -67,37 +75,44 @@ void Game::renderBoard()
 
 void Game::printCurrentScoreToScreen()
 {
+	constexpr unsigned int snakeInitialLentgh{ 2 };
 	std::string score = "Score: ";
-	score.append(std::to_string(snake_.length()));
-	constexpr unsigned int x{ 0 };
-	constexpr unsigned int y{ 40 };
-	renderer_.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+
+	const unsigned int len = snake_.length() > 0 ? snake_.length() - snakeInitialLentgh : 0;
+
+	score.append(std::to_string(len));
+	//constexpr unsigned int x{ 0 };
+	//constexpr unsigned int y{ 40 };
+	//renderer_.renderText(x, y, score, *fontCache.getFont(utils::commonConstants::fontSize::twenty), utils::commonConstants::color::black);
+	renderer_.renderText(score);
 }
 
 void Game::printFpsRateToScreen()
 {
 	uint32_t now{ SDL_GetTicks() };
+	//TTF_Font* font = fontCache.getFont(20);
 
 	uint32_t delta = now - lastRender_;
 
 	float fps = { 1000.0f / delta };
-	TTF_Font* font = fontCache.getFont(20);
 
 	std::string fpsTtext{ "FPS: " };
 	fpsTtext.append(std::to_string(static_cast<unsigned int>(std::round(fps))));
-	
-	fpsTtext.append(" / Simulation rate: ");
+	std::string simulationFpsText("Simulation rate: ");
+
 	const uint32_t simulationRate = simulation_.updateRate();
-	fpsTtext.append(std::to_string(static_cast<unsigned int>(simulationRate)));
-	renderer_.renderText(0, 0, fpsTtext, *font, utils::commonConstants::color::black);
+	simulationFpsText.append(std::to_string(static_cast<unsigned int>(simulationRate)));
+	//renderer_.renderText(0, 0, fpsTtext, *font, utils::commonConstants::color::black);
+	//renderer_.renderText(0, 20, simulationFpsText, *font, utils::commonConstants::color::black);
+	renderer_.renderText(fpsTtext);
+	renderer_.renderText(simulationFpsText);
 	
 	lastRender_ = now;
 }
 
 void Game::exit() noexcept
 {
-	fontCache.clear();
-	states_.clear();
+	//fontCache.clear();
 }
 
 Board& Game::board() noexcept
@@ -144,25 +159,16 @@ void Game::handleInput()
 	currentState()->handleInput(keyboard);
 }
 
-State* Game::currentState() const
-{
-	if (states_.empty() == false) {
-		return states_.back().get();
-	}
-
-	return nullptr;
-}
-
-const bool Game::checkForQuit() const
+bool Game::checkForQuit() const
 {
 	const auto& keyboard = input_.getKeyboard();
-	bool running = false;
+	bool quit{ false };
 
 	if (keyboard.getKeyState(SDL_Scancode::SDL_SCANCODE_ESCAPE) == keyboard::ButtonState::pressed) {
-		running = true;
+		quit = true;
 	}
 
-	return running;
+	return quit;
 }
 
 

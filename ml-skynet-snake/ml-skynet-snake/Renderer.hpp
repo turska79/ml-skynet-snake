@@ -2,8 +2,13 @@
 
 #include <memory>
 #include <list>
+
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
 #include <SDL.h>
 #include <SDL_ttf.h>
+#pragma warning( pop )
+
 #include <string>
 #include "Board.hpp"
 
@@ -14,7 +19,8 @@ public:
 
 	void renderBackground() noexcept;
 	void renderCells(const std::list<std::unique_ptr<Cell>>& cells);
-	void renderText(const unsigned int x, const unsigned int y, const std::string& text, TTF_Font &font, const SDL_Color& color) noexcept;
+	void renderText(const unsigned int x, const unsigned int y, const std::string text, TTF_Font &font, const SDL_Color& color) noexcept;
+	void renderText(const std::string text);
 	void present() noexcept;
 	void clear() noexcept;
 	void DrawDottedLine(int x0, int y0, int x1, int y1);
@@ -31,5 +37,7 @@ private:
 	std::size_t windowHeight_;
 	std::size_t gridStartOffset_;
 	SDL_Color backGround_;
+
+	unsigned int textsRendered_{ 0 };
 };
 

@@ -3,19 +3,20 @@
 #include <utility>
 #include <cmath>
 #include <cstdint>
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
 #include <SDL_pixels.h>
-#include "Point.hpp"
-
-class Board;
-struct Cell;
+#pragma warning( pop )
 
 namespace utils {
 	namespace commonConstants {
 		constexpr unsigned int secondAsMilliseconds{ 1000 };
 		constexpr unsigned int targetFramesPerSecond{ 60 };
 		constexpr uint32_t refreshRateTargetTimeStep{ secondAsMilliseconds / targetFramesPerSecond };
-		constexpr uint32_t simulationRefreshRateTargetTimeStep{ secondAsMilliseconds / 30 };
-		constexpr unsigned int lowSpeedLimit{ 10 };
+		constexpr unsigned int targetSimulationStepsPerecond{ 10 };
+		constexpr uint32_t simulationRefreshRateTargetTimeStep{ secondAsMilliseconds / targetSimulationStepsPerecond };
+		constexpr unsigned int processOneStepPerUpdate{ 1 };
+		constexpr unsigned int lowSpeedLimit{ processOneStepPerUpdate };
 
 		namespace fontSize {
 			constexpr unsigned int twenty{ 20 };
@@ -24,13 +25,31 @@ namespace utils {
 		namespace color {
 			constexpr SDL_Color black = { 0, 0, 0,255 };
 		}
+
+		namespace ml {
+			namespace inputParameters {
+				constexpr unsigned int count{ 30 };
+				constexpr unsigned int vision_start { 0 };
+				constexpr unsigned int vision_end{ 23 };
+
+				constexpr unsigned int snake_head_x{ 24 };
+				constexpr unsigned int snake_head_y{ 25 };
+
+				constexpr unsigned int food_x{ 26 };
+				constexpr unsigned int food_y{ 27 };
+
+				constexpr unsigned int direction_vector_x{ 28 };
+				constexpr unsigned int direction_vector_y{ 29 };
+			}
+
+			constexpr unsigned int left_or_forward_or_right{ 3 };
+			constexpr unsigned int number_of_possible_actions{ left_or_forward_or_right };
+			constexpr unsigned int number_of_hidden_neurons{ 60 };
+			constexpr unsigned int max_steps{ 500 };
+		}
 	}
 	
 	namespace math {
 		const double pi{ std::atan(1.0) * 4 };
-
-		Point<long> directionVectorBetweenPoints(const Point<std::size_t> from, const Point<std::size_t> to) noexcept;
-		float distanceBetweenPoints(const Point<std::size_t> from, const Point<std::size_t> to) noexcept;
-		float snakeAngleToFood(const Point<std::size_t> head, const Point<std::size_t> body, const Point<std::size_t> food) noexcept;
 	}
 }

@@ -19,11 +19,14 @@ class Board
 public:
 	explicit Board(const Settings& settings);
 	
-	Cell* findCell(const utils::Point<std::size_t>& coordinate);
+	Cell* findCell(const utils::Point<std::size_t> coordinate);
+	Cell* findFood();
 	void resetBoard();
 	utils::Point<std::size_t> findRandomEmptyCell();
 	std::list<std::unique_ptr<Cell>>& grid() noexcept;
-	const bool isFoodCell(const utils::Point<std::size_t>& target);
+	const bool isFood(const utils::Point<std::size_t> target);
+	const bool isWall(const utils::Point<std::size_t> target);
+	const bool isSnakeBody(const utils::Point<std::size_t> target);
 private:
 	void createBoard(std::size_t gridWidth_, std::size_t gridHeight);
 	std::size_t gridWidth_{ 0 };

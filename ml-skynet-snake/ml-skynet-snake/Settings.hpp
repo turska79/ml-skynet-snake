@@ -1,7 +1,11 @@
 #pragma once
 
 #include <cstddef>
-#include <SDL.h>
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812)
+#include <SDL_pixels.h>
+#pragma warning( pop )
+
 
 struct Settings
 {

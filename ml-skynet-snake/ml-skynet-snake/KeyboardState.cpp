@@ -1,5 +1,9 @@
 #include "KeyboardState.hpp"
-#include <iostream>
+
+#pragma warning(push)  
+#pragma warning(disable : 26819 26812) 
+#include <SDL_keyboard.h>
+#pragma warning( pop )
 
 KeyboardState::KeyboardState()
 {
