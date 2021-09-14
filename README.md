@@ -17,8 +17,8 @@ playing the game.
 Machine learning Dependency:
 MlPack
 
-Game and code structure might be a bit overcomplicated for a simple game as a Snake
-clone, but point was to make it well with object oriented style and using various
+Game and code structure might be a bit overcomplicated for such a simple game as a Snake
+clone, but point of this project is to make it on object oriented style and using various
 C++ features including some from C++ 17.
 
 Visuals have been secondary objective within this practice project.
