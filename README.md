@@ -1,6 +1,6 @@
 # ml-skynet-snake
 
-Snake game clone using SDL and Machine learning for my C++ practice purposes.
+Snake game clone using SDL and Machine learning for my C++ practice purposes in Windows environment with Visual Studio.
 
 Snake game works and can be controlled with arrow keys. Space bar starts another game.
 
